@@ -4,7 +4,7 @@
 
 ## Lectures
 
-2. Version control and project management \[[**.html**](https://raw.githack.com/intro-to-data-science-21/lectures/main/02-version-control/02-version-control.html) | [**.pdf**](https://raw.githack.com/uo-ec607/lectures/master/02-git/02-Git.pdf) | [**.Rmd**](https://raw.githack.com/intro-to-data-science-21/lectures/main/02-version-control/02-version-control.Rmd)\]
+2. Version control and project management \[[**.html**](https://raw.githack.com/intro-to-data-science-21/lectures/main/02-version-control/02-version-control.html) | [**.pdf**](https://raw.githack.com/intro-to-data-science-21/lectures/main/02-version-control/02-version-control.pdf) | [**.Rmd**](https://raw.githack.com/intro-to-data-science-21/lectures/main/02-version-control/02-version-control.Rmd)\]
 
 ## Summary
 
