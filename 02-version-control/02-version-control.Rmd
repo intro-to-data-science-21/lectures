@@ -2,7 +2,7 @@
 title: "Introduction to Data Science"
 subtitle: "Session 2: Version control and project management"
 author: "Simon Munzert"
-institute: "Hertie School | [GRAD-C11/E1339](https://github.com/Fall-2021-Introduction-to-Data-Science)" #"`r format(Sys.time(), '%d %B %Y')`"
+institute: "Hertie School | [GRAD-C11/E1339](https://github.com/intro-to-data-science-21)" #"`r format(Sys.time(), '%d %B %Y')`"
 output:
   xaringan::moon_reader:
     css: [default,'simons-touch.css', metropolis, metropolis-fonts] 
