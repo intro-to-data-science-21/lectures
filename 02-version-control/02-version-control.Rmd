@@ -5,7 +5,7 @@ author: "Simon Munzert"
 institute: "Hertie School | [GRAD-C11/E1339](https://github.com/Fall-2021-Introduction-to-Data-Science)" #"`r format(Sys.time(), '%d %B %Y')`"
 output:
   xaringan::moon_reader:
-    css: [default,'../simons-touch.css', metropolis, metropolis-fonts] 
+    css: [default,'simons-touch.css', metropolis, metropolis-fonts] 
     lib_dir: libs
     nature:
       highlightStyle: github
