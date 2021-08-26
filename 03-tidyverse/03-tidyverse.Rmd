@@ -505,7 +505,7 @@ name: dplyr
 # Key dplyr verbs
 
 .pull-left-wide[
-There are five key `dplyr` verbs that you need to learn.
+There are five key `dplyr` verbs that you need to learn.<sup>1</sup>
 
 1. `filter()`: Filter (i.e. subset) rows based on their values.
 
@@ -515,11 +515,17 @@ There are five key `dplyr` verbs that you need to learn.
 
 4. `mutate()`: Create new columns.
 
-5. `summarize()`: Collapse multiple rows into a single summary value.<sup>1</sup>
+5. `summarize()`: Collapse multiple rows into a single summary value.<sup>2</sup>
+
+But let's start with studying the key commands using the `starwars` dataset that comes pre-packaged with `dplyr`. 
+
 ]
 
+
 .footnote[
-<sup>1</sup> `summarize()` with an "s" works too. I slightly prefer the barbarian version though.
+<sup>1</sup> There is much, much more in `dplyr`, and we will look beyond these core functions later. Have a glimpse at the [overview at tidyverse.org](https://dplyr.tidyverse.org/) and at this excellent [cheat sheet](https://github.com/rstudio/cheatsheets/blob/master/data-transformation.pdf).
+</br>
+<sup>2</sup> `summarize()` with an "s" works too. I slightly prefer the barbarian version though.
 ]
 
 
@@ -531,11 +537,6 @@ There are five key `dplyr` verbs that you need to learn.
 ]
 
 
---
-
-There is much, much more in `dplyr`, and we will look beyond these core functions later. Have a glimpse at the [overview at tidyverse.org](https://dplyr.tidyverse.org/) and at this excellent [cheat sheet](https://github.com/rstudio/cheatsheets/blob/master/data-transformation.pdf).
-
-But let's start with studying the key commands using the `starwars` dataset that comes pre-packaged with `dplyr`. 
 
 ---
 name: filter
