@@ -14,7 +14,8 @@ output:
       ratio: '16:9'
       hash: true
 ---
-
+class: inverse, center, middle
+name: welcome
 
 ```{css, echo=FALSE} 
 @media print { # print out incremental slides; see https://stackoverflow.com/questions/56373198/get-xaringan-incremental-animations-to-print-to-pdf/56374619#56374619
@@ -45,101 +46,176 @@ knit_hooks$set(
       continue = if (options$engine %in% c('sh','bash')) '$ ' else '+ '
       )
 })
+
+library(tidyverse)
+library(hrbrthemes)
+library(fontawesome)
 ```
 
 
 
-SESSION 1: 
-  - EXPECTATION MANAGEMENT
-  - What is data science slides from workshop
-  - glimpse on research
-  - glimpse on ethics
-  - organizational issues
+
+# Welcome!
+<html><div style='float:left'></div><hr color='#EB811B' size=1px style="width:1000px; margin:auto;"/></html>
+
+---
+
+# Introductions
+
+### Course
+
+`r fa('globe')` https://github.com/intro-to-data-science-21
+
+Much of this course lives on GitHub. You will find lecture materials, code, assignments, and other people's presentations there. We also have Moodle, which is is for everything else.
+
+--
+
+### Me
+
+`r fa('address-book')` I'm [Simon Munzert](https://grantmcdermott.com/) [si’mən munsɜrt], or just Simon [saɪmən].
+
+`r fa('envelope')` [munzert@hertie-school.org](mailto:munzert@hertie-school.org)
+
+`r fa('graduation-cap')` Assistant Professor (data science and public policy)
+
+--
+
+### You
+
+What's your name? Why are you here? And would you share a funny fact about yourself?
+
+---
+
+# The labs
+
+.pull-left-wide[
+
+## Who & how
+
+- This course is accompanied by labs administered by **Lisa Oswald** and **Tom Arend**.
+- The labs are mandatory. Please attend them.
+- As with the regular classes, please stick to the lab you are assigned to.
+
+## What for
+
+- What these sessions are meant for:
+  - Discussion of issues related to the content covered in the lecture
+  - Discussion of issues related to the assignments
+  - Boosting your R skills
+- What these sessions are **not** meant for: 
+  - Solving the assignments for you
+]
+
+.pull-right-small-center[
+<div align="center">
+<br>
+<img src="pics/lisa-circle.png" height=200>
+<br>
+<br>
+<img src="pics/tom-circle.png" height=200>
+</div>
+]
 
 
+---
+
+# Class etiquette
+
+.pull-left-wide[
+- Learning programming with R can be challenging and might lead you out of your comfort zone. If you have problems with the pace of the course, let me know. I expect your commitment to the class, but **I do not want anyone to fail.**
+- You are all genuinely interested in data science. But there is also considerable variation in your backgrounds. This is how we like it! Some sessions will be more informative for you than others. If you feel bored, **look out for and help others**, or explore other corners of R you don't know yet.
+- The pandemic is still around. We are differentially affected by it. We are located in different time zones. **Let's support each other.** 
+- **Be respectful** to each other, all the time.
+- **Ask questions** whenever you feel the need to do so!
+]
+
+.pull-right-small-center[
+<div align="center">
+<br>
+<img src="pics/stupid-questions.jpg" height=400>
+</div>
+]
+
+---
 
 # Table of contents
 
+</br></br>
+
 1. [Welcome!](#welcome)
 
-2. [Class logistics](#logistics)
+2. [What is data science?](#whatisdatascience)
 
-3. [What is data science?](#whatisdatascience)
+3. [Sneak preview](#preview)
 
-4. [Sneak preview](#preview)
-
-
----
-class: inverse, center, middle
-name: git
-
-# Git and GitHub
-<html><div style='float:left'></div><hr color='#EB811B' size=1px style="width:1000px; margin:auto;"/></html>
-
----
-
-# TL;DL
-
-
----
-
-# TL;DL
-
-<div align="center">
-<img src="pics/venn1.png" height=550>
-</div>
-
----
-
-# TL;DL
-
-<div align="center">
-<img src="pics/venn2.png" height=550>
-</div>
-
----
-
-# TL;DL
-
-<div align="center">
-<img src="pics/venn3.png" height=550>
-</div>
-
----
-
-# TL;DL
-
-<div align="center">
-<img src="pics/venn4.png" height=550>
-</div>
-
----
-
-# TL;DL
-
-<div align="center">
-<img src="pics/venn5.png" height=550>
-</div>
-
-
----
-
-# TL;DL
-
-<br><br><br><br>
-<div align="center" class = "font200">
-<b>To gain a deep understanding of the ethical implications of data science work, we need to teach the fundamentals of data science.</b>
-</div>
-
-
+4. [Class logistics](#logistics)
 
 
 ---
 class: inverse, center, middle
+name: whatisdatascience
 
-# What's data science?
-
+# What is data science?
 <html><div style='float:left'></div><hr color='#EB811B' size=1px style="width:1000px; margin:auto;"/></html>
+
+
+---
+
+# An old classic
+
+<div align="center">
+<img src="pics/venn-orig-1.png" height=550>
+</div>
+
+---
+
+# An old classic
+
+<div align="center">
+<img src="pics/venn-orig-2.png" height=550>
+</div>
+
+---
+
+# An old classic
+
+<div align="center">
+<img src="pics/venn-orig-3.png" height=550>
+</div>
+
+---
+
+# An old classic
+
+<div align="center">
+<img src="pics/venn-orig-4.png" height=550>
+</div>
+
+
+---
+
+# An old classic
+
+<div align="center">
+<img src="pics/venn-orig-5.png" height=550>
+</div>
+
+---
+
+# An old classic
+
+<div align="center">
+<img src="pics/venn-orig-5-credit.png" height=550>
+</div>
+
+
+
+---
+background-image: url("pics/vintage-pipeline.jpeg")
+background-size: contain
+background-color: #000000
+
+# The data science pipeline
 
 
 ---
@@ -371,6 +447,12 @@ class: inverse, center, middle
 
 
 
+---
+class: inverse, center, middle
+name: preview
+
+# Sneak preview
+<html><div style='float:left'></div><hr color='#EB811B' size=1px style="width:1000px; margin:auto;"/></html>
 
 
 
@@ -378,7 +460,199 @@ class: inverse, center, middle
 ---
 class: inverse, center, middle
 
-# Everyday ethics in data science
+# Sneak preview <br> Learning to love a programming environment
+
+<html><div style='float:left'></div><hr color='#EB811B' size=1px style="width:1000px; margin:auto;"/></html>
+
+
+---
+class: center
+background-color: #fff
+
+# The tidyverse
+
+<div align="center">
+<br>
+<img src="pics/hex-tidyverse.gif" height=500>
+</div>
+
+
+
+
+---
+class: inverse, center, middle
+
+# Sneak preview <br> Collecting web data at scale
+
+<html><div style='float:left'></div><hr color='#EB811B' size=1px style="width:1000px; margin:auto;"/></html>
+
+
+---
+class: center
+background-color: #fff
+
+# Most popular websites 2019
+
+<div align="center">
+<br>
+<img src="pics/top-100-websites-1.jpeg" height=500>
+</div>
+
+---
+# Scraping the web for social research
+
+
+.pull-left-center[
+<div align="center">
+<img src="pics/pap1.png" height=300>
+<br><br>
+<img src="pics/pap4.png" height=200>
+</div>
+]
+
+.pull-right-center[
+<div align="center">
+<img src="pics/cld-paper.png" height=250>
+<br>
+<img src="pics/leakingnetworks.png" height=260>
+</div>
+]
+
+
+
+
+---
+class: inverse, center, middle
+
+# Sneak preview <br> Applying data science to tackle social problems
+
+<html><div style='float:left'></div><hr color='#EB811B' size=1px style="width:1000px; margin:auto;"/></html>
+
+---
+class: center
+background-color: #fff
+
+# Tracking the usage of a contact tracing app
+
+.pull-left-center[
+<div align="center">
+<img src="pics/nhb-screenshot.png" height=300>
+<br><br>
+<img src="pics/corona-warn-app-android-ios.jpeg" height=200>
+</div>
+]
+
+.pull-right-center[
+<div align="center">
+<img src="pics/cwa-experiment.png" height=250>
+<br>
+<img src="pics/cwa-timeline.png" height=260>
+</div>
+]
+
+
+
+---
+class: center
+background-color: #fff
+
+# Reducing hate speech on social media
+
+.pull-left-center[
+<div align="center">
+<img src="pics/munger-1.png" height=500>
+</div>
+]
+
+.pull-right-center[
+<div align="center">
+<img src="pics/munger-2.png" height=250>
+<br>
+<img src="pics/munger-3.png" height=260>
+</div>
+]
+
+
+---
+class: center
+background-color: #fff
+
+# Monitoring the effects of climate change on health
+
+.pull-left-center[
+<div align="center">
+<img src="pics/lancet-2020.png" height=300>
+<br><br>
+<img src="pics/lancet-2020-fig1.png" height=200>
+</div>
+]
+
+.pull-right-center[
+<div align="center">
+<img src="pics/clickstream_network_graph_health_climate_labels_2020.png" height=250>
+<br>
+<img src="pics/clickstream-views-2018-2020.png" height=260>
+</div>
+]
+
+
+
+
+
+
+---
+class: inverse, center, middle
+
+# Sneak preview <br> Getting to know the limits of data
+
+<html><div style='float:left'></div><hr color='#EB811B' size=1px style="width:1000px; margin:auto;"/></html>
+
+
+---
+
+# Calling bullsh*t when you see it
+
+.pull-left-small[
+
+<br> 
+
+Learn not to be fooled by 
+- big data
+- garbage data
+- garbage models
+- weird samples
+- claims of generality
+- statistical significance
+- implausibly large effect sizes
+- highly precise forecasts
+- overfitted models
+
+And much more...
+]
+
+.pull-right-wide-center[
+<br>
+<div align="center">
+<img src="pics/sc01.png" height=150> 
+<img src="pics/gigo.png" height=150>
+</br>
+<img src="pics/criminal-faces-2.png" height=150>
+<img src="pics/calling-bullshit-2.jpg" height=150>
+<img src="pics/survivorship-bias.png" height=150>
+</br>
+<img src="pics/cor-examples7.png" height=150>
+<img src="pics/overfitting.png" height=150>
+<img src="pics/nyt-opera.png" height=150>
+</div>
+]
+
+
+
+
+---
+class: inverse, center, middle
+
+# Sneak preview <br> Reflecting everyday ethics in data science
 
 <html><div style='float:left'></div><hr color='#EB811B' size=1px style="width:1000px; margin:auto;"/></html>
 
@@ -441,36 +715,371 @@ background-color: #000000
 
 
 
+
+
 ---
-background-image: url("pics/research-ethics-2.png")
-background-size: contain
-background-color: #000000
+class: inverse, center, middle
+name: logistics
 
-# Data science ethics
-
-.pull-left-center[
-<br><br><br>
-<div align="center" class = "font200">
-<b>Data science ethics </br>∋</b> </br> <b>Classical research ethics<sup>1</sup></b>
-</div>
-<br><br><br><br><br><sup>1</sup>Honesty, objectivity, prudence, openness, respect for intellectual property, social responsibility, ...
-]
+# Class logistics
+<html><div style='float:left'></div><hr color='#EB811B' size=1px style="width:1000px; margin:auto;"/></html>
 
 
 
 ---
-background-image: url("pics/research-ethics-3.png")
+
+# The plan
+
+.pull-left[
+
+### Goals of the course
+
+- This course equips you with conceptual knowledge about the data science pipeline and coding workflow, data structures, and data wrangling.
+- It enables you to apply this knowledge with statistical software.
+- It prepares you for our other core courses and electives as well as the master’s thesis.
+
+<div align="center">
+<img src="pics/venn-focus.png" height=230>
+</div>
+
+]
+
+--
+
+.pull-right[
+### What we will cover
+
+- Version control and project management
+- R and the tidyverse
+- Relational databases and SQL
+- Web data and technologies
+- Model fitting and simulation<sup>1</sup>
+- Viusalization
+- The command line
+- Programming workflow: debugging, automationg, packaging
+- Monitoring and communication
+- Data science ethics
+
+.footnote[
+<sup>1</sup> Not yet: mathematical and statistical foundations, ML.
+]
+
+]
+
+
+---
+background-image: url("pics/harry-ron-hermione-start.jpeg")
 background-size: contain
 background-color: #000000
 
-# Data science ethics
+# You at the beginning of the course
 
-.pull-left-center[
+
+---
+background-image: url("pics/harry-ron-hermione-end.jpeg")
+background-size: contain
+background-color: #000000
+
+# You at the end of the course
+
+
+---
+
+# Why R and RStudio?
+
+### Data science positivism
+
+- Alongside Python, R has become the *de facto* language for data science.
+  - See: [*The Impressive Growth of R*](https://stackoverflow.blog/2017/10/10/impressive-growth-r/), [*The Popularity of Data Science Software*](http://r4stats.com/articles/popularity/)
+- Open-source (free!) with a global user-base spanning academia and industry.
+  - "Do you want to be a profit source or a cost center?"
+
+--
+
+### Bridge to multiple other programming environments, with statistics at heart
+
+- Already has all of the statistics support, and is amazingly adaptable as a “glue” language to other
+programming languages and APIs.
+- The RStudio IDE and ecosystem allow for further, seemless integration.
+
+--
+
+### Path dependency
+
+- It's also the language that I know best.
+- (Learning multiple languages is a good idea, though.)
+
+
+
+---
+
+
+
+# Why R and RStudio? (cont.)
+```{R, indeeddotcom, echo = F, fig.height = 6, fig.width = 9, dev = "svg", warning = F}
+# The popularity data
+pop_df = 
+  data.frame(
+  lang = c("Python", "SQL", "R", "SAS", "Matlab", "SPSS", "Stata"),
+  n_jobs = c(8150, 7264, 3484, 950, 687, 270, 74),
+  #n_jobs = c(99756, 132860, 41242, 31943, NA, 4843, 2302),
+  free = c(T, T, T, F, F, F, F)
+  )
+## Plot it
+pop_df %>% 
+  mutate(lang = lang %>% factor(ordered = T)) %>%
+  ggplot(aes(x = lang, y = n_jobs, fill = free)) +
+  geom_col() +
+  geom_hline(yintercept = 0) +
+  aes(x = reorder(lang, -n_jobs), fill = reorder(free, -free)) +
+  xlab("Statistical language") +
+  scale_y_continuous(label = scales::comma) +
+  ylab("Number of jobs") +
+  labs(
+    title = "Comparing statistical languages",
+    subtitle = "Number of job postings for '<language> data' on de.indeed.com, 2021/08/27"
+    ) +
+  scale_fill_manual(
+    "Free?",
+    labels = c("True", "False"),
+    values = c("#f92672", "darkslategray")
+    ) +
+  ggthemes::theme_pander(base_size = 17) +
+  # theme_ipsum() +
+  theme(legend.position = "bottom")
+```
+
+
+---
+
+# Core (and optional) readings
+
 <br><br><br>
-<div align="center" class = "font200">
-<b>Data science ethics </br>∋</b> </br> <b>The ethics of </br> everyday decisions </br> of data scientists</b>
+<div align="center">
+<img src="pics/r4ds.png" height=300>
+<img src="pics/advr2end.jpeg" height=300>
+<img src="pics/rpackages.jpeg" height=300>
+<img src="pics/bitbybit.png" height=300>
+<img src="pics/datasciencekelleher.jpeg" height=300>
 </div>
-]
+
+
+
+
+---
+
+# Attendance
+
+- As a general rule, switching onsite groups will not be possible during the course of the semester. - However, if you happen to be unavailable on your slot but not on the other, please tune in (**only online!**). Don't email me about it - this will result in a crowded mailbox on my end.
+- You cannot miss more than two sessions. If you have to miss a session for medical reasons or personal emergencies, please inform Examination Office.
+- The current Hertie Hygiene rules apply!
+
+
+---
+
+# Office hours and advice
+
+-  If you want to discuss content from class, please first do so in the lab sessions. 
+- If you still need more feedback, get in touch with me (`r fa('envelope')` [munzert@hertie-school.org](mailto:munzert@hertie-school.org)).
+- If you want to discuss any other matters with me, just drop me a message and we'll arrange a meeting.
+- My (virtual) office hours (by appointment) are Tuesdays, 3-4pm CET.
+- For general technical advice, the [Research Consulting Team at the Data Science Lab](https://hertie-data-science-lab.github.io/research-consulting/) is there for you.
+
+
+
+---
+# Assignments and grading
+
+| Component                           | Weight |
+|:-|-:|
+| 4 × homework assignments (10% each) | 40% |
+| 1 × workshop presentation	  	| 25% |
+| 1 × final data science project	        | 35% |
+
+--
+
+### Homework assignments 
+- The assignments are distributed via our own [GitHub Classroom](https://classroom.github.com/classrooms/88543430-introduction-to-data-science).
+- Each assignment is a mix of practical problems that are to be solved with R.
+- You are encouraged to collaborate, but everyone will hand in a separate solution.
+- There will be 5 assignments (one every ~2 weeks) and the 4 best will contribute to the final grade.
+- You'll have roughly 2 weeks to work on each assignment.
+- You submit your solutions via GitHub Classroom.
+- Grades will be based on (1) the accuracy of your solutions and (2) the adherence of a clean and efficient coding style that you will learn in the first sessions.
+
+
+
+---
+# Assignments and grading
+
+| Component                           | Weight |
+|:-|-:|
+| 4 × homework assignments (10% each) | 40% |
+| 1 × workshop presentation	  	| 25% |
+| 1 × final data science project	        | 35% |
+
+### Workshop presentation
+- About halfway through the semester, we will flip the roles and you will become the instructor for one session of a workshop on **Tools for Data Science**. Whether this will happen onsite (hybrid) or online will still be determined.
+- You, in groups of 2 students, will present a preexisting tool or package that is useful for the data science workflow.
+- Topics will be randomly allocated and are listed on [GitHub](https://github.com/intro-to-data-science-21/workshop-presentations).
+- Your contribution will include
+  1. A lightning talk where you briefly introduce and motivate the tool
+  2. A hands-on session where you showcase the tool and provide exercises for practice
+- Both the talk and the prepared exercise materials, which must also be hosted openly on GitHub, will be graded.
+
+
+
+---
+# Assignments and grading
+
+| Component                           | Weight |
+|:-|-:|
+| 4 × homework assignments (10% each) | 40% |
+| 1 × workshop presentation	  	| 25% |
+| 1 × final data science project	        | 35% |
+
+### Final data science project
+- In the component, to be submitted a couple of weeks after classes have finished, you will design and implement your own data science project.
+- You are supposed to collaborate in groups of two or three students.
+- Student groups choose their topic subject to approval by the instructor.
+- A wide variety of project types are imaginable and include
+  1. A report about a statistical data analysis
+  2. A policy explainer project enriched with data (think: a piece of data journalism)
+  3. A dashboard to make data / analyses accessible in an interactive fashion
+  4. An R package
+
+
+
+---
+
+# Further reading
+
+<div align="center">
+<br><br><br>
+<img src="pics/bookofwhy.jpg" height=300>
+<img src="pics/everybodylies.jpg" height=300>
+<img src="pics/everythingisobvious.jpg" height=300>
+<img src="pics/calling-bullshit.jpeg" height=300>
+<img src="pics/wilkebook.jpeg" height=300>
+</div>
+
+
+---
+
+# Further listening
+
+<div align="center">
+<br>
+<img src="pics/podcast-casual-inference.png" height=200>
+<img src="pics/podcast-data-skeptic.png" height=200>
+<img src="pics/podcast-data-stories.png" height=200>
+<img src="pics/podcast-digital-analytics-power-hour.jpeg" height=200>
+<img src="pics/podcast-linear-digressions.png" height=200>
+<br>
+<img src="pics/podcast-not-so-standard-deviations.png" height=200>
+<img src="pics/podcast-oreilly-datashow.jpeg" height=200>
+<img src="pics/podcast-banana-data.jpeg" height=200>
+<img src="pics/podcast-stats-stories.png" height=200>
+<img src="pics/podcast-talking-machines.png" height=200>
+</div>
+
+
+---
+
+# Further watching
+
+<div align="center">
+<br><br><br><br><br>
+<img src="pics/3blue1brown.jpeg" height=200>
+<img src="pics/statsquest.jpeg" height=200>
+<img src="pics/dataviz-heiss.png" height=200>
+<img src="pics/online-causal-inference.png" height=200>
+<img src="pics/civica-data-science.png" height=200>
+</div>
+
+
+
+
+---
+
+# Getting started for the course
+
+### Software
+
+1. Download [R](https://www.r-project.org/).
+
+2. Download [RStudio](https://www.rstudio.com/products/rstudio/download/preview/).
+
+3. Download [Git](https://git-scm.com/downloads).
+
+4. Create an account on [GitHub](https://github.com/) and register for a student/educator [discount](https://education.github.com/discount_requests/new). You will soon receive an invitation to the course organization on GitHub, as well as [GitHub classroom](https://classroom.github.com), which is how we'll disseminate and submit assignments, receive feedback and grading, etc. 
+  
+--
+
+### OS extras
+
+- **Windows:** Install [Rtools](https://cran.r-project.org/bin/windows/Rtools/). You might also want to install [Chocolately](https://chocolatey.org/).
+- **Mac:** Install [Homebrew](https://brew.sh/).
+- **Linux:** None (you should be good to go).
+
+
+---
+
+# Checklist
+
+☑ Do you have the most recent version of R?
+  ```{r, cache=FALSE}
+  version$version.string
+  ```
+
+
+☑ Do you have the most recent version of RStudio? (The [preview version](https://www.rstudio.com/products/rstudio/download/preview/) is fine.)
+  ```{r eval=FALSE}
+  RStudio.Version()$version
+  ## Requires an interactive session but should return something like "[1] ‘1.4.1100’"
+  ```
+
+☑ Have you updated all of your R packages? 
+  ```{r eval=FALSE}
+  update.packages(ask = FALSE, checkBuilt = TRUE)
+  ```
+  
+---
+
+# Checklist (cont.)
+
+Open up the [shell](http://happygitwithr.com/shell.html#shell).
+- Windows users, make sure that you installed a Bash-compatible version of the shell. If you installed [Git for Windows](https://gitforwindows.org), then you should be good to go.
+
+☑ Which version of Git have you installed?
+  ```{bash, cache=FALSE}
+  git --version
+  ```
+
+☑ Did you introduce yourself to Git? (Substitute in your details.)
+  ```{bash eval=FALSE}
+  git config --global user.name 'Simon Munzert'
+  git config --global user.email 'munzert@hertie-school.org'
+  git config --global --list
+  ```
+
+☑ Did you register an account in GitHub? 
+
+---
+
+
+# Coming up
+
+<br><br><br> 
+
+### The first lab session
+
+Wednesday is lab day. Get to know Lisa, Tom, R, and RStudio, four of your best friends for the next months!
+
+### Next lecture
+
+Version control and project management
+
 
 
 
