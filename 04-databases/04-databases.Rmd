@@ -96,7 +96,7 @@ library(tidyverse)
 
 - The **data structure**: tables, columns, keys, normal forms
 - The **data manipulations**: selects, joins, grouping
-- The **database system**: e.g., Postgres, Oracle, SQL Server, sqlite
+- The **database management system**: e.g., Postgres, Oracle, SQL Server, sqlite
 - The **query language**, e.g., SQL
 
 ## What we will cover and won't cover
@@ -128,6 +128,34 @@ Databases can exist
 - But also see hash tables: https://en.wikipedia.org/wiki/Hash_table
 - Analogy: (Relational) databases organize data in one more tables. Think of a list of data frames in R. To access information from a specific table (data frame), we first have to index it from the database (list) and then execute our query functions
 - Another useful analogy (from McDermott): A b-tree shares the spirit of the file cabinet ordering system, but takes it step further so that we eliminate at least half of the remaining data from our search at each step. E.g. We need to find a person’s tax records in a million-row dataset. In the first step we immediately realise that it’s somewhere in the first 500k rows. In the next step we immediately realise that it’s somewhere in rows 250k-500k, etc.
+
+
+---
+
+# Connecting to databases with R
+
+- R can connect to all major existing databases types (and to virtually anything else, too).
+- There are various R packages that allow you to connect to particular database types, e.g.:
+
+| DBMS  |  R package |
+|---|---|
+| SQLite  | [`RSQLite`](https://cran.r-project.org/web/packages/RSQLite/index.html) |
+| MySQL  | [`RMySQL`](https://cran.r-project.org/web/packages/RMySQL/index.html) |
+|  PostgreSQL |  [`RPostgres`](https://cran.r-project.org/web/packages/RPostgres/index.html) |
+|  Oracle Database |  [`ROracle`](https://cran.r-project.org/web/packages/ROracle/index.html) |
+
+
+
+---
+
+# A common interface to relational databases from R
+
+https://cran.r-project.org/web/packages/DBI/vignettes/DBI-proposal.html
+https://db.rstudio.com/getting-started/overview
+https://en.wikipedia.org/wiki/Database#Database_management_system
+
+
+
 
 
 ---
