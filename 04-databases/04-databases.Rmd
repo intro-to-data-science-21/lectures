@@ -1,11 +1,11 @@
 ---
 title: "Introduction to Data Science"
-subtitle: "Session 4: Relational databases"
+subtitle: "Session 4: Relational databases and SQL"
 author: "Simon Munzert"
-institute: "Hertie School | [GRAD-C11/E1339](https://github.com/Fall-2021-Introduction-to-Data-Science)" #"`r format(Sys.time(), '%d %B %Y')`"
+institute: "Hertie School | [GRAD-C11/E1339](https://github.com/intro-to-data-science-21)" #"`r format(Sys.time(), '%d %B %Y')`"
 output:
   xaringan::moon_reader:
-    css: [default, '../simons-touch.css', metropolis, metropolis-fonts] 
+    css: [default, 'simons-touch.css', metropolis, metropolis-fonts] 
     lib_dir: libs
     nature:
       highlightStyle: github
@@ -45,30 +45,101 @@ knit_hooks$set(
       continue = if (options$engine %in% c('sh','bash')) '$ ' else '+ '
       )
 })
+
+library(tidyverse)
 ```
 
 
 # Table of contents
 
-1. [Tidyverse basics](#basics)<sup>1</sup>
+1. [Back to dplyr: joins](#joins)
 
-2. [Pipes](#pipes)
+2. [Relational data](#relational)
 
-3. [Data wrangling with dplyr](#dplyr)
+3. [Database fundamentals](#databases)
 
-4. [Data tidying with tidyr](#tidyr)
+4. [SQL](#sql)
 
-5. [Tidy programming](#programming)
+5. [Databases and R](#dbr)
 
-6. [Coding style](#style)
+6. [Other database types](#otherdb)
 
 7. [Summary](#summary)
 
-.footnote[<sup>1</sup> Parts of this lecture draws on materials from Grant McDermott's excellent [*Data Science for Economists*](https://github.com/uo-ec607/lectures) class.]
+
 
 
 ---
+
+# When databases become useful
+
+.pull-left[
+- You want to present or make data available on a website. Using a database, you only need one tool to achieve this.
+- You collaborate with others on a data collection project. With a database, you have a common, always accessible, and reliable infrastructure at hand that multiple users can access at the same time.
+- When several parties are involved, who is allowed to do what with the database might differ (e.g., read-only, access to parts of the data, limited admin rights, etc.). Most databases allow defining different usage rights for different users.
+]
+
+--
+
+.pull-right[
+- You have loads of data that exceed the working memory on your computer. Databases are limited by available disk size (or can be distributed across multiple disks/machines).
+- Your data structure is complex. Databases allow/encourage you to store, retrieve and subset data with complex data structures.
+- Your data is big and you have to access/subset/operate frequently. Querying databases is fast.
+- You care about data quality and have clear expectations how data should look like. Using databases you can define specific rules for extending and updating your database.
+]
+
+---
+
+# Getting some terminology right
+
+## We should distinguish:
+
+- The **data structure**: tables, columns, keys, normal forms
+- The **data manipulations**: selects, joins, grouping
+- The **database system**: e.g., Postgres, Oracle, SQL Server, sqlite
+- The **query language**, e.g., SQL
+
+## What we will cover and won't cover
+
+- We will cover essential structures and manipulations, how to interact with databases from within R, and basics of SQL
+- We will not cover SQL or any particular database system in detail
+
+
+dbms-r-sql.png
+
+
+---
+
+# Why databases?
+
+- Big data, big problems
+- Store data which is too big to fit into memory
+- Access big data effectively
+
+# Where are the databases
+
+Databases can exist
+- locally or remotely
+- in-memory or on-disk
+
+# Why are databases so efficient?
+
+- They rely on binary search trees https://en.wikipedia.org/wiki/Binary_search_tree
+- But also see hash tables: https://en.wikipedia.org/wiki/Hash_table
+- Analogy: (Relational) databases organize data in one more tables. Think of a list of data frames in R. To access information from a specific table (data frame), we first have to index it from the database (list) and then execute our query functions
+- Another useful analogy (from McDermott): A b-tree shares the spirit of the file cabinet ordering system, but takes it step further so that we eliminate at least half of the remaining data from our search at each step. E.g. We need to find a person’s tax records in a million-row dataset. In the first step we immediately realise that it’s somewhere in the first 500k rows. In the next step we immediately realise that it’s somewhere in rows 250k-500k, etc.
+
+
+---
+class: inverse, center, middle
 name: joins
+
+# Back to dplyr: joins
+
+<html><div style='float:left'></div><hr color='#EB811B' size=1px style="width:1000px; margin:auto;"/></html>
+
+
+---
 
 # Joins
 
@@ -171,5 +242,59 @@ left_join(
 Make sure you know what "year.x" and "year.y" are. Again, it pays to be specific.
 
 
+
+
+
+---
+class: inverse, center, middle
+name: relational
+
+# Relational data
+
+<html><div style='float:left'></div><hr color='#EB811B' size=1px style="width:1000px; margin:auto;"/></html>
+
+
+---
+class: inverse, center, middle
+name: databases
+
+# Database fundamentals
+
+<html><div style='float:left'></div><hr color='#EB811B' size=1px style="width:1000px; margin:auto;"/></html>
+
+
+---
+class: inverse, center, middle
+name: sql
+
+# SQL
+
+<html><div style='float:left'></div><hr color='#EB811B' size=1px style="width:1000px; margin:auto;"/></html>
+
+
+---
+class: inverse, center, middle
+name: dbr
+
+# Databases and R
+
+<html><div style='float:left'></div><hr color='#EB811B' size=1px style="width:1000px; margin:auto;"/></html>
+
+
+---
+class: inverse, center, middle
+name: otherdb
+
+# Other database types
+
+<html><div style='float:left'></div><hr color='#EB811B' size=1px style="width:1000px; margin:auto;"/></html>
+
+---
+class: inverse, center, middle
+name: summary
+
+# Summary
+
+<html><div style='float:left'></div><hr color='#EB811B' size=1px style="width:1000px; margin:auto;"/></html>
 
 

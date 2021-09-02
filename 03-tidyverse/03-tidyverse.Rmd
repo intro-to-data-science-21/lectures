@@ -66,6 +66,15 @@ knit_hooks$set(
 
 .footnote[<sup>1</sup> Parts of this lecture draws on materials from Grant McDermott's excellent [*Data Science for Economists*](https://github.com/uo-ec607/lectures) class.]
 
+
+---
+background-image: url("pics/data-science-with-tidyverse.png")
+background-size: contain
+background-color: #fff
+
+# Today's session in a nutshell
+
+
 ---
 class: inverse, center, middle
 name: basics
@@ -503,7 +512,7 @@ background-color: #000000
 class: inverse, center, middle
 name: dplyr
 
-# dplyr
+# Data wrangling with dplyr
 
 <html><div style='float:left'></div><hr color='#EB811B' size=1px style="width:1000px; margin:auto;"/></html>
 
@@ -915,7 +924,7 @@ There are also a whole class of [window functions](https://cran.r-project.org/we
 class: inverse, center, middle
 name: tidyr
 
-# tidyr
+# Data tidying with tidyr
 
 <html><div style='float:left'></div><hr color='#EB811B' size=1px style="width:1000px; margin:auto;"/></html>
 
