@@ -153,7 +153,7 @@ Databases can exist
 https://cran.r-project.org/web/packages/DBI/vignettes/DBI-proposal.html
 https://db.rstudio.com/getting-started/overview
 https://en.wikipedia.org/wiki/Database#Database_management_system
-
+https://www.dataquest.io/blog/sql-basics/
 
 
 
@@ -169,6 +169,73 @@ name: joins
 
 ---
 
+# Relational data in R
+
+For the simple examples that I'm going to show here, we'll need some data sets that come bundled with the [**nycflights13**](http://github.com/hadley/nycflights13) package. 
+
+Let's load it now and then inspect these data frames in your own console.
+
+```{r flights, echo = F}
+library(nycflights13)
+```
+```{r, eval = F}
+library(nycflights13)
+flights 
+planes
+```
+
+---
+# Relational data in R (cont.)
+
+The package contains the tables `airlines`, `airports`, `flights`, `planes`, and `weather`.
+
+--
+
+.pull-left[
+The `airlines` data frame lets you look up the full carrier name from its [abbreviated code](https://en.wikipedia.org/wiki/List_of_airline_codes): 
+```{r}
+head(airlines, 10)
+```
+]
+--
+
+.pull-right[
+`airports` gives information about each airport, identified by the `faa` [airport code](https://airportcodes.io/en/faa-codes/): 
+```{r}
+head(airports, 10)
+```
+]
+
+
+
+---
+# Relational data in R (cont.)
+
+The package contains the tables `airlines`, `airports`, `flights`, `planes`, and `weather`.
+
+.pull-left[
+ `planes` gives information about each plane, identified by its `tailnum` (aircraft registration a.k.a. [tail number](https://en.wikipedia.org/wiki/Aircraft_registration): 
+```{r}
+head(planes, 10)
+```
+]
+
+--
+
+.pull-right[
+`weather` gives the [weather](https://www.youtube.com/watch?v=1ZyT_Aiey1U) at each NYC airport for each hour: 
+```{r}
+head(weather, 10)
+```
+]
+
+FINALLY, FLIGHTS TABLE
+
+THEN: CONCEPTUAL TABLE
+
+
+---
+
 # Joins
 
 One of the mainstays of the dplyr package is merging data with the family [join operations](https://cran.r-project.org/web/packages/dplyr/vignettes/two-table.html).
@@ -179,21 +246,6 @@ One of the mainstays of the dplyr package is merging data with the family [join 
 - `semi_join(df1, df2)`
 - `anti_join(df1, df2)`
 
-(You find find it helpful to to see visual depictions of the different join operations [here](https://r4ds.had.co.nz/relational-data.html).)
-
---
-
-For the simple examples that I'm going to show here, we'll need some data sets that come bundled with the [**nycflights13**](http://github.com/hadley/nycflights13) package. 
-- Load it now and then inspect these data frames in your own console.
-
-```{r flights, echo = F}
-library(nycflights13)
-```
-```{r, eval = F}
-library(nycflights13)
-flights 
-planes
-```
 
 ---
 
@@ -282,6 +334,46 @@ name: relational
 <html><div style='float:left'></div><hr color='#EB811B' size=1px style="width:1000px; margin:auto;"/></html>
 
 
+
+---
+
+# The ubiqity of multi-dimensional data structures
+
+.pull-left[
+## From data frames...
+
+- When you have a background in social sciences, your top-of-the-head mental image of data might be a rectangular spread sheet.
+- In fact, much of classical "statistical" software (SPSS, Stata, MS Excel) operates with rectangular data frames by default. 
+- At the same time, your perception might be file-based. Data is stored in files, and these files are read (and produced) by our data management software.
+- In many cases, the two-dimensional structure makes sense. We observe persons x characteristics, countries x variables, social media posts x text features, etc.
+]
+
+--
+
+.pull-right[
+## ... to more complex data structures
+
+- However, the longer you think about it, the more problematic it becomes to store your data in two-dimensional structures.
+- Examples:
+  - countries x persons x characteristics x time
+  - countries x states x communities x time x variables
+  - social media posts x retweets x users x user characteristics x network features x meta data 
+- Mapping three- onto two-dimensional structures is easy (think: `pivot_longer`, `pivot_wider`).
+- With multiple heterogeneous data sources, things get messy.
+]
+
+
+---
+
+# Relational data for the win
+
+
+
+
+
+
+
+
 ---
 class: inverse, center, middle
 name: databases
@@ -317,6 +409,15 @@ name: otherdb
 
 <html><div style='float:left'></div><hr color='#EB811B' size=1px style="width:1000px; margin:auto;"/></html>
 
+
+---
+# Non-relational databases
+
+
+
+
+
+
 ---
 class: inverse, center, middle
 name: summary
@@ -324,5 +425,54 @@ name: summary
 # Summary
 
 <html><div style='float:left'></div><hr color='#EB811B' size=1px style="width:1000px; margin:auto;"/></html>
+
+---
+# Summing it up
+
+Most data scientists never design a database. 
+
+- But they almost all end up interacting with them.
+- Also, with database administrators (DBAs).
+
+--
+
+Lots of academic data work consists of working with *bad reinventions* of the relational database.
+
+- Looking at you, Excel users.
+- Looking at you, instructor.
+
+-- 
+
+Surprise: Thinking about data relationally will help you with statistics.
+
+- Multilevel models, time-series analysis, network analysis, NLP
+
+| Database concept  |  Statistical concept |
+|---|---|
+| Table  | Sample |
+| Column  | Variable |
+|  Row |  Unit |
+|  Value |  Observation |
+|  Foreign key relationships |  Nested variables |
+|  Many-to-many relationships |  Crossed variables (possibly unbalanced) |
+
+
+---
+# Databases: Maybe not the most exciting technology, but awesomely useful and not going away
+
+
+---
+
+# Coming up
+
+
+### Assignment
+
+None! But you'll get the chance to practice databasing with R in the lab.
+
+
+### Next lecture
+
+Web data and technologies - relational data structures FTW!
 
 

@@ -72,6 +72,24 @@ class: center, middle, inverse, title-slide
 - You care about data quality and have clear expectations how data should look like. Using databases you can define specific rules for extending and updating your database.
 ]
 
+---
+
+# Getting some terminology right
+
+## We should distinguish:
+
+- The **data structure**: tables, columns, keys, normal forms
+- The **data manipulations**: selects, joins, grouping
+- The **database management system**: e.g., Postgres, Oracle, SQL Server, sqlite
+- The **query language**, e.g., SQL
+
+## What we will cover and won't cover
+
+- We will cover essential structures and manipulations, how to interact with databases from within R, and basics of SQL
+- We will not cover SQL or any particular database system in detail
+
+
+dbms-r-sql.png
 
 
 ---
@@ -97,12 +115,172 @@ Databases can exist
 
 
 ---
+
+# Connecting to databases with R
+
+- R can connect to all major existing databases types (and to virtually anything else, too).
+- There are various R packages that allow you to connect to particular database types, e.g.:
+
+| DBMS  |  R package |
+|---|---|
+| SQLite  | [`RSQLite`](https://cran.r-project.org/web/packages/RSQLite/index.html) |
+| MySQL  | [`RMySQL`](https://cran.r-project.org/web/packages/RMySQL/index.html) |
+|  PostgreSQL |  [`RPostgres`](https://cran.r-project.org/web/packages/RPostgres/index.html) |
+|  Oracle Database |  [`ROracle`](https://cran.r-project.org/web/packages/ROracle/index.html) |
+
+
+
+---
+
+# A common interface to relational databases from R
+
+https://cran.r-project.org/web/packages/DBI/vignettes/DBI-proposal.html
+https://db.rstudio.com/getting-started/overview
+https://en.wikipedia.org/wiki/Database#Database_management_system
+https://www.dataquest.io/blog/sql-basics/
+
+
+
+
+---
 class: inverse, center, middle
 name: joins
 
 # Back to dplyr: joins
 
 &lt;html&gt;&lt;div style='float:left'&gt;&lt;/div&gt;&lt;hr color='#EB811B' size=1px style="width:1000px; margin:auto;"/&gt;&lt;/html&gt;
+
+
+---
+
+# Relational data in R
+
+For the simple examples that I'm going to show here, we'll need some data sets that come bundled with the [**nycflights13**](http://github.com/hadley/nycflights13) package. 
+
+Let's load it now and then inspect these data frames in your own console.
+
+
+
+```r
+R&gt; library(nycflights13)
+R&gt; flights 
+R&gt; planes
+```
+
+---
+# Relational data in R (cont.)
+
+The package contains the tables `airlines`, `airports`, `flights`, `planes`, and `weather`.
+
+--
+
+.pull-left[
+The `airlines` data frame lets you look up the full carrier name from its [abbreviated code](https://en.wikipedia.org/wiki/List_of_airline_codes): 
+
+```r
+R&gt; head(airlines, 10)
+```
+
+```
+## # A tibble: 10 × 2
+##    carrier name                       
+##    &lt;chr&gt;   &lt;chr&gt;                      
+##  1 9E      Endeavor Air Inc.          
+##  2 AA      American Airlines Inc.     
+##  3 AS      Alaska Airlines Inc.       
+##  4 B6      JetBlue Airways            
+##  5 DL      Delta Air Lines Inc.       
+##  6 EV      ExpressJet Airlines Inc.   
+##  7 F9      Frontier Airlines Inc.     
+##  8 FL      AirTran Airways Corporation
+##  9 HA      Hawaiian Airlines Inc.     
+## 10 MQ      Envoy Air
+```
+]
+--
+
+.pull-right[
+`airports` gives information about each airport, identified by the `faa` [airport code](https://airportcodes.io/en/faa-codes/): 
+
+```r
+R&gt; head(airports, 10)
+```
+
+```
+## # A tibble: 10 × 8
+##    faa   name                       lat    lon   alt    tz dst   tzone          
+##    &lt;chr&gt; &lt;chr&gt;                    &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;          
+##  1 04G   Lansdowne Airport         41.1  -80.6  1044    -5 A     America/New_Yo…
+##  2 06A   Moton Field Municipal A…  32.5  -85.7   264    -6 A     America/Chicago
+##  3 06C   Schaumburg Regional       42.0  -88.1   801    -6 A     America/Chicago
+##  4 06N   Randall Airport           41.4  -74.4   523    -5 A     America/New_Yo…
+##  5 09J   Jekyll Island Airport     31.1  -81.4    11    -5 A     America/New_Yo…
+##  6 0A9   Elizabethton Municipal …  36.4  -82.2  1593    -5 A     America/New_Yo…
+##  7 0G6   Williams County Airport   41.5  -84.5   730    -5 A     America/New_Yo…
+##  8 0G7   Finger Lakes Regional A…  42.9  -76.8   492    -5 A     America/New_Yo…
+##  9 0P2   Shoestring Aviation Air…  39.8  -76.6  1000    -5 U     America/New_Yo…
+## 10 0S9   Jefferson County Intl     48.1 -123.    108    -8 A     America/Los_An…
+```
+]
+
+
+
+---
+# Relational data in R (cont.)
+
+The package contains the tables `airlines`, `airports`, `flights`, `planes`, and `weather`.
+
+.pull-left[
+ `planes` gives information about each plane, identified by its `tailnum` (aircraft registration a.k.a. [tail number](https://en.wikipedia.org/wiki/Aircraft_registration): 
+
+```r
+R&gt; head(planes, 10)
+```
+
+```
+## # A tibble: 10 × 9
+##    tailnum  year type          manufacturer   model  engines seats speed engine 
+##    &lt;chr&gt;   &lt;int&gt; &lt;chr&gt;         &lt;chr&gt;          &lt;chr&gt;    &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt;  
+##  1 N10156   2004 Fixed wing m… EMBRAER        EMB-1…       2    55    NA Turbo-…
+##  2 N102UW   1998 Fixed wing m… AIRBUS INDUST… A320-…       2   182    NA Turbo-…
+##  3 N103US   1999 Fixed wing m… AIRBUS INDUST… A320-…       2   182    NA Turbo-…
+##  4 N104UW   1999 Fixed wing m… AIRBUS INDUST… A320-…       2   182    NA Turbo-…
+##  5 N10575   2002 Fixed wing m… EMBRAER        EMB-1…       2    55    NA Turbo-…
+##  6 N105UW   1999 Fixed wing m… AIRBUS INDUST… A320-…       2   182    NA Turbo-…
+##  7 N107US   1999 Fixed wing m… AIRBUS INDUST… A320-…       2   182    NA Turbo-…
+##  8 N108UW   1999 Fixed wing m… AIRBUS INDUST… A320-…       2   182    NA Turbo-…
+##  9 N109UW   1999 Fixed wing m… AIRBUS INDUST… A320-…       2   182    NA Turbo-…
+## 10 N110UW   1999 Fixed wing m… AIRBUS INDUST… A320-…       2   182    NA Turbo-…
+```
+]
+
+--
+
+.pull-right[
+`weather` gives the weather at each NYC airport for each hour: 
+
+```r
+R&gt; head(weather, 10)
+```
+
+```
+## # A tibble: 10 × 15
+##    origin  year month   day  hour  temp  dewp humid wind_dir wind_speed
+##    &lt;chr&gt;  &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;      &lt;dbl&gt;
+##  1 EWR     2013     1     1     1  39.0  26.1  59.4      270      10.4 
+##  2 EWR     2013     1     1     2  39.0  27.0  61.6      250       8.06
+##  3 EWR     2013     1     1     3  39.0  28.0  64.4      240      11.5 
+##  4 EWR     2013     1     1     4  39.9  28.0  62.2      250      12.7 
+##  5 EWR     2013     1     1     5  39.0  28.0  64.4      260      12.7 
+##  6 EWR     2013     1     1     6  37.9  28.0  67.2      240      11.5 
+##  7 EWR     2013     1     1     7  39.0  28.0  64.4      240      15.0 
+##  8 EWR     2013     1     1     8  39.9  28.0  62.2      250      10.4 
+##  9 EWR     2013     1     1     9  39.9  28.0  62.2      260      15.0 
+## 10 EWR     2013     1     1    10  41    28.0  59.6      260      13.8 
+## # … with 5 more variables: wind_gust &lt;dbl&gt;, precip &lt;dbl&gt;, pressure &lt;dbl&gt;,
+## #   visib &lt;dbl&gt;, time_hour &lt;dttm&gt;
+```
+]
 
 
 ---
@@ -117,20 +295,6 @@ One of the mainstays of the dplyr package is merging data with the family [join 
 - `semi_join(df1, df2)`
 - `anti_join(df1, df2)`
 
-(You find find it helpful to to see visual depictions of the different join operations [here](https://r4ds.had.co.nz/relational-data.html).)
-
---
-
-For the simple examples that I'm going to show here, we'll need some data sets that come bundled with the [**nycflights13**](http://github.com/hadley/nycflights13) package. 
-- Load it now and then inspect these data frames in your own console.
-
-
-
-```r
-R&gt; library(nycflights13)
-R&gt; flights 
-R&gt; planes
-```
 
 ---
 
@@ -262,6 +426,46 @@ name: relational
 &lt;html&gt;&lt;div style='float:left'&gt;&lt;/div&gt;&lt;hr color='#EB811B' size=1px style="width:1000px; margin:auto;"/&gt;&lt;/html&gt;
 
 
+
+---
+
+# The ubiqity of multi-dimensional data structures
+
+.pull-left[
+## From data frames...
+
+- When you have a background in social sciences, your top-of-the-head mental image of data might be a rectangular spread sheet.
+- In fact, much of classical "statistical" software (SPSS, Stata, MS Excel) operates with rectangular data frames by default. 
+- At the same time, your perception might be file-based. Data is stored in files, and these files are read (and produced) by our data management software.
+- In many cases, the two-dimensional structure makes sense. We observe persons x characteristics, countries x variables, social media posts x text features, etc.
+]
+
+--
+
+.pull-right[
+## ... to more complex data structures
+
+- However, the longer you think about it, the more problematic it becomes to store your data in two-dimensional structures.
+- Examples:
+  - countries x persons x characteristics x time
+  - countries x states x communities x time x variables
+  - social media posts x retweets x users x user characteristics x network features x meta data 
+- Mapping three- onto two-dimensional structures is easy (think: `pivot_longer`, `pivot_wider`).
+- With multiple heterogeneous data sources, things get messy.
+]
+
+
+---
+
+# Relational data for the win
+
+
+
+
+
+
+
+
 ---
 class: inverse, center, middle
 name: databases
@@ -297,6 +501,15 @@ name: otherdb
 
 &lt;html&gt;&lt;div style='float:left'&gt;&lt;/div&gt;&lt;hr color='#EB811B' size=1px style="width:1000px; margin:auto;"/&gt;&lt;/html&gt;
 
+
+---
+# Non-relational databases
+
+
+
+
+
+
 ---
 class: inverse, center, middle
 name: summary
@@ -304,6 +517,55 @@ name: summary
 # Summary
 
 &lt;html&gt;&lt;div style='float:left'&gt;&lt;/div&gt;&lt;hr color='#EB811B' size=1px style="width:1000px; margin:auto;"/&gt;&lt;/html&gt;
+
+---
+# Summing it up
+
+Most data scientists never design a database. 
+
+- But they almost all end up interacting with them.
+- Also, with database administrators (DBAs).
+
+--
+
+Lots of academic data work consists of working with *bad reinventions* of the relational database.
+
+- Looking at you, Excel users.
+- Looking at you, instructor.
+
+-- 
+
+Surprise: Thinking about data relationally will help you with statistics.
+
+- Multilevel models, time-series analysis, network analysis, NLP
+
+| Database concept  |  Statistical concept |
+|---|---|
+| Table  | Sample |
+| Column  | Variable |
+|  Row |  Unit |
+|  Value |  Observation |
+|  Foreign key relationships |  Nested variables |
+|  Many-to-many relationships |  Crossed variables (possibly unbalanced) |
+
+
+---
+# Databases: Maybe not the most exciting technology, but awesomely useful and not going away
+
+
+---
+
+# Coming up
+
+
+### Assignment
+
+None! But you'll get the chance to practice databasing with R in the lab.
+
+
+### Next lecture
+
+Web data and technologies - relational data structures FTW!
 
 
     </textarea>
