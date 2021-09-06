@@ -86,6 +86,61 @@ What's your name? Why are you here? And would you share a funny fact about yours
 
 ---
 
+# More about you
+
+<div align="center">
+<br>
+<img src="pics/r-knowledge.png" height=500>
+</div>
+
+
+---
+
+# More about you
+
+.pull-left[
+<div align="center">
+<br><b>MPP/MIA/PhD</b>
+<br>
+<img src="pics/wordcloud-mpp.png" height=400>
+</div>
+]
+
+.pull-right[
+<div align="center">
+<br><b>MDS</b>
+<br>
+<img src="pics/wordcloud-mds.png" height=400>
+</div>
+]
+
+---
+
+# More about you
+
+.pull-left[
+<div align="center">
+<br><b>MPP/MIA/PhD</b>
+<br>
+<img src="pics/terms_freq_mpp.png" height=400>
+</div>
+]
+
+.pull-right[
+<div align="center">
+<br><b>MDS</b>
+<br>
+<img src="pics/terms_freq_mds.png" height=400>
+</div>
+]
+
+
+
+
+
+
+---
+
 # The labs
 
 .pull-left-wide[
