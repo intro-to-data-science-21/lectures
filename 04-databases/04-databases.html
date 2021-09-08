@@ -160,21 +160,19 @@ For the simple examples that I'm going to show here, we'll need some data sets t
 Let's load it now and then inspect these data frames in your own console.
 
 
-
 ```r
 R&gt; library(nycflights13)
-R&gt; flights 
-R&gt; planes
 ```
+
+
 
 ---
 # Relational data in R (cont.)
 
-The package contains the tables `airlines`, `airports`, `flights`, `planes`, and `weather`.
+The package contains the tables `flights`, `airlines`, `airports`, `planes`, and `weather`.
 
 --
 
-.pull-left[
 The `airlines` data frame lets you look up the full carrier name from its [abbreviated code](https://en.wikipedia.org/wiki/List_of_airline_codes): 
 
 ```r
@@ -196,10 +194,13 @@ R&gt; head(airlines, 10)
 ##  9 HA      Hawaiian Airlines Inc.     
 ## 10 MQ      Envoy Air
 ```
-]
---
 
-.pull-right[
+
+---
+# Relational data in R (cont.)
+
+The package contains the tables `flights`, `airlines`, `airports`, `planes`, and `weather`.
+
 `airports` gives information about each airport, identified by the `faa` [airport code](https://airportcodes.io/en/faa-codes/): 
 
 ```r
@@ -208,29 +209,27 @@ R&gt; head(airports, 10)
 
 ```
 ## # A tibble: 10 × 8
-##    faa   name                       lat    lon   alt    tz dst   tzone          
-##    &lt;chr&gt; &lt;chr&gt;                    &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;          
-##  1 04G   Lansdowne Airport         41.1  -80.6  1044    -5 A     America/New_Yo…
-##  2 06A   Moton Field Municipal A…  32.5  -85.7   264    -6 A     America/Chicago
-##  3 06C   Schaumburg Regional       42.0  -88.1   801    -6 A     America/Chicago
-##  4 06N   Randall Airport           41.4  -74.4   523    -5 A     America/New_Yo…
-##  5 09J   Jekyll Island Airport     31.1  -81.4    11    -5 A     America/New_Yo…
-##  6 0A9   Elizabethton Municipal …  36.4  -82.2  1593    -5 A     America/New_Yo…
-##  7 0G6   Williams County Airport   41.5  -84.5   730    -5 A     America/New_Yo…
-##  8 0G7   Finger Lakes Regional A…  42.9  -76.8   492    -5 A     America/New_Yo…
-##  9 0P2   Shoestring Aviation Air…  39.8  -76.6  1000    -5 U     America/New_Yo…
-## 10 0S9   Jefferson County Intl     48.1 -123.    108    -8 A     America/Los_An…
+##    faa   name                             lat    lon   alt    tz dst   tzone    
+##    &lt;chr&gt; &lt;chr&gt;                          &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;    
+##  1 04G   Lansdowne Airport               41.1  -80.6  1044    -5 A     America/…
+##  2 06A   Moton Field Municipal Airport   32.5  -85.7   264    -6 A     America/…
+##  3 06C   Schaumburg Regional             42.0  -88.1   801    -6 A     America/…
+##  4 06N   Randall Airport                 41.4  -74.4   523    -5 A     America/…
+##  5 09J   Jekyll Island Airport           31.1  -81.4    11    -5 A     America/…
+##  6 0A9   Elizabethton Municipal Airport  36.4  -82.2  1593    -5 A     America/…
+##  7 0G6   Williams County Airport         41.5  -84.5   730    -5 A     America/…
+##  8 0G7   Finger Lakes Regional Airport   42.9  -76.8   492    -5 A     America/…
+##  9 0P2   Shoestring Aviation Airfield    39.8  -76.6  1000    -5 U     America/…
+## 10 0S9   Jefferson County Intl           48.1 -123.    108    -8 A     America/…
 ```
-]
-
 
 
 ---
 # Relational data in R (cont.)
 
-The package contains the tables `airlines`, `airports`, `flights`, `planes`, and `weather`.
+The package contains the tables `flights`, `airlines`, `airports`, `planes`, and `weather`.
 
-.pull-left[
+
  `planes` gives information about each plane, identified by its `tailnum` (aircraft registration a.k.a. [tail number](https://en.wikipedia.org/wiki/Aircraft_registration): 
 
 ```r
@@ -252,12 +251,13 @@ R&gt; head(planes, 10)
 ##  9 N109UW   1999 Fixed wing m… AIRBUS INDUST… A320-…       2   182    NA Turbo-…
 ## 10 N110UW   1999 Fixed wing m… AIRBUS INDUST… A320-…       2   182    NA Turbo-…
 ```
-]
 
---
+---
+# Relational data in R (cont.)
 
-.pull-right[
-`weather` gives the weather at each NYC airport for each hour: 
+The package contains the tables `flights`, `airlines`, `airports`, `planes`, and `weather`.
+
+`weather` gives the [weather](https://www.youtube.com/watch?v=1ZyT_Aiey1U) at each NYC airport for each hour: 
 
 ```r
 R&gt; head(weather, 10)
@@ -280,7 +280,105 @@ R&gt; head(weather, 10)
 ## # … with 5 more variables: wind_gust &lt;dbl&gt;, precip &lt;dbl&gt;, pressure &lt;dbl&gt;,
 ## #   visib &lt;dbl&gt;, time_hour &lt;dttm&gt;
 ```
+
+---
+# Relational data in R (cont.)
+
+The package contains the tables `flights`, `airlines`, `airports`, `planes`, and `weather`.
+
+Finally, `flights` gives data on each of the 336776 flights in the dataset: 
+
+
+```r
+R&gt; head(flights, 10)
+```
+
+```
+## # A tibble: 10 × 19
+##     year month   day dep_time sched_dep_time dep_delay arr_time sched_arr_time
+##    &lt;int&gt; &lt;int&gt; &lt;int&gt;    &lt;int&gt;          &lt;int&gt;     &lt;dbl&gt;    &lt;int&gt;          &lt;int&gt;
+##  1  2013     1     1      517            515         2      830            819
+##  2  2013     1     1      533            529         4      850            830
+##  3  2013     1     1      542            540         2      923            850
+##  4  2013     1     1      544            545        -1     1004           1022
+##  5  2013     1     1      554            600        -6      812            837
+##  6  2013     1     1      554            558        -4      740            728
+##  7  2013     1     1      555            600        -5      913            854
+##  8  2013     1     1      557            600        -3      709            723
+##  9  2013     1     1      557            600        -3      838            846
+## 10  2013     1     1      558            600        -2      753            745
+## # … with 11 more variables: arr_delay &lt;dbl&gt;, carrier &lt;chr&gt;, flight &lt;int&gt;,
+## #   tailnum &lt;chr&gt;, origin &lt;chr&gt;, dest &lt;chr&gt;, air_time &lt;dbl&gt;, distance &lt;dbl&gt;,
+## #   hour &lt;dbl&gt;, minute &lt;dbl&gt;, time_hour &lt;dttm&gt;
+```
+
+
+---
+# Relational data in R (cont.)
+
+.pull-left[
+- We can illustrate the relationships between the different tables with a schematic drawing.&lt;sup&gt;1&lt;/sup&gt;
+- One table seems central (`flights`), but that's not a necessary feature of relational databases.
+- Key to understanding the diagram is that each relation always concerns a pair of tables:
+  - `flights` connects to `planes` via `tailnum`.
+  - `flights` connects to `airlines` via `carrier`.
+  - `flights` connects to `airports` via `origin` and `dest`.
+  - `flights` connects to `weather` via `origin` (location) and `year`, `month`, `day`, and `hour` (time).
 ]
+
+.pull-right[
+&lt;br&gt;
+&lt;div align="center"&gt;
+&lt;img src="pics/relational-nycflights.png" height=350&gt;
+&lt;/div&gt;
+]
+
+.footnote[&lt;sup&gt;1&lt;/sup&gt; Of course there are R packages that help you create such data models visually, e.g., the [dm package](https://cynkra.github.io/dm/).]
+
+---
+# Relational data in R (cont.)
+
+.pull-left[
+## Question time
+
+1. Imagine you wanted to draw (approximately) the route each plane flies from its origin to its destination. What variables would you need? What tables would you need to combine?
+
+2. We know that some days of the year are “special”, and fewer people than usual fly on them. How might you represent that data as a data frame? What would be the primary keys of that table? How would it connect to the existing tables?
+]
+
+.pull-right[
+&lt;br&gt;
+&lt;div align="center"&gt;
+&lt;img src="pics/relational-nycflights.png" height=350&gt;
+&lt;/div&gt;
+]
+
+---
+# Keys
+
+- Variables used to connect each pair of tables are called keys. 
+- A key is a variable (or set of variables) that uniquely identifies an observation.
+- In simple cases, a single variable is sufficient to identify an observation. For instance, each plane is uniquely identified by its `tailnum`.
+- In other cases, multiple variables are needed (look again at the `weather` table).
+
+--
+
+## Primary keys
+
+- A primary key uniquely identifies an observation in its own table.
+- It is either a column containing a (sometimes autogenerated and otherwise meaningless) identifier that uniquely identifies each row, or
+- Several substantively meaningful columns whose row values *taken together* uniquely identify each row.
+
+--
+
+## Foreign keys
+
+- A foreign key is a column containing primary key(s) from another table.
+- It is the piece of information necessary to join both tables.
+- Note that a variable can be both a primary *and* a foreign key. In our example, `origin` is part of the `weather` primary key, and is also a foreign key for the `airports` table.
+
+
+
 
 
 ---
