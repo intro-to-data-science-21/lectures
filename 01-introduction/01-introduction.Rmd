@@ -72,7 +72,7 @@ Much of this course lives on GitHub. You will find lecture materials, code, assi
 
 ### Me
 
-`r fa('address-book')` I'm [Simon Munzert](https://grantmcdermott.com/) [si’mən munsɜrt], or just Simon [saɪmən].
+`r fa('address-book')` I'm [Simon Munzert](https://simonmunzert.github.io/) [si’mən munsɜrt], or just Simon [saɪmən].
 
 `r fa('envelope')` [munzert@hertie-school.org](mailto:munzert@hertie-school.org)
 
