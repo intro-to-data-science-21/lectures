@@ -36,23 +36,91 @@ class: center, middle, inverse, title-slide
 
 # Table of contents
 
-1. [Git and GitHub](#git)&lt;sup&gt;1&lt;/sup&gt;
+1. [Project management](#projects)&lt;sup&gt;1&lt;/sup&gt;
 
-2. [Getting started](#gettingstarted)
+2. [Git and GitHub](#git)
 
-3. [Git(Hub) + RStudio](#rstudio)
+3. [Getting started](#gettingstarted)
 
-4. [Git from the shell](#shell)
+4. [Git(Hub) + RStudio](#rstudio)
 
-5. [Merge conflicts](#merge)
+5. [Git from the shell](#shell)
 
-6. [Branches and forking](#branches)
+6. [Merge conflicts](#merge)
 
-7. [Other tips](#other)
+7. [Branches and forking](#branches)
 
-8. [Summary](#summary)
+8. [Other tips](#other)
+
+9. [Summary](#summary)
 
 .footnote[&lt;sup&gt;1&lt;/sup&gt; Much of this lecture draws on materials from Grant McDermott's excellent [*Data Science for Economists*](https://github.com/uo-ec607/lectures) class.]
+
+
+
+---
+class: inverse, center, middle
+name: projects
+
+# Project management
+&lt;html&gt;&lt;div style='float:left'&gt;&lt;/div&gt;&lt;hr color='#EB811B' size=1px style="width:1000px; margin:auto;"/&gt;&lt;/html&gt;
+
+---
+
+# Taming chaos
+
+.pull-left[
+In the data science workflow there are two sorts of **surprises** and cognitive stress:
+
+1. Analytical (often good)
+2. Infrastructural (almost always bad)
+
+**Analytical surprise** is when you learn something from or about the data.
+
+**Infrastructural surprise** is when you discover that:
+
+- You can't find what you did before.
+- The analysis code breaks.
+- The report doesn't compile.
+- The collaborator can't run your code.
+
+Data analysis can be stressful. Good project management and workflow is there to ensure you only face the right kind of stress.
+]
+
+.pull-right[
+&lt;br&gt;
+&lt;div align="center"&gt;
+&lt;img src="pics/pippi-langstrumpf.gif" height=400&gt;
+]
+
+---
+
+# Project setup
+
+You should **always** think in terms of projects.
+
+A project is a self-contained unit of data science work that can be
+
+- Shared
+- Recreated by others
+- Packaged
+- Dumped
+
+--
+
+It contains
+
+- Content, e.g., raw data, processed data, scripts, functions, documents and other output
+- Metadata, e.g., information about tools for running it (required libraries, compilers), version history
+
+-- 
+
+For R projects
+
+- Projects are folders/directories.
+- Metadata is the `.Rproj`files (perhaps augmented with the output of [renv](https://rstudio.github.io/renv/articles/renv.html) for dependency management) and `.git`.
+
+
 ---
 class: inverse, center, middle
 name: git
@@ -192,16 +260,16 @@ name: git
 # Git(Hub) for scientific research
 
 .pull-left[
-### From software development...
+**From software development...**
 
 - Git and GitHub's role in global software development is not in question.
 - There's a high probability that your favourite app, program or package is built using Git-based tools. (RStudio is a case in point.)
 
-### ... to scientific research
+**... to scientific research**
 
 - Data science involves product building, collaboration, transparency. GH helps with all that.
 - Journals have increasingly strict requirements regarding reproducibility and access. GH makes this easy (DOI integration, off-the-shelf licenses, etc.).
-- I host all of the code and data for my [papers](https://simonmunzert.github.io/publications.html) on GH. My [website](https://simonmunzert.github.io/) lives there. And this [course](https://github.com/Fall-2021-Introduction-to-Data-Science) does, too.
+- I host most of the code and data for my [papers](https://simonmunzert.github.io/publications.html) on GH. My [website](https://simonmunzert.github.io/) lives there. And this [course](https://github.com/intro-to-data-science-21) does, too.
 ]
 
 .pull-right-center[
@@ -225,6 +293,7 @@ name: gettingstarted
 
 # First step: register a GitHub account
 
+.pull-left[
 Good news: It's free!
 
 Simply go to [https://github.com](https://github.com) to sign up.
@@ -235,6 +304,18 @@ Some things to consider:
 - The Pro account comes with a couple of [additional features](https://docs.github.com/en/get-started/learning-about-github/githubs-products#github-pro).
 - Register for a free account first, then pursue the special offers.
 - Choose your username [wisely](https://happygitwithr.com/github-acct.html). This isn't Instagram, so maybe avoid puns and "funny" nicknames.
+]
+
+.pull-right[
+&lt;br&gt;
+&lt;div align="center"&gt;
+&lt;img src="pics/brent-rambo.gif" height=350&gt;
+&lt;/div&gt;
+]
+
+
+
+
 
 
 ---
@@ -281,7 +362,14 @@ To install/update Git for Windows, check out [happygitwithr.com](https://happygi
 
 This is particularly important when you work with Git but without the GitHub overhead. The idea is to define how your commits are labelled. Others should easily identify your commits as coming from you.
 
-To that end, we set our user name and email address like this:
+Have you already introduced yourself to Git? Find it out:
+
+
+```bash
+$ git config --list
+```
+
+Still have to introduce yourself? To that end, we set our user name and email address like this:
 
 
 ```bash
@@ -413,24 +501,24 @@ Here's a step-by-step summary of what we just did.
 
 --
 
-🤓 You were likely challenged for your GitHub credentials at some point. Learn how to cache these [here](https://happygitwithr.com/credential-caching.html).
+🤓 You were likely challenged for your GitHub credentials at some point. Learn how to cache these [here](https://happygitwithr.com/credential-caching.html). Note that the classical username/password authentication was recently removed. Instead, you have to use your personal access token (PAT). I recommend `usethis::create_github_token()` in combination with `gitcreds::gitcreds_set()`.
 
 --
 
-🤓 Speaking of credentials, an even better approach is to [switch to SSH](https://happygitwithr.com/ssh-keys.html). I recommend you do this once you feel comfortable with the main Git operations.
+🤓 Speaking of credentials, another approach is to [switch to SSH](https://happygitwithr.com/ssh-keys.html). You might want to consider doing this when you feel comfortable with the main Git operations.
 
 ---
 
 # Why this workflow?
 
-Creating the repo on GitHub first means that it will always be "upstream" of your (and any other) local copies.
+**Creating the repo on GitHub first** means that it will always be "upstream" of your (and any other) local copies.
 - In effect, this allows GitHub to act as the central node in the distributed VC network.
 - Especially valuable when you are collaborating on a project with others — more on this later — but also has advantages when you are working alone.
 - If you would like to move an existing project to GitHub, my advice is still to create an empty repo there first, clone it locally, and then copy all your files across.
 
 --
 
-RStudio Projects are great. 
+**RStudio Projects are great.** 
 - Again, they interact seamlessly with Git(Hub), as we've just seen. 
 - They also solve absolute vs. relative path problems, since the `.Rproj` file acts as an anchor point for all other files in the repo.&lt;sup&gt;1&lt;/sup&gt;
 
@@ -447,17 +535,25 @@ name: shell
 
 # Why bother with the shell?
 
-The GitHub + RStudio Project combo is ideal for new users.
+.pull-left[
+**The GitHub + RStudio Project combo is ideal for new users.**
+
 - RStudio's Git integration and built-in GUI cover all the major operations.
 - RStudio Projects FTW.
 
---
-
-However, there are some benefits:
+However, there are **some benefits of the shell**:
 - The shell is more powerful and flexible. It lets you do things that the RStudio Git GUI can't.
 - Working in the shell is potentially more appropriate for projects that aren't primarily based in R.
 - Knowing the basic Git commands in the shell is generally a good thing for a data scientist.
 - We're going to cover the shell in more detail in a later session, so this is a sneak preview.
+]
+
+.pull-right[
+&lt;br&gt;
+&lt;div align="center"&gt;
+&lt;img src="pics/hacker-cat.gif" height=400&gt;
+&lt;/div&gt;
+]
 
 ---
 
@@ -738,7 +834,7 @@ name: branches
 .pull-left-wide[
 ### Branches are cool.
 - Think of your repo as a growing tree.
-- Branches allow you to take a snapshot of your existing repo and try out a whole new idea *without affecting* your main (i.e. "master") branch.
+- Branches allow you to take a snapshot of your existing repo and try out a whole new idea *without affecting* your main (formerly "master") branch.
 - Only once you (and your collaborators) are 100% satisfied, would you merge it back into the master branch.&lt;sup&gt;1&lt;/sup&gt;
   - This is how most new features in modern software and apps are developed.
   - It is also how bugs are caught and fixed.
@@ -783,9 +879,9 @@ List all branches on your local machine:
 $ git branch
 ```
 
-Switch back to (e.g.) the master branch:
+Switch back to (e.g.) the main branch:
 ```bash
-$ git checkout master
+$ git checkout main
 ```
 
 Delete a branch
@@ -897,11 +993,15 @@ name: other
 - README files are special in GitHub because they act as repo landing pages. 
 - They're the first thing viewers of your repo see and should therefore communicate what the repo is about.
 
+--
+
 ### Where README?
 
 - For a project tied to a research paper, this is where you should be explicit about the goal of the research paper, the software requirements, how to run the analysis, and so forth (e.g. [here](https://github.com/grantmcdermott/bycatch)).
 - On the other end of the scale, many GitHub repos are basically standalone README files. Think of these as version-controlled blog posts (e.g. [here](https://github.com/jfiksel/github-classroom-for-teachers)). 
 - R packages that are published on GitHub often provide more useful information in the README (and in the repo in general) than on CRAN (if they're published there at all). See, e.g., [here](https://github.com/saschagobel/legislatoR) vs. [here](https://cran.r-project.org/web/packages/legislatoR/index.html).
+
+--
 
 ### How README?
 
@@ -915,7 +1015,7 @@ name: other
 .pull-left-wide[
 ### What is .gitignore?
 
-- A .gitignore file tells Git what to ignore.
+- A `.gitignore` file tells Git what to ignore.
 - This is especially useful if you want to exclude whole folders or a class of files (e.g. based on size or type).
 - Proprietary data files should be ignored from the beginning if you intend to make a repo public at some point.
 - Very large individual files (&gt;100 MB) exceed GitHub's maximum allowable size and should be ignored regardless. See &lt;a href="https://help.github.com/articles/working-with-large-files/" target="_blank"&gt;here&lt;/a&gt; and &lt;a href="https://help.github.com/articles/versioning-large-files/" target=_"blank"&gt;here&lt;/a&gt;.
@@ -936,9 +1036,9 @@ name: other
 
 ### Multiple ways to create a .gitignore
 
-- A .gitignore file was automatically generated if you cloned your repo with an RStudio Project.
+- A `.gitignore` file was automatically generated if you cloned your repo with an RStudio Project.
 - You could also have the option of adding one when you first create a repo on GitHub.
-- Or, you can create one with your preferred text editor. (Must be saved as ".gitignore".)
+- Or, you can create one with your preferred text editor. (Must be saved as "`.gitignore`".)
 
 --
 
