@@ -84,7 +84,7 @@ In the data science workflow there are two sorts of **surprises** and cognitive 
 - The report doesn't compile.
 - The collaborator can't run your code.
 
-Data analysis can be stressful. Good project management and workflow is there to ensure you only face the right kind of stress.
+Good project management lets you focus on the right kind of stress.
 ]
 
 .pull-right[
@@ -99,7 +99,7 @@ Data analysis can be stressful. Good project management and workflow is there to
 
 You should **always** think in terms of projects.
 
-A project is a self-contained unit of data science work that can be
+A project is a **self-contained unit of data science work** that can be
 
 - Shared
 - Recreated by others
@@ -108,17 +108,74 @@ A project is a self-contained unit of data science work that can be
 
 --
 
-It contains
+A project contains
 
 - Content, e.g., raw data, processed data, scripts, functions, documents and other output
 - Metadata, e.g., information about tools for running it (required libraries, compilers), version history
 
--- 
+--
 
 For R projects
 
 - Projects are folders/directories.
-- Metadata is the `.Rproj`files (perhaps augmented with the output of [renv](https://rstudio.github.io/renv/articles/renv.html) for dependency management) and `.git`.
+- Metadata is the `.Rproj` files (perhaps augmented with the output of [renv](https://rstudio.github.io/renv/articles/renv.html) for dependency management) and `.git`.
+
+
+---
+
+# Setup: the folder structure
+
+.pull-left-wide[
+
+## Structuring your working directory
+
+- One folder contains everything inside it.
+- Directories keep things separate that should be separated.
+- Different structures are possible (see, e.g., [here](https://www.r-bloggers.com/2018/08/structuring-r-projects/) or [here](https://martinctc.github.io/blog/rstudio-projects-and-working-directories-a-beginner's-guide/) or [here](https://kdestasio.github.io/post/r_best_practices/).
+- You decide on the fundamental structure. The project decides on the details.
+]
+
+.pull-right-small-center[
+&lt;div align="center"&gt;
+&lt;img src="pics/rproject-setup.png" width=300&gt;
+&lt;/div&gt;
+&lt;br&gt;
+&lt;div align="center"&gt;
+&lt;img src="pics/r-project-setup-2.png" width=300&gt;
+&lt;/div&gt;
+`Credit` [Chris/r-bloggers.com](https://www.r-bloggers.com/2018/08/structuring-r-projects/)
+]
+
+
+
+
+
+
+
+---
+
+# Setup: the paths
+
+
+
+---
+
+# Setup: the data
+
+
+
+---
+
+# Setup: the output
+
+
+---
+
+# Setup: experimentation
+
+
+
+
 
 
 ---
@@ -153,7 +210,8 @@ name: git
 - Wanted to see how much work is being done, when, and by whom?
 - Wanted to experiment with but not interfering with working code?
 
-`Credit` [si618/Stackoverflow](https://stackoverflow.com/questions/1408450/why-should-i-use-version-control)]
+`Credit` [si618/Stackoverflow](https://stackoverflow.com/questions/1408450/why-should-i-use-version-control)
+]
 
 .pull-right-center[
 &lt;br&gt;
@@ -332,7 +390,7 @@ $ which git
 ```
 
 ```
-## /usr/bin/git
+## /usr/local/bin/git
 ```
 
 And here's how you can check the version:
@@ -343,7 +401,7 @@ $ git --version
 ```
 
 ```
-## git version 2.30.1 (Apple Git-130)
+## git version 2.28.0
 ```
 
 If you want to install (or update) Git on your Mac/Linux machine, I recommend using [Homebrew](https://brew.sh/), "the missing package manager for macOS (or Linux)":

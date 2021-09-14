@@ -98,7 +98,7 @@ In the data science workflow there are two sorts of **surprises** and cognitive 
 - The report doesn't compile.
 - The collaborator can't run your code.
 
-Data analysis can be stressful. Good project management and workflow is there to ensure you only face the right kind of stress.
+Good project management lets you focus on the right kind of stress.
 ]
 
 .pull-right[
@@ -113,7 +113,7 @@ Data analysis can be stressful. Good project management and workflow is there to
 
 You should **always** think in terms of projects.
 
-A project is a self-contained unit of data science work that can be
+A project is a **self-contained unit of data science work** that can be
 
 - Shared
 - Recreated by others
@@ -122,7 +122,7 @@ A project is a self-contained unit of data science work that can be
 
 --
 
-It contains
+A project contains
 
 - Content, e.g., raw data, processed data, scripts, functions, documents and other output
 - Metadata, e.g., information about tools for running it (required libraries, compilers), version history
@@ -132,18 +132,54 @@ It contains
 For R projects
 
 - Projects are folders/directories.
-- Metadata is the `.Rproj`files (perhaps augmented with the output of [renv](https://rstudio.github.io/renv/articles/renv.html) for dependency management) and `.git`.
+- Metadata is the `.Rproj` files (perhaps augmented with the output of [renv](https://rstudio.github.io/renv/articles/renv.html) for dependency management) and `.git`.
 
 
 ---
 
 # Setup: the folder structure
 
+.pull-left-wide[
+
+## Structuring your working directory
+
+- One folder contains everything inside it.
+- Directories keep things separate that should be separated.
+- Different structures are possible (see, e.g., [here](https://www.r-bloggers.com/2018/08/structuring-r-projects/) or [here](https://martinctc.github.io/blog/rstudio-projects-and-working-directories-a-beginner's-guide/) or [here](https://kdestasio.github.io/post/r_best_practices/).
+- You decide on the fundamental structure. The project decides on the details.
+
+## Further thoughts
+
+- Keep input separate from output. Definitely separate raw from processed data!
+- Structure should be capable of evolution. More data, cases, models, output formats shouldn't be a problem. 
+
+
+
+]
+
+.pull-right-small-center[
+<div align="center">
+<img src="pics/rproject-setup.png" width=280>
+</div>
+<br>
+<div align="center">
+<img src="pics/r-project-setup-2.png" width=350>
+</div>
+`Credit` [Chris/r-bloggers.com](https://www.r-bloggers.com/2018/08/structuring-r-projects/)
+]
+
 
 
 ---
 
 # Setup: the paths
+
+
+
+---
+
+# Setup: the code structure
+
 
 
 
@@ -156,6 +192,7 @@ For R projects
 ---
 
 # Setup: the output
+
 
 
 ---
@@ -199,7 +236,8 @@ name: git
 - Wanted to see how much work is being done, when, and by whom?
 - Wanted to experiment with but not interfering with working code?
 
-`Credit` [si618/Stackoverflow](https://stackoverflow.com/questions/1408450/why-should-i-use-version-control)]
+`Credit` [si618/Stackoverflow](https://stackoverflow.com/questions/1408450/why-should-i-use-version-control)
+]
 
 .pull-right-center[
 <br>
