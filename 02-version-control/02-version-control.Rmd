@@ -105,7 +105,30 @@ Good project management lets you focus on the right kind of stress.
 <br>
 <div align="center">
 <img src="pics/pippi-langstrumpf.gif" height=400>
+</div>
 ]
+
+
+---
+# Keeping Future-you happy
+
+- It’s often tempting to set up a project assuming that you will be the only person working on it, e.g. as homework.
+- That’s almost never true.
+- Coauthors and collaborators happen to the best of us.
+- Even if not, there's someone else who you always have to keep happy: Future-you.
+- Future-you is really the one you do organize your projects for.
+- They are who you use version control for (see later).
+- Most importantly, they are who will enjoy the fruits of your data science labor, or have to fight back your chaos.
+- So, be kind to Future-you. Establish a good workflow. You'll thank yourself later.
+
+--
+
+<div align="center">
+<img src="pics/michaeljfox-1.jpg" height=200>
+<img src="pics/michaeljfox-2.jpg" height=200>
+<img src="pics/michaeljfox-3.jpg" height=200>
+</div>
+
 
 ---
 
@@ -132,7 +155,7 @@ A project contains
 For R projects
 
 - Projects are folders/directories.
-- Metadata is the `.Rproj` files (perhaps augmented with the output of [renv](https://rstudio.github.io/renv/articles/renv.html) for dependency management) and `.git`.
+- Metadata is the [RStudio project](https://support.rstudio.com/hc/en-us/articles/200526207-Using-Projects) (`.Rproj`) files (perhaps augmented with the output of [renv](https://rstudio.github.io/renv/articles/renv.html) for dependency management) and `.git`.
 
 
 ---
@@ -145,25 +168,22 @@ For R projects
 
 - One folder contains everything inside it.
 - Directories keep things separate that should be separated.
-- Different structures are possible (see, e.g., [here](https://www.r-bloggers.com/2018/08/structuring-r-projects/) or [here](https://martinctc.github.io/blog/rstudio-projects-and-working-directories-a-beginner's-guide/) or [here](https://kdestasio.github.io/post/r_best_practices/).
 - You decide on the fundamental structure. The project decides on the details.
 
 ## Further thoughts
 
+- Ideally, your project folder can be relocated without problem.
 - Keep input separate from output. Definitely separate raw from processed data!
 - Structure should be capable of evolution. More data, cases, models, output formats shouldn't be a problem. 
-
-
-
 ]
 
 .pull-right-small-center[
 <div align="center">
-<img src="pics/rproject-setup.png" width=280>
+<img src="pics/rproject-setup.png" width=250>
 </div>
 <br>
 <div align="center">
-<img src="pics/r-project-setup-2.png" width=350>
+<img src="pics/r-project-setup-2.png" width=220>
 </div>
 `Credit` [Chris/r-bloggers.com](https://www.r-bloggers.com/2018/08/structuring-r-projects/)
 ]
@@ -174,32 +194,118 @@ For R projects
 
 # Setup: the paths
 
+.pull-left[
+## Good paths
+
+- All internal paths are relative.
+- They are invariant to moving/sharing the project.
+- Examples:
+  - `"preprocessing.R"`
+  - `"figures/model-1.png"`
+  - `"../data/survey.RDa"`
+  
+## Bad paths
+
+- Using `setwd()` is bad practice 99% of the times.
+- Absolute paths are bad paths. Don't feed functions with paths like `"/Users/me/data/thing.sav"`.
+- Those paths will not work outside your computer (or maybe not even there, some days/weeks/months ahead).
+]
+
+--
+
+.pull-right[
+
+## The working directory
+
+- Set it manually once per session (do `Session > Set Working Directory > Choose Directory`). Then all your good paths will "just work".
+- Better yet, get it right automatically by opening RStudio with clicking on the script you want to work with. This will set the location of the script as working directory (which should be your working assumption, too).
+- Even better yet, have the metadata set it for you:
+  - Open your session by opening (choosing, clicking on) `myproject.Rproj` 
+  - Then you’ll get the path set for you. 
+- That's probably better than the previous option because you might not want your `code` directory to be the working directory.
+]
 
 
 ---
 
 # Setup: the code structure
 
+## Naming scripts
+
+- Files should have short, descriptive names that indicate their purpose.
+- I recommend the use of telling verbs.
+- Names should only include letters and numbers with dashes `-` or underscores `_` to separate words.
+- Use numbering to indicate the order in which files should be run:
+  - `0-setup.R`
+  - `1-import-data.R`
+  - `2-preprocess-data.R`
+  - `3-describe-uptake.R`
+  - `4-analyze-uptake.R`
+  - `5-analyze-experiment.R`
+  
+--
+
+## Modularizing scripts
+
+- Write short, modular scripts. Every script serves a purpose in your pipeline.
+- This makes things easier to debug.
+- At the beginning of a script you might want to document input and output.
 
 
 
 ---
 
-# Setup: the data
+# Setup: the code structure (cont.)
+
+## Talk to Future-you
+
+- Describe your code, e.g. by starting with a description of what it does. If you comment/describe a lot, consider using an R Markdown (`.Rmd`) file instead of a simple `.R` script.
+- Put the setup first (e.g., `library()` and `source()`).
+- You might want to outsource the loading of packages to a separate script that is imported in the first step (`source("functions.R")`) or just declared the first script in the pipeline.
+- Always comment more than you usually do.
+
+--
+
+## Structuring your code
+
+- Even with modularized code, scripts can become long. Structure helps to keep an overview.
+- Use commented lines as section/subsection heads.
+- RStudio creates a "table of contents" when you name your code chunks as follows (`#` followed by title and `---`):
+
+```{r, eval = FALSE}
+# Import data --------------
+
+dat <- read_csv("dat.csv")
+```
 
 
 
 ---
 
-# Setup: the output
+# Setup: the rest
 
+.pull-left[
 
+## More things to consider 
 
----
+- There'd be more to say on how to establish a good project workflow, including how to
+  - store/organize raw and derived data,
+  - deal with output in form of graphs and tables,
+  - link everything together from start (project setup) to finish (knitting the report)
+  - separate coding for the record and experimental coding.
+- But there's limited value in teaching you all that upfront.
+- The truth is: You'll likely refine your own workflow over time. I just saved you some initial pain (hopefully).
+- Do check out other people's experiences and opinions, e.g.,  [here](https://www.r-bloggers.com/2018/08/structuring-r-projects/) or [here](https://chrisvoncsefalvay.com/2018/08/09/structuring-r-projects/) or [here](https://kdestasio.github.io/post/r_best_practices/).
 
-# Setup: experimentation
+]
 
-
+.pull-right-center[
+<div align="center">
+<br><br><br>
+<img src="pics/fuckingowl.png" width=400>
+</div>
+**Managing your R project in two simple steps**
+]
 
 
 
@@ -335,7 +441,7 @@ name: git
 .pull-right-narrow-center[
 <div align="center">
 <img src="pics/octocat.png" height=450>
-
+</div>
 `Credit` [Screenshot](https://github.com/octocat3)
 ]
 
@@ -1232,6 +1338,7 @@ A: Burn it down and start again.
 
 # Coming up
 
+<br> 
 ### Get the course materials
 
 If you haven't done so already, now is a good time to clone/fork the course materials to your local computer.
