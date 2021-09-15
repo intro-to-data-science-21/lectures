@@ -189,7 +189,6 @@ name: relationaldb
 # Codd's relational model for databases
 
 .pull-left[
-
 - The concept of relational databases builds on the [relational model (RM) for database management](https://en.wikipedia.org/wiki/Relational_model), as proposed by [Edgar F. "Ted" Codd](https://en.wikipedia.org/wiki/Edgar_F._Codd) in 1969/1970.<sup>1</sup>
 - Todd described the RM formally in mathematical terms, but also introduced it using concepts that are still in use today (normalization, keys, joins, redundancy, etc.).
 - The key assumption of the relational model is that all data can be represented as relations (tables).

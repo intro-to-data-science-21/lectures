@@ -23,10 +23,6 @@ This course will introduce you to the modern data science workflow with R. In re
 The goals are to (1) equip you with conceptual knowledge about the data science pipeline and coding workflow, data structures, and data wrangling, (2) enable you to apply this knowledge with statistical software, and (3) prepare you for our other methods electives and the master’s thesis.
 
 
-## About
-
-
-
 ## License
 
 The material in this repository is made available under the [MIT license](http://opensource.org/licenses/mit-license.php). 
