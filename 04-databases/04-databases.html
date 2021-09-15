@@ -36,9 +36,11 @@ class: center, middle, inverse, title-slide
 
 # Table of contents
 
-1. [Relational data](#relational)
+&lt;br&gt;
 
-2. [Database fundamentals](#databases)
+1. [Why databases?](#whydb)
+
+2. [Relational database fundamentals](#relationaldb)
 
 3. [Back to dplyr: joins](#joins)
 
@@ -52,15 +54,13 @@ class: center, middle, inverse, title-slide
 
 
 
-
 ---
 class: inverse, center, middle
-name: relational
+name: whydb
 
-# Relational data
+# Why databases?
 
 &lt;html&gt;&lt;div style='float:left'&gt;&lt;/div&gt;&lt;hr color='#EB811B' size=1px style="width:1000px; margin:auto;"/&gt;&lt;/html&gt;
-
 
 
 ---
@@ -96,73 +96,58 @@ name: relational
 
 ---
 
-# Use of databases in data science
-
-
-
----
-
 # When databases become useful
 
 .pull-left[
-- You want to present or make data available on a website. Using a database, you only need one tool to achieve this.
-- You collaborate with others on a data collection project. With a database, you have a common, always accessible, and reliable infrastructure at hand that multiple users can access at the same time.
-- When several parties are involved, who is allowed to do what with the database might differ (e.g., read-only, access to parts of the data, limited admin rights, etc.). Most databases allow defining different usage rights for different users.
+&lt;br&gt;
+- You want to present or **make data available on a website**. Using a database, you only need one tool to achieve this.
+- You **collaborate with others** on a data collection project. With a database, you have a common, always accessible, and reliable infrastructure at hand that multiple users can access at the same time.
+- When several parties are involved, who is allowed to do what with the database might differ (e.g., read-only, access to parts of the data, limited admin rights, etc.). Most databases allow **defining different usage rights for different users**.
 ]
 
 --
 
 .pull-right[
-- You have loads of data that exceed the working memory on your computer. Databases are limited by available disk size (or can be distributed across multiple disks/machines).
-- Your data structure is complex. Databases allow/encourage you to store, retrieve and subset data with complex data structures.
-- Your data is big and you have to access/subset/operate frequently. Querying databases is fast.
-- You care about data quality and have clear expectations how data should look like. Using databases you can define specific rules for extending and updating your database.
+&lt;br&gt;
+- You have **loads of data that exceed the working memory** on your computer. Databases are limited by available disk size (or can be distributed across multiple disks/machines).
+- Your **data structure is complex**. Databases allow/encourage you to store, retrieve and subset data with complex data structures.
+- Your data is big and you have to **access/subset/operate frequently**. Querying databases is fast.
+- You care about **data quality** and have clear expectations how data should look like. Using databases you can define specific rules for extending and updating your database.
 ]
-
 
 
 ---
 
-# Getting some terminology right
+# Terminology and focus
 
-## We should distinguish:
+.pull-left[
+
+## What we should distinguish
 
 - The **data structure**: tables, columns, keys, normal forms
 - The **data manipulations**: selects, joins, grouping
 - The **database management system**: e.g., Postgres, Oracle, SQL Server, sqlite
 - The **query language**, e.g., SQL
 
-## What we will cover and won't cover
+## What we will and will not cover
 
-- We will cover essential structures and manipulations, how to interact with databases from within R, and basics of SQL
-- We will not cover SQL or any particular database system in detail
+✅ Essential structures and manipulations, how to interact with databases from within R, and basics of SQL
+❌ Details of SQL and databases
+]
 
+.pull-right-center[
+&lt;div align="center"&gt;
+&lt;br&gt;&lt;br&gt;
+&lt;img src="pics/dbms-r-sql.png" height=330&gt;
+&lt;/div&gt;
+`Credit` ADCR, p.166
+]
 
-dbms-r-sql.png
 
 
 ---
 
-# Why databases?
-
-- Big data, big problems
-- Store data which is too big to fit into memory
-- Access big data effectively
-
-# Where are the databases
-
-Databases can exist
-- locally or remotely
-- in-memory or on-disk
-
-# Why are databases so efficient?
-
-- They rely on binary search trees https://en.wikipedia.org/wiki/Binary_search_tree
-- But also see hash tables: https://en.wikipedia.org/wiki/Hash_table
-- Analogy: (Relational) databases organize data in one more tables. Think of a list of data frames in R. To access information from a specific table (data frame), we first have to index it from the database (list) and then execute our query functions
-- Another useful analogy (from McDermott): A b-tree shares the spirit of the file cabinet ordering system, but takes it step further so that we eliminate at least half of the remaining data from our search at each step. E.g. We need to find a person’s tax records in a million-row dataset. In the first step we immediately realise that it’s somewhere in the first 500k rows. In the next step we immediately realise that it’s somewhere in rows 250k-500k, etc.
-
-
+# Use of databases in data science
 
 
 
@@ -173,6 +158,15 @@ Databases can exist
 # Data warehousing
 
 
+
+
+---
+class: inverse, center, middle
+name: relationaldb
+
+# Relational database fundamentals
+
+&lt;html&gt;&lt;div style='float:left'&gt;&lt;/div&gt;&lt;hr color='#EB811B' size=1px style="width:1000px; margin:auto;"/&gt;&lt;/html&gt;
 
 
 ---
@@ -200,23 +194,30 @@ Databases can exist
 ]
 
 
+---
+
+# Why are databases so efficient?
+
+- They rely on binary search trees https://en.wikipedia.org/wiki/Binary_search_tree
+- But also see hash tables: https://en.wikipedia.org/wiki/Hash_table
+- Analogy: (Relational) databases organize data in one more tables. Think of a list of data frames in R. To access information from a specific table (data frame), we first have to index it from the database (list) and then execute our query functions
+- Another useful analogy (from McDermott): A b-tree shares the spirit of the file cabinet ordering system, but takes it step further so that we eliminate at least half of the remaining data from our search at each step. E.g. We need to find a person’s tax records in a million-row dataset. In the first step we immediately realise that it’s somewhere in the first 500k rows. In the next step we immediately realise that it’s somewhere in rows 250k-500k, etc.
 
 
 ---
-class: inverse, center, middle
-name: databases
 
-# Relational database fundamentals
+# Where are the databases?
 
-&lt;html&gt;&lt;div style='float:left'&gt;&lt;/div&gt;&lt;hr color='#EB811B' size=1px style="width:1000px; margin:auto;"/&gt;&lt;/html&gt;
+Databases can exist
+- locally or remotely
+- in-memory or on-disk
+
 
 
 ---
 # Database normalization
 
 https://en.wikipedia.org/wiki/Database_normalization
-
-
 
 
 
@@ -288,18 +289,18 @@ R&gt; head(airports, 10)
 
 ```
 ## # A tibble: 10 × 8
-##    faa   name                       lat    lon   alt    tz dst   tzone          
-##    &lt;chr&gt; &lt;chr&gt;                    &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;          
-##  1 04G   Lansdowne Airport         41.1  -80.6  1044    -5 A     America/New_Yo…
-##  2 06A   Moton Field Municipal A…  32.5  -85.7   264    -6 A     America/Chicago
-##  3 06C   Schaumburg Regional       42.0  -88.1   801    -6 A     America/Chicago
-##  4 06N   Randall Airport           41.4  -74.4   523    -5 A     America/New_Yo…
-##  5 09J   Jekyll Island Airport     31.1  -81.4    11    -5 A     America/New_Yo…
-##  6 0A9   Elizabethton Municipal …  36.4  -82.2  1593    -5 A     America/New_Yo…
-##  7 0G6   Williams County Airport   41.5  -84.5   730    -5 A     America/New_Yo…
-##  8 0G7   Finger Lakes Regional A…  42.9  -76.8   492    -5 A     America/New_Yo…
-##  9 0P2   Shoestring Aviation Air…  39.8  -76.6  1000    -5 U     America/New_Yo…
-## 10 0S9   Jefferson County Intl     48.1 -123.    108    -8 A     America/Los_An…
+##    faa   name                             lat    lon   alt    tz dst   tzone    
+##    &lt;chr&gt; &lt;chr&gt;                          &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;    
+##  1 04G   Lansdowne Airport               41.1  -80.6  1044    -5 A     America/…
+##  2 06A   Moton Field Municipal Airport   32.5  -85.7   264    -6 A     America/…
+##  3 06C   Schaumburg Regional             42.0  -88.1   801    -6 A     America/…
+##  4 06N   Randall Airport                 41.4  -74.4   523    -5 A     America/…
+##  5 09J   Jekyll Island Airport           31.1  -81.4    11    -5 A     America/…
+##  6 0A9   Elizabethton Municipal Airport  36.4  -82.2  1593    -5 A     America/…
+##  7 0G6   Williams County Airport         41.5  -84.5   730    -5 A     America/…
+##  8 0G7   Finger Lakes Regional Airport   42.9  -76.8   492    -5 A     America/…
+##  9 0P2   Shoestring Aviation Airfield    39.8  -76.6  1000    -5 U     America/…
+## 10 0S9   Jefferson County Intl           48.1 -123.    108    -8 A     America/…
 ```
 
 
@@ -682,7 +683,7 @@ Make sure you know what "year.x" and "year.y" are. Again, it pays to be specific
 # Duplicate keys
 
 - If you're lucky, keys are unique. But that's not always the case.
-- Two common scenarios:
+- There are two common scenarios:
 
 --
 
@@ -692,16 +693,13 @@ Make sure you know what "year.x" and "year.y" are. Again, it pays to be specific
 &lt;img src="pics/join-one-to-many.png" height=110&gt;
 &lt;/div&gt;
 
+--
 
 2. Both tables have duplicate keys. This is usually an error because in neither table do the keys uniquely identify an observation. When joining duplicated keys, we get all possible combinations (the Cartesian product, a many-to-many relationship):
   
 &lt;div align="center"&gt;
 &lt;img src="pics/join-many-to-many.png" height=140&gt;
 &lt;/div&gt;
-
----
-
-# Joins in R *cont.*
 
 
 
@@ -744,8 +742,6 @@ name: sql
 - Data definition language (DDL) to describe data structure and its relations (create tables, columns, define data types, keys, constraints) [`CREATE`, `ALTER`, `DROP`]
 - Data manipulation language (DML) to fill database or retrieve information from it [`SELECT`, `FROM`, `WHERE`, `INSERT`, `UPDATE`, `DELETE`]
 - Data control language (DCL) to define usage/admin rights [`GRANT`, `REVOKE`]
-
-
 
 
 ---
@@ -827,6 +823,14 @@ https://en.wikipedia.org/wiki/Database#Database_management_system
 https://www.dataquest.io/blog/sql-basics/
 
 
+
+---
+
+# Using SQL directly in R
+
+- Behind the scenes, dplyr is translating your R code into SQL. You can use the `show_query()` function to display the SQL code that was used to generate a queried table.
+
+- So, do you even need to learn SQL? 
 
 
 

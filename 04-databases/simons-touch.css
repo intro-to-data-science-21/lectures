@@ -59,6 +59,18 @@ hr, .title-slide h2::after, .mline h1::after {
   height: 2px;
 }
 
+.pull-left {
+  margin-top: -20px;
+  float: left;
+  width: 47%;
+}
+
+.pull-right {
+  margin-top: -20px;
+  float: right;
+  width: 47%;
+}
+
 
 .pull-left-wide {
   float: left;
