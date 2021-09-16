@@ -59,37 +59,56 @@ hr, .title-slide h2::after, .mline h1::after {
   height: 2px;
 }
 
+.pull-left {
+  margin-top: -20px;
+  float: left;
+  width: 47%;
+}
+
+.pull-right {
+  margin-top: -20px;
+  float: right;
+  width: 47%;
+}
+
 
 .pull-left-wide {
+  margin-top: -20px;
   float: left;
   width: 63%;
 }
 .pull-right-wide {
+    margin-top: -20px;
   float: right;
   width: 63%;
 }
 
 .pull-left-small {
+    margin-top: -20px;
   float: left;
   width: 30%;
 }
 .pull-right-small {
+    margin-top: -20px;
   float: right;
   width: 30%;
 }
 
 .pull-right-small-center {
+    margin-top: -20px;
   float: right;
   width: 30%;
   text-align: center;
 }
 
 .pull-left-center {
+    margin-top: -20px;
   float: left;
   width: 47%;
   text-align: center;
 }
 .pull-right-center {
+    margin-top: -20px;
   float: right;
   width: 47%;
   text-align: center;

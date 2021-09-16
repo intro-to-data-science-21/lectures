@@ -438,7 +438,7 @@ name: git
 - Part of GitHub's history are controversies around issues like harassment allegations or incidences of censorship.
 ]
 
-.pull-right-narrow-center[
+.pull-right-small-center[
 <div align="center">
 <img src="pics/octocat.png" height=450>
 </div>
