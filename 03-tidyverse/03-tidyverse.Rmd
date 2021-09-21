@@ -50,6 +50,8 @@ knit_hooks$set(
 
 # Table of contents
 
+<br>
+
 1. [Tidyverse basics](#basics)<sup>1</sup>
 
 2. [Pipes](#pipes)
@@ -64,7 +66,7 @@ knit_hooks$set(
 
 7. [Summary](#summary)
 
-.footnote[<sup>1</sup> Parts of this lecture draws on materials from Grant McDermott's excellent [*Data Science for Economists*](https://github.com/uo-ec607/lectures) class.]
+.footnote[<sup>1</sup> Parts of this lecture draw on materials from Grant McDermott's excellent [*Data Science for Economists*](https://github.com/uo-ec607/lectures) class.]
 
 
 ---
@@ -120,7 +122,7 @@ Hadley Wickham
 .pull-left[
 ### Valuable resources
 
-- [Welcome to the Tidyverse](https://tidyverse.tidyverse.org/articles/paper.html), a quick overview from many tidyverse contributors)
+- [Welcome to the Tidyverse](https://tidyverse.tidyverse.org/articles/paper.html), a quick overview from many tidyverse contributors
 - [Tidy data](https://vita.had.co.nz/papers/tidy-data.pdf), a foundational paper on data wrangling and structuring, by Hadley Wickham, 2014, *Journal of Statistical Software*; check [here](https://cran.r-project.org/web/packages/tidyr/vignettes/tidy-data.html) for a hands-on vignette based on the `tidyr` package
 - [The tidyverse design guide](https://design.tidyverse.org/), a (soon-to-be book) manifesto to promote design consistency across the tidyverse
 - [R for Data Science](https://r4ds.had.co.nz/), our main textbook for this course
@@ -193,7 +195,7 @@ Basically, tidy data is more likely to be [long (i.e. narrow) format](https://en
 - Today, the tidyverse stands for more than just "tidy data".
 - It is guided by the principles of being **human centered**, **consistent**, **composable**, and **inclusive**.
 - We will learn about these [unifying principles](https://design.tidyverse.org/unifying-principles.html) inductively when working with more and more tidyverse packages.
-- Later today, we will learn about [tidyverse style principles])(https://style.tidyverse.org/) of low-level code formatting.
+- Later today, we will learn about [tidyverse style principles](https://style.tidyverse.org/) of low-level code formatting.
 
 --
 
@@ -934,7 +936,7 @@ name: tidyr
 
 .pull-left-wide[
 
-`tidyr` is part of the core tidyverse. There are four key `tidyr`verbs that you need to learn.
+`tidyr` is part of the core tidyverse. There are four key `tidyr` verbs that you need to learn.
 
 1. `pivot_longer()`: Pivot wide data into long format (i.e. "melt").<sup>1</sup> 
 
@@ -973,7 +975,7 @@ Remember the **key philosophy for tidy data**?
 
 One of the most common tasks for data scientists is to **reshape** data from one form to the other. 
 
-There are **multiple ways to store the same data in a dataset** (or in across multiple tables; but more on that in the next session).
+There are **multiple ways to store the same data in a dataset** (or across multiple tables; but more on that in the next session).
 
 Here, we learn how to shift between 
 - **"wider"** formats, i.e. data being stored across more columns and
@@ -1815,13 +1817,31 @@ The `map*()` functions all follow a similar syntax:
 `map(.x, .f, ...)`
 </div>
 
-We use it to apply a function `.f`
+We use it to apply a function `.f` to each piece in `.x`. Additional arguments to `.f` can be passed on in `...`.
+
+--
+
+For instance, if we want to identify the object class of every column of a data.frame, we can write:
+
+```{r}
+map(starwars, class)
+```
 
 
-Overview
-The map functions https://r4ds.had.co.nz/iteration.html#the-map-functions
-Mapping over multiple arguments https://r4ds.had.co.nz/iteration.html#mapping-over-multiple-arguments
+---
 
+# Iteration with purrr: map() *cont.*
+
+By default, `map()` returns a list. But we can also use other `map*()`functions to give us an atomic vector of an indicated type (e.g., `map_int()` to return an integer vector) or a data.frame created by row- or column-binding (`map_dfr()`, `map_dfc()`).
+
+The `purrr` function set is quite comprehensive. Be sure to check out the [cheat sheet](https://github.com/rstudio/cheatsheets/blob/master/purrr.pdf) and the [tutorials](https://jennybc.github.io/purrr-tutorial/index.html). You'll survive without `purrr` but you probably don't want to live with it. Together with `dplyr` it's easily the most powerful package for data wrangling in the tidyverse. If you master it, it will save you a lot of time and headaches.
+
+<div align="center">
+<br>
+<img src="pics/purrr-cheatsheet.png" height=250>
+<img src="pics/purrr-cheatsheet-2.png" height=250>
+
+</div>
 
 
 
@@ -2097,6 +2117,9 @@ name: summary
 # FAQ
 
 .pull-left[
+
+<br>
+
 **Q: How much time should I invest to learn the tidyverse?**
 
 A: A week clearly is not enough. You will automatically practice more over the course of the semester. Coding is also self-learning, though. Look out for other tidyverse packages that sound interesting, and practice them!
@@ -2107,6 +2130,9 @@ A: You are going to, automatically. All I've done is to nudge you to a certain p
 ]
 
 .pull-right[
+
+<br>
+
 **Q: Does the tidyverse also work for Big Data**
 
 A: Sure! However, when dealing with large datasets, you might want to consider the [`data.table`](https://rdatatable.gitlab.io/data.table/) package as an alternative to `dplyr`. Or just use [`dtplyr`](https://github.com/tidyverse/dtplyr), a `data.table` backend for dplyr that allows you to write dplyr code that is automatically translated to the equivalent, but usually much faster, data.table code.
@@ -2123,14 +2149,16 @@ sample(tidyverse_packages(), 1)
 
 # Coming up
 
+<br>
+
 
 ### The first **real** assignment
 
-Now we get serious: Assignment 1 is up on GitHub Classroom. Check it out and solve problems with the tidyverse.
+Now we get serious: Assignment 2 is up on GitHub Classroom. Check it out and solve problems with the tidyverse.
 
 
 ### Next lecture
 
-Relational databases and SQL
+Relational databases and SQL. Buckle up and bring coffee, because it'll get both exciting and tedious at the same time.
 
 
