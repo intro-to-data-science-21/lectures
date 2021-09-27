@@ -82,36 +82,79 @@ name: webdata
 ---
 # What is web data?
 
+<br>
+<div align="center">
+<img src="pics/upworthy-paper.png" height=440>
+<img src="pics/cld-paper.png" height=440>
+
+</div>
 
 
 ---
-# Why data from the web is attractive
+# What is web data? *cont.*
+
+<br>
+<div align="center">
+<img src="pics/facebook-contagion-paper.png" height=440>
+<img src="pics/pnas-paper.png" height=440>
+</div>
+
+---
+# What is web data? *cont.*
+
+.pull-left[
+
+### So what is web data, really?
+
+- Not all data you get from the web is "web data".
+- We data is **data that is created on, for, or via the web**. By that definition, a survey dataset that you download from a data repository is not web data.
+- On the other hand, survey data collected online (i.e., web/mobile questionnaires) is web data but we don't consider it in today's session.
+- Examples of web data: 
+  - Online news articles
+  - Social media network structures
+  - Crowdsourced databases (e.g., Wikidata)
+  - Server logs (e.g., viewership statistics)
+  - Data from surveys, experiments, clickworkers
+  - Just any website
+- The vast majority of web data was not created with a data analysis purpose in mind.
+  
+]
+
+--
+
+.pull-right[
+
+### And why is data from the web attractive?
 
 - Data is abundant online.
 - Human behavior increasingly takes place online.
 - Countless services track human behavior.
-
 - Getting data from the web is cheap and often quick.
 - An analysis workflow that involves web data can often be easily updated.
+- The fact that much of the data was not created for purposes of analysis is often a feature, not a bug.
 
+<p style="color:red">
+Today, we focus on one particular way of collecting data from the web: <b>web scraping</b>. This also limits the type of web data we'll be talking about (basically: data from static webpages). But it'll be fun nevertheless.
+</p>
 
+]
 
 
 ---
-# What is web scraping?
+# Web scraping
 
-Web scraping is the process of
+.pull-left[
+
+### What is web scraping?
+
 1. Getting (unstructured) data from the web and
 2. Bringing it into shape (e.g., into a format ready for analysis).
 
----
-# From web scraping to automated web data collection
-
-### The philosophy behind web data collection with R (or any other scripting language)
+### The philosophy of scraping with R
 
 - No point-and-click procedure
 - Script the entire process from start to finish
-- Automate
+- **Automate**
   - The downloading of files
   - The scraping of information from web sites
   - Tapping APIs
@@ -119,15 +162,39 @@ Web scraping is the process of
   - Data tidying, text data processing
 - Easily scale up scraping procedures
 - Scheduling of scraping tasks
+]
 
-
+.pull-right-center[
+<br>
+<div align="center">
+<img src="pics/web-scraping-vs-web-crawling.png" width=500>
+</div>
+`Credit` [prowebscraping.com](http://prowebscraping.com/web-scraping-vs-web-crawling/)
+]
 
 ---
 # Technologies of the world wide web
 
+.pull-left[
+
+- To fully unlock the potential of web data for data science, you have to familiarize with certain web technologies.
+- Importantly, often a passive/pragmatic understanding of these technologies is sufficient as the focus is on web data collection, not web development.
+- Specifically, we have to understand
+  - How our machine/browser/R communicates with web servers (→ **HTTP/S**)
+  - How websites are built (→ **HTML**, **CSS**, basics of **JavaScript**)
+  - How content in webpages can be effectively located (→ **XPath**, **CSS selectors**)
+  - How dynamic web applications are executed and tapped (→ **AJAX**, **Selenium**)
+  - How data by web services is distributed and processed (→ **APIs**, **JSON**, **XML**)
+  
+]
+
+.pull-right-center[
+<br>
 <div align="center">
-<img src="pics/webtechnologies.png" width=700>
+<img src="pics/webtechnologies.png" width=500>
 </div>
+`Credit` [ADCR](http://r-datacollection.com/)
+]
 
 
 
@@ -143,19 +210,35 @@ name: html
 ---
 # HTML background
 
+.pull-left-wide[
+
 ### What is HTML?
 
 - **H**yper**T**ext **M**arkup **L**anguage
 - Markup language = plain text + markups
-- [W3C](https://en.wikipedia.org/wiki/World_Wide_Web_Consortium) standard for the construction of websites
-- Lies underneath of what you see in your browser
+- Originally specified by [Tim Berners-Lee](https://en.wikipedia.org/wiki/Tim_Berners-Lee) at [CERN](https://en.wikipedia.org/wiki/CERN) in 1989/90 
+- [W3C](https://en.wikipedia.org/wiki/World_Wide_Web_Consortium) standard for the construction of websites.
+- The fundamentals of HTML haven't changed much recently. Current version is HTML 5.2 (published in 2017). 
 
-### Why do we need to know about it?
 
-- It determines where and how information is stored.
-- A basic understanding of HTML helps us locate the information we want to retrieve.
-- A (mostly) passive understanding of HTML is sufficient though.
+### What is it good for?
 
+- In the early days, the internet was mainly good for sharing texts. But plain text is boring. Markup is fun!
+- HTML lies underneath of what you see in your browser. You don't see it because your browser interprets and renders it for you.
+- A basic understanding of HTML helps us locate the information we want to retrieve. A (mostly) passive understanding of HTML is sufficient though.
+
+]
+
+.pull-right-small-center[
+
+<br>
+<div align="center">
+<img src="pics/Sir_Tim_Berners-Lee_(cropped).jpeg" width=200>
+<br><br>
+<img src="pics/html5.png" width=200>
+</div>
+
+]
 
 
 ---
@@ -163,8 +246,16 @@ name: html
 
 .pull-left[
 
-]
+### The DOM tree
 
+- HTML documents are hierarchically structured. Think of them as a tree with multiple nodes and branches.
+- When a webpage (HTML resource) is loaded, the browser creates a **D**ocument **O**bject **M**odel of that page - the **DOM Tree**.
+- Think of it as a representation of the website that considers all HTML elements as objects and also carries information about the properties of these elements and how to deal with them. 
+
+### Parts of the tree
+
+- 
+]
 
 .pull-right[
 
@@ -740,7 +831,8 @@ html_elements(parsed_doc, xpath = "//div/p[1]")
 Can you find out what the following expressions do? 
 
 ```{r, eval = FALSE, message= FALSE}
-html_elements(parsed_doc, xpath = "//div/p[last()-1]") html_elements(parsed_doc, xpath = "//div[count(./@*)>2]")
+html_elements(parsed_doc, xpath = "//div/p[last()-1]") 
+html_elements(parsed_doc, xpath = "//div[count(./@*)>2]")
 html_elements(parsed_doc, xpath = "//*[string-length(text())>50]")
 ```
 
@@ -852,18 +944,123 @@ name: scrapingstatic
 ---
 # The scraping workflow
 
+.pull-left[
+# The key tools for scraping static webpages
 
-Scraping workflow
+1. You are able to inspect HTML pages in your browser using the web developer tools.
+2. You are able to parse HTML into R with `rvest`.
+3. You are able to speak XPath (or CSS selectors).
+4. You are able to apply XPath expressions with `rvest`.
+5. You are able to tidy web data with R/`dplyr`/`regex`.
+]
 
-basic rvest
+.pull-right[
+<div align="center">
+<img src="pics/scraping-workflow.png" width=350>
+</div>
+]
 
-Scraping HTML tables
+---
+# rvest: a suite of scraping tools for R
 
-selectorGadget
+- what it is
+- workflow: 
+`read_html()`
+`html_elements()`
+`html_text2()`
+
+https://rvest.tidyverse.org/reference/index.html#section-html
+https://rvest.tidyverse.org/
+
+Webscraping basics: See Grant McDermott's "webscraping basics" server-side vs client-side
+
+
+---
+# Scraping HTML tables
+
+- HTML tables are everywhere.
+- They are easy to spot in the wild - just look for `<table>` tags!
+- Exactly because scraping tables is an easy and repetitive task, there is a dedicated `rvest` function for it: `html_table()`.
+
+```{r, eval = FALSE}
+html_table(x, 
+            header = NA,
+            trim = TRUE,
+            dec = ".",
+            na.strings = "NA",
+            convert = TRUE
+ )
+```
+
+| Argument |  Description |
+|---|---|
+| `x` | Usually a document (from `read_html()`) or node set (from `html_elements()`). |
+| `header` | Use first row as header? If `NA`, will use first row if it consists of `<th>` tags. |
+| `trim` | Remove leading and trailing whitespace within each cell? |
+| `dec` | The character used as decimal place marker. |
+| `na.strings` | Character vector of values that will be converted to `NA` if `convert` is `TRUE`. |
+| `convert` | If `TRUE`, will run `type.convert()` to interpret texts as integer, double, or `NA`. |
+
+
+---
+# Scraping HTML tables: example
+
+```{r, eval = FALSE}
+library(rvest)
+url_p <- read_html("https://en.wikipedia.org/wiki/List_of_human_ spaceflights")
+tables <- html_table(url_p, header = TRUE)
+spaceflights <- tables[[1]]
+spaceflights
+```
+
+
+
+
+---
+# Quick-n-dirty static webscraping with SelectorGadget
+
+.pull-left[
+
+### The hassle with XPath
+
+- The most cumbersome part of web scraping (data tidying aside) is the construction of XPath expressions that match the components of a page you want to extract
+- It will take a couple of scraping projects until you’ll truly have mastered XPath
+
+### A much-appreciated helper
+
+- **SelectorGadget** is a JavaScript browser plugin that constructs XPath statements (or CSS selectors) via a point-and-click approach.
+- It is available here: http://selectorgadget.com/ (there is also a Chrome extension).
+- The tool is magic and you will love it.
+
+]
+
+--
+
+.pull-right[
+
+### What does SelectorGadget do?
+
+- You active the tool on any webpage you want to scrape.
+- Based on your selection of components, the tool learns about your desired components and generates an XPath expression (or CSS selector) for you
+
+### Under the hood
+
+- Based on your selection(s), the tool looks for similar elements on the page
+- The underlying algorithm, which draws on Google’s diff-match-patch libraries, focuses on CSS characteristics, such as tag names and `<div>` and `<span>` attributes
+
+]
+
+
+---
+# More usecases
 
 scraping multiple pages
 
+forms
 
+authentication
+
+crawling
 
 
 
@@ -879,6 +1076,91 @@ name: goodpractice
 
 
 ---
+# Downloading HTML files
+
+.pull-left[
+
+### Stay modest when accessing lots of data
+
+- Content on the web is publicly available.
+- But accessing the data causes server traffic.
+- Stay polite by querying resources as sparsely as possible.
+
+### Two easy-to-implement practices
+
+1. Do not bombard the server with requests - and if you have to, do so at modest pace.
+2. Store web data on your local/remote drive first, then parse.
+
+### Looping over a list of URLs
+
+- `!file.exists()` checks whether a file does not exist in the specified location.
+- `download.file()` downloads the file to a folder. The destination file (location + name) has to be specified.
+- `Sys.sleep()` suspends the execution of R code for a given time interval (in seconds).
+]
+
+.pull-right[
+
+```{r, eval = FALSE}
+for (i in 1:length(list_of_urls)) { 
+  if (!file.exists(paste0(folder, file_names[i]))) {
+    download.file(list_of_urls[i],
+                  destfile = paste0(folder, file_names[i])
+                  )
+    Sys.sleep(runif(1, 1, 2))
+    }
+}
+```
+
+
+---
+# Staying identifiable
+
+.pull-left[
+
+### Don't be a phantom
+
+- Downloading massive amounts of data may arouse attention from server administrators.
+- Assuming that you've got nothing to hide, you should stay identifiable beyond your IP address.
+
+### Two easy-to-implement practices
+
+1. Get in touch with website administrators / data owners.
+2. Use HTTP header fields `From` and `User-Agend` to provide information about yourself.
+
+### Staying identifiable in practice
+
+- `rvest`'s `session()` creates a session object that responds to HTTP and HTML methods.
+- Here, we provide our email address and the current R version as `User-Agent` information.
+- This will pop up in the server logs: The webpage administrator has the chance to easily get in touch with you.
+]
+
+.pull-right[
+
+```{r, eval = FALSE}
+url <- "http://a-totally-random-website.com"
+rvest_session <- session(url, 
+                        add_headers(From = "my@email.com", 
+                                    `UserAgent` = R.Version()$version.string
+                                    )
+                        ) 
+headlines <- rvest_session %>% 
+             html_elements(xpath = "p//a") %>% 
+             html_text()
+```
+
+]
+
+
+---
+# Being nice on the web with the polite package
+
+https://dmi3kno.github.io/polite/
+
+
+
+
+
+---
 class: inverse, center, middle
 name: summary
 
@@ -888,6 +1170,10 @@ name: summary
 
 
 
+---
+# Outlook
+
+Outlook: dynamic webpages, APIs
 
 
 

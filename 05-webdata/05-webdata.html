@@ -66,36 +66,79 @@ name: webdata
 ---
 # What is web data?
 
+&lt;br&gt;
+&lt;div align="center"&gt;
+&lt;img src="pics/upworthy-paper.png" height=440&gt;
+&lt;img src="pics/cld-paper.png" height=440&gt;
+
+&lt;/div&gt;
 
 
 ---
-# Why data from the web is attractive
+# What is web data? *cont.*
+
+&lt;br&gt;
+&lt;div align="center"&gt;
+&lt;img src="pics/facebook-contagion-paper.png" height=440&gt;
+&lt;img src="pics/pnas-paper.png" height=440&gt;
+&lt;/div&gt;
+
+---
+# What is web data? *cont.*
+
+.pull-left[
+
+### So what is web data, really?
+
+- Not all data you get from the web is "web data".
+- We data is **data that is created on, for, or via the web**. By that definition, a survey dataset that you download from a data repository is not web data.
+- On the other hand, survey data collected online (i.e., web/mobile questionnaires) is web data but we don't consider it in today's session.
+- Examples of web data: 
+  - Online news articles
+  - Social media network structures
+  - Crowdsourced databases (e.g., Wikidata)
+  - Server logs (e.g., viewership statistics)
+  - Data from surveys, experiments, clickworkers
+  - Just any website
+- The vast majority of web data was not created with a data analysis purpose in mind.
+  
+]
+
+--
+
+.pull-right[
+
+### And why is data from the web attractive?
 
 - Data is abundant online.
 - Human behavior increasingly takes place online.
 - Countless services track human behavior.
-
 - Getting data from the web is cheap and often quick.
 - An analysis workflow that involves web data can often be easily updated.
+- The fact that much of the data was not created for purposes of analysis is often a feature, not a bug.
 
+&lt;p style="color:red"&gt;
+Today, we focus on one particular way of collecting data from the web: &lt;b&gt;web scraping&lt;/b&gt;. This also limits the type of web data we'll be talking about (basically: data from static webpages). But it'll be fun nevertheless.
+&lt;/p&gt;
 
+]
 
 
 ---
-# What is web scraping?
+# Web scraping
 
-Web scraping is the process of
+.pull-left[
+
+### What is web scraping?
+
 1. Getting (unstructured) data from the web and
 2. Bringing it into shape (e.g., into a format ready for analysis).
 
----
-# From web scraping to automated web data collection
-
-### The philosophy behind web data collection with R (or any other scripting language)
+### The philosophy of scraping with R
 
 - No point-and-click procedure
 - Script the entire process from start to finish
-- Automate
+- **Automate**
   - The downloading of files
   - The scraping of information from web sites
   - Tapping APIs
@@ -103,15 +146,39 @@ Web scraping is the process of
   - Data tidying, text data processing
 - Easily scale up scraping procedures
 - Scheduling of scraping tasks
+]
 
-
+.pull-right-center[
+&lt;br&gt;
+&lt;div align="center"&gt;
+&lt;img src="pics/web-scraping-vs-web-crawling.png" width=500&gt;
+&lt;/div&gt;
+`Credit` [prowebscraping.com](http://prowebscraping.com/web-scraping-vs-web-crawling/)
+]
 
 ---
 # Technologies of the world wide web
 
+.pull-left[
+
+- To fully unlock the potential of web data for data science, you have to familiarize with certain web technologies.
+- Importantly, often a passive/pragmatic understanding of these technologies is sufficient as the focus is on web data collection, not web development.
+- Specifically, we have to understand
+  - How our machine/browser/R communicates with web servers (→ **HTTP/S**)
+  - How websites are built (→ **HTML**, **CSS**, basics of **JavaScript**)
+  - How content in webpages can be effectively located (→ **XPath**, **CSS selectors**)
+  - How dynamic web applications are executed and tapped (→ **AJAX**, **Selenium**)
+  - How data by web services is distributed and processed (→ **APIs**, **JSON**, **XML**)
+  
+]
+
+.pull-right-center[
+&lt;br&gt;
 &lt;div align="center"&gt;
-&lt;img src="pics/webtechnologies.png" width=700&gt;
+&lt;img src="pics/webtechnologies.png" width=500&gt;
 &lt;/div&gt;
+`Credit` [ADCR](http://r-datacollection.com/)
+]
 
 
 
@@ -127,19 +194,35 @@ name: html
 ---
 # HTML background
 
+.pull-left-wide[
+
 ### What is HTML?
 
 - **H**yper**T**ext **M**arkup **L**anguage
 - Markup language = plain text + markups
-- [W3C](https://en.wikipedia.org/wiki/World_Wide_Web_Consortium) standard for the construction of websites
-- Lies underneath of what you see in your browser
+- Originally specified by [Tim Berners-Lee](https://en.wikipedia.org/wiki/Tim_Berners-Lee) at [CERN](https://en.wikipedia.org/wiki/CERN) in 1989/90 
+- [W3C](https://en.wikipedia.org/wiki/World_Wide_Web_Consortium) standard for the construction of websites.
+- The fundamentals of HTML haven't changed much recently. Current version is HTML 5.2 (published in 2017). 
 
-### Why do we need to know about it?
 
-- It determines where and how information is stored.
-- A basic understanding of HTML helps us locate the information we want to retrieve.
-- A (mostly) passive understanding of HTML is sufficient though.
+### What is it good for?
 
+- In the early days, the internet was mainly good for sharing texts. But plain text is boring. Markup is fun!
+- HTML lies underneath of what you see in your browser. You don't see it because your browser interprets and renders it for you.
+- A basic understanding of HTML helps us locate the information we want to retrieve. A (mostly) passive understanding of HTML is sufficient though.
+
+]
+
+.pull-right-small-center[
+
+&lt;br&gt;
+&lt;div align="center"&gt;
+&lt;img src="pics/Sir_Tim_Berners-Lee_(cropped).jpeg" width=200&gt;
+&lt;br&gt;&lt;br&gt;
+&lt;img src="pics/html5.png" width=200&gt;
+&lt;/div&gt;
+
+]
 
 
 ---
@@ -147,6 +230,15 @@ name: html
 
 .pull-left[
 
+### The DOM tree
+
+- HTML documents are hierarchically structured. Think of them as a tree with multiple nodes and branches.
+- When a webpage (HTML resource) is loaded, the browser creates a **D**ocument **O**bject **M**odel of that page - the **DOM Tree**.
+- Think of it as a representation of the website that considers all HTML elements as objects and also carries information about the properties of these elements and how to deal with them. 
+
+### Parts of the tree
+
+- 
 ]
 
 
@@ -783,7 +875,7 @@ R&gt; xml2::as_list(parsed_doc)
 ## [1] "\na, a:link, a:visited, a:active, a:hover {\n  color: #1a73e8;\n  text-decoration: none;\n}\nbody {\n  font-family: Roboto,RobotoDraft,Helvetica,Arial,sans-serif;\n  text-align: center;\n  -ms-text-size-adjust: 100%;\n  -moz-text-size-adjust: 100%;\n  -webkit-text-size-adjust: 100%;\n}\n.box {\n  border: 1px solid #dadce0;\n  box-sizing: border-box;\n  border-radius: 8px;\n  margin: 24px auto 5px auto;\n  max-width: 520px;\n  padding: 24px;\n}\nh1 {\n  color: #2c2c2c;\n  font-size: 24px;\n  hyphens: auto;\n  margin: 24px 0;\n}\np, .sub, .contentText {\n  color: #5f6368;;\n  font-size: 14px;\n  line-height: 20px;\n  letter-spacing: 0.2px;\n  text-align: left;\n}\n.signin {\n  text-align: right;\n}\n.image {\n  display: block;\n  margin: 14px auto;\n}\na.button {\n  color: #fff;\n}\nbutton, .button {\n  border-radius: 4px;\n  background-color: #1a73e8;\n  border: none;\n  color: #fff;\n  cursor: pointer;\n  font-family: Roboto,RobotoDraft,Helvetica,Arial,sans-serif;\n  font-size: 14px;\n  font-weight: 500;\n  height: 36px;\n  margin: 0 4px;\n  padding: 10px 24px;\n}\ninput.button {\n  -webkit-appearance: none;\n}\n.error {\n  border: 2px solid #d93025;\n  border-radius: 5px;\n  color: #d93025;\n  margin: auto;\n  padding: 5px;\n}\n.footer {\n  margin-top: 16px;\n}\n.footer a {\n  margin-left: 24px;\n  white-space: nowrap;\n}\n.footer a, .footer select, .footer input {\n  color: #757575;\n  font-size: 12px;\n}\n.languagepicker {\n  display: inline-flex;\n  margin: 2px 0;\n}\n#languageform,\n#languageselect {\n  margin: 0 2px;\n}\n#languageselect {\n  color: #757575;\n}\n.detailspage {\n  margin: 24px auto 0 auto;\n  max-width: 700px;\n}\n.detailspage h1, .detailspage h2 {\n  font-size: 22px\n}\n.setting {\n  border: 1px solid #dadce0;\n  box-sizing: border-box;\n  border-radius: 8px;\n  margin-bottom: 11px;\n  padding: 24px 24px 20px 24px;\n  text-align: right;\n}\n.sub {\n  padding: 24px 24px 20px 24px;\n}\nhr {\n  margin: 12px -24px 12px;\n  border: 0;\n  border-top: 1px solid #dadce0;\n}\nfieldset {\n  border: none;\n  padding: 0;\n}\nlabel {\n  margin: 24px;\n}\ntd {\n  vertical-align: top;\n}\n.setting h2, .setting h3, h4 {\n  color: #3c4043;\n  margin: 0;\n  text-align: left;\n}\n.yt-text {\n  color: #5f6368;\n  font-size: 14px;\n  font-weight: 300;\n}\n.productLogoContainer {\n  margin: auto;\n  max-width: 360px;\n}\n\n/** Narrow screen (for example a mobile device). */\n@media only screen and (max-width: 480px) {\n  body {\n    margin: 18px 14px;\n  }\n  .imgContainer {\n    min-width: 96px;\n  }\n  .hideOnSmallWidth {\n    display: none;\n  }\n  .footer form {\n    margin-bottom: 3px;\n  }\n}\n\n@media only screen and (max-width: 380px) {\n  .imgContainer {\n    min-width: 72px;\n  }\n}\n\n/** Normal/non-narrow screen. */\n@media not screen and (max-width: 480px) {\n  body {\n    margin: 18px 25px;\n  }\n  .imgContainer {\n    width: 51%;\n  }\n  .hideOnNormalWidth {\n    display: none;\n  }\n  .footer form {\n    display: inline;\n  }\n}\n"
 ## 
 ## attr(,"nonce")
-## [1] "FghZEhoZcCOqOt2LQEpBrg"
+## [1] "ZP8tqNjixtLe3VVygAt3fQ"
 ## 
 ## $html$head$title
 ## $html$head$title[[1]]
@@ -993,7 +1085,7 @@ R&gt; xml2::as_list(parsed_doc)
 ## attr(,"name")
 ## [1] "v"
 ## attr(,"value")
-## [1] "cb.20210921-01-p1.de+FX+730"
+## [1] "cb.20210921-01-p1.de+FX+413"
 ## 
 ## $html$body$div$div$form$input
 ## list()
@@ -1002,7 +1094,7 @@ R&gt; xml2::as_list(parsed_doc)
 ## attr(,"name")
 ## [1] "t"
 ## attr(,"value")
-## [1] "ADw3F8j9PgTN8ph08KOBzj38ovFfR2obPQ:1632498024711"
+## [1] "ADw3F8g9sB0LaR-A5gQwZEBQi5dUi8BiFA:1632749543793"
 ## 
 ## $html$body$div$div$form$input
 ## list()
@@ -1782,6 +1874,12 @@ R&gt;
 &lt;/div&gt;
 
 
+---
+# Slide explaining DOM TREE
+
+also nodes vs. elements and why I use it interchangeably
+nodeset
+
 
 ---
 # Applying XPath on HTML in R
@@ -1976,7 +2074,7 @@ R&gt; html_elements(parsed_doc, xpath = "//a/ancestor::div")
 ## [1] &lt;div lang="english" date="October/2011"&gt;\n  &lt;h1&gt;Rolf Turner&lt;/h1&gt;\n  &lt;p&gt;&lt;i ...
 ```
 
-Another example: Select all &lt;h1&gt; nodes that precede a &lt;p&gt; node:
+Another example: Select all `&lt;h1&gt;` nodes that precede a `&lt;p&gt;` node:
 
 
 ```r
@@ -2000,16 +2098,113 @@ R&gt; html_elements(parsed_doc, xpath = "//p/preceding-sibling::h1")
 - They are applicable to a variety of features: name, value attribute.
 - Basic syntax: `element[predicate]`
 
-Examples:
+Select all first &lt;p&gt; elements that are children of a &lt;div&gt; element, using a **numeric predicate**:
 
 
-```html
-R&gt; //div[true()]
-+ //div[@class="head"]
-+ //div[@class="head"][@id="top"]
+```r
+R&gt; html_elements(parsed_doc, xpath = "//div/p[1]")
 ```
 
+```
+## {xml_nodeset (2)}
+## [1] &lt;p&gt;&lt;i&gt;'What we have is nice, but we need something very different'&lt;/i&gt;&lt;/p&gt;
+## [2] &lt;p&gt;&lt;i&gt;'R is wonderful, but it cannot work magic'&lt;/i&gt; &lt;br&gt;&lt;emph&gt;answering  ...
+```
 
+--
+
+Can you find out what the following expressions do? 
+
+
+```r
+R&gt; html_elements(parsed_doc, xpath = "//div/p[last()-1]") 
+R&gt; html_elements(parsed_doc, xpath = "//div[count(./@*)&gt;2]")
+R&gt; html_elements(parsed_doc, xpath = "//*[string-length(text())&gt;50]")
+```
+
+---
+# Predicates
+
+Select all &lt;div&gt; nodes that contain an attribute named ’October/2011’, using a **textual predicate**:
+
+
+```r
+R&gt; html_elements(parsed_doc, xpath ="//div[@date='October/2011']")
+```
+
+```
+## {xml_nodeset (1)}
+## [1] &lt;div lang="english" date="October/2011"&gt;\n  &lt;h1&gt;Rolf Turner&lt;/h1&gt;\n  &lt;p&gt;&lt;i ...
+```
+
+Rudimentary string matching is also possible using string functions like `contains()`, `starts-with()`, or `ends-with()`.
+
+Can you tell what the following calls do?
+
+
+```r
+R&gt; html_elements(parsed_doc, xpath = "//div[starts-with(./@id, 'R')]")
+R&gt; html_elements(parsed_doc, xpath = "//div[substring-after(./@date, '/')='2003']//i")
+```
+
+---
+# Content extraction 
+
+- Until now, we used XPath expressions to extract complete nodes or nodesets (that is, elements with tags).
+- However, in most cases we're interested in extracting the content only.
+- To that end, we can use extractor functions that are applied on the output of XPath query calls.
+
+| Function  |  Argument | Return value |
+|---|---|---|
+| `html_text()` |  | Element value |
+| `html_text2()` |  | Element value (with a bit more cleanup) |
+| `html_attr()` | `name` | Element attribute |
+| `html_attrs()` |  | (All) element attributes |
+| `html_name()` | `trim` | Element name |
+| `html_children()` |  | Element children |
+
+
+---
+# Content extraction *cont.*
+
+Extracting element values/content
+
+
+```r
+R&gt; html_elements(parsed_doc, xpath = "//title") %&gt;% html_text()
+```
+
+```
+## [1] "Collected R wisdoms"
+```
+
+Extracting attributes
+
+
+```r
+R&gt; html_elements(parsed_doc, xpath = "//div") %&gt;% html_attrs()
+```
+
+```
+## [[1]]
+##           id         lang         date 
+## "R Inventor"    "english"  "June/2003" 
+## 
+## [[2]]
+##           lang           date 
+##      "english" "October/2011"
+```
+
+Extracting attribute values
+
+
+```r
+R&gt; html_elements(parsed_doc, xpath = "//div") %&gt;% html_attr("lang")
+```
+
+```
+## [1] "english" "english"
+```
 
 
 ---
@@ -2021,7 +2216,11 @@ XPath expression testbed: http://www.whitebeam.org/library/guide/TechNotes/xpath
 
 Tutorial?
 
+### XPath creator tools
 
+- Now, do you really have to construct XPath expressions by your own? No! At least not always.
+- **SelectorGadget**: [http://selectorgadget.com](http://selectorgadget.com): Browser plugin that constructs XPath statements via a point-and-click approach. The generated expressions are not always efficient and effective though.
+- Web developer tools: Internal browser functionality which returns XPath statements for selected nodes.
 
 
 ---
@@ -2033,6 +2232,19 @@ name: css
 &lt;html&gt;&lt;div style='float:left'&gt;&lt;/div&gt;&lt;hr color='#EB811B' size=1px style="width:1000px; margin:auto;"/&gt;&lt;/html&gt;
 
 
+---
+# What is CSS?
+
+- **C**ascading **S**tyle **S**heets (CSS)
+
+
+---
+# CSS selectors
+
+https://flukeout.github.io/
+
+
+
 
 ---
 class: inverse, center, middle
@@ -2041,6 +2253,128 @@ name: scrapingstatic
 # Scraping static webpages with R
 
 &lt;html&gt;&lt;div style='float:left'&gt;&lt;/div&gt;&lt;hr color='#EB811B' size=1px style="width:1000px; margin:auto;"/&gt;&lt;/html&gt;
+
+
+---
+# The scraping workflow
+
+.pull-left[
+# The key tools for scraping static webpages
+
+1. You are able to inspect HTML pages in your browser using the web developer tools.
+2. You are able to parse HTML into R with `rvest`.
+3. You are able to speak XPath (or CSS selectors).
+4. You are able to apply XPath expressions with `rvest`.
+5. You are able to tidy web data with R/`dplyr`/`regex`.
+]
+
+.pull-right[
+&lt;div align="center"&gt;
+&lt;img src="pics/scraping-workflow.png" width=350&gt;
+&lt;/div&gt;
+]
+
+---
+# rvest: a suite of scraping tools for R
+
+- what it is
+- workflow: 
+`read_html()`
+`html_elements()`
+`html_text2()`
+
+Webscraping basics: See Grant McDermott's "webscraping basics" server-side vs client-side
+
+
+---
+# Scraping HTML tables
+
+- HTML tables are everywhere.
+- They are easy to spot in the wild - just look for `&lt;table&gt;` tags!
+- Exactly because scraping tables is an easy and repetitive task, there is a dedicated `rvest` function for it: `html_table()`.
+
+
+```r
+R&gt; html_table(x, 
++             header = NA,
++             trim = TRUE,
++             dec = ".",
++             na.strings = "NA",
++             convert = TRUE
++  )
+```
+
+| Argument |  Description |
+|---|---|
+| `x` | Usually a document (from `read_html()`) or node set (from `html_elements()`). |
+| `header` | Use first row as header? If `NA`, will use first row if it consists of `&lt;th&gt;` tags. |
+| `trim` | Remove leading and trailing whitespace within each cell? |
+| `dec` | The character used as decimal place marker. |
+| `na.strings` | Character vector of values that will be converted to `NA` if `convert` is `TRUE`. |
+| `convert` | If `TRUE`, will run `type.convert()` to interpret texts as integer, double, or `NA`. |
+
+
+---
+# Scraping HTML tables: example
+
+
+```r
+R&gt; library(rvest)
+R&gt; url_p &lt;- read_html("https://en.wikipedia.org/wiki/List_of_human_ spaceflights")
+R&gt; tables &lt;- html_table(url_p, header = TRUE)
+R&gt; spaceflights &lt;- tables[[1]]
+R&gt; spaceflights
+```
+
+
+
+
+---
+# Quick-n-dirty static webscraping with SelectorGadget
+
+.pull-left[
+
+### The hassle with XPath
+
+- The most cumbersome part of web scraping (data tidying aside) is the construction of XPath expressions that match the components of a page you want to extract
+- It will take a couple of scraping projects until you’ll truly have mastered XPath
+
+### A much-appreciated helper
+
+- **SelectorGadget** is a JavaScript browser plugin that constructs XPath statements (or CSS selectors) via a point-and-click approach.
+- It is available here: http://selectorgadget.com/ (there is also a Chrome extension).
+- The tool is magic and you will love it.
+
+]
+
+--
+
+.pull-right[
+
+### What does SelectorGadget do?
+
+- You active the tool on any webpage you want to scrape.
+- Based on your selection of components, the tool learns about your desired components and generates an XPath expression (or CSS selector) for you
+
+### Under the hood
+
+- Based on your selection(s), the tool looks for similar elements on the page
+- The underlying algorithm, which draws on Google’s diff-match-patch libraries, focuses on CSS characteristics, such as tag names and `&lt;div&gt;` and `&lt;span&gt;` attributes
+
+]
+
+
+---
+# More usecases
+
+scraping multiple pages
+
+forms
+
+authentication
+
+crawling
+
 
 
 
@@ -2055,6 +2389,93 @@ name: goodpractice
 
 
 ---
+# Downloading HTML files
+
+.pull-left[
+
+### Stay modest when accessing lots of data
+
+- Content on the web is publicly available.
+- But accessing the data causes server traffic.
+- Stay polite by querying resources as sparsely as possible.
+
+### Two easy-to-implement practices
+
+1. Do not bombard the server with requests - and if you have to, do so at modest pace.
+2. Store web data on your local/remote drive first, then parse.
+
+### Looping over a list of URLs
+
+- `!file.exists()` checks whether a file does not exist in the specified location.
+- `download.file()` downloads the file to a folder. The destination file (location + name) has to be specified.
+- `Sys.sleep()` suspends the execution of R code for a given time interval (in seconds).
+]
+
+.pull-right[
+
+
+```r
+R&gt; for (i in 1:length(list_of_urls)) { 
++   if (!file.exists(paste0(folder, file_names[i]))) {
++     download.file(list_of_urls[i],
++                   destfile = paste0(folder, file_names[i])
++                   )
++     Sys.sleep(runif(1, 1, 2))
++     }
++ }
+```
+
+
+---
+# Staying identifiable
+
+.pull-left[
+
+### Don't be a phantom
+
+- Downloading massive amounts of data may arouse attention from server administrators.
+- Assuming that you've got nothing to hide, you should stay identifiable beyond your IP address.
+
+### Two easy-to-implement practices
+
+1. Get in touch with website administrators / data owners.
+2. Use HTTP header fields `From` and `User-Agend` to provide information about yourself.
+
+### Staying identifiable in practice
+
+- `rvest`'s `session()` creates a session object that responds to HTTP and HTML methods.
+- Here, we provide our email address and the current R version as `User-Agent` information.
+- This will pop up in the server logs: The webpage administrator has the chance to easily get in touch with you.
+]
+
+.pull-right[
+
+
+```r
+R&gt; url &lt;- "http://a-totally-random-website.com"
+R&gt; rvest_session &lt;- session(url, 
++                         add_headers(From = "my@email.com", 
++                                     `UserAgent` = R.Version()$version.string
++                                     )
++                         ) 
+R&gt; headlines &lt;- rvest_session %&gt;% 
++              html_elements(xpath = "p//a") %&gt;% 
++              html_text()
+```
+
+]
+
+
+---
+# Being nice on the web with the polite package
+
+https://dmi3kno.github.io/polite/
+
+
+
+
+
+---
 class: inverse, center, middle
 name: summary
 
@@ -2064,6 +2485,10 @@ name: summary
 
 
 
+---
+# Outlook
+
+Outlook: dynamic webpages, APIs
 
 
 
