@@ -476,7 +476,7 @@ alex_hertie <- hertie(alex_on_train,
 
 - `%>%` should always have a space before it, and should usually be followed by a new line.
 - A one-step pipe can stay on one line, but unless you plan to expand it later on, you should consider rewriting it to a regular function call.
-- `magrittr`allows you to omit `()` on functions that don't have arguments (as in `mydata %>% summary`). Avoid this feature.
+- `magrittr` allows you to omit `()` on functions that don't have arguments (as in `mydata %>% summary`). Avoid this feature.
 
 ---
 
@@ -1834,7 +1834,7 @@ map(starwars, class)
 
 By default, `map()` returns a list. But we can also use other `map*()`functions to give us an atomic vector of an indicated type (e.g., `map_int()` to return an integer vector) or a data.frame created by row- or column-binding (`map_dfr()`, `map_dfc()`).
 
-The `purrr` function set is quite comprehensive. Be sure to check out the [cheat sheet](https://github.com/rstudio/cheatsheets/blob/master/purrr.pdf) and the [tutorials](https://jennybc.github.io/purrr-tutorial/index.html). You'll survive without `purrr` but you probably don't want to live with it. Together with `dplyr` it's easily the most powerful package for data wrangling in the tidyverse. If you master it, it will save you a lot of time and headaches.
+The `purrr` function set is quite comprehensive. Be sure to check out the [cheat sheet](https://github.com/rstudio/cheatsheets/blob/master/purrr.pdf) and the [tutorials](https://jennybc.github.io/purrr-tutorial/index.html). You'll survive without `purrr` but you probably don't want to live without it. Together with `dplyr` it's easily the most powerful package for data wrangling in the tidyverse. If you master it, it will save you a lot of time and headaches.
 
 <div align="center">
 <br>

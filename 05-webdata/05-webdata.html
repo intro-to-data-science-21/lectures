@@ -1,0 +1,2210 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Introduction to Data Science</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Simon Munzert" />
+    <script src="libs/header-attrs/header-attrs.js"></script>
+    <link href="libs/remark-css/default.css" rel="stylesheet" />
+    <link href="libs/remark-css/metropolis.css" rel="stylesheet" />
+    <link href="libs/remark-css/metropolis-fonts.css" rel="stylesheet" />
+    <link rel="stylesheet" href="simons-touch.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Introduction to Data Science
+## Session 5: Web data and technologies
+### Simon Munzert
+### Hertie School | <a href="https://github.com/intro-to-data-science-21">GRAD-C11/E1339</a>
+
+---
+
+
+
+&lt;style type="text/css"&gt;
+@media print { # print out incremental slides; see https://stackoverflow.com/questions/56373198/get-xaringan-incremental-animations-to-print-to-pdf/56374619#56374619
+  .has-continuation {
+    display: block !important;
+  }
+}
+&lt;/style&gt;
+
+
+
+
+# Table of contents
+
+&lt;br&gt;
+
+1. [Web data for data science](#webdata)
+
+2. [HTML basics](#html)
+
+3. [XPath basics](#xpath)
+
+4. [CSS basics](#css)
+
+5. [Scraping static webpages with R](#scrapingstatic)
+
+6. [Web scraping: good practice](#goodpractice)
+
+7. [Summary](#summary)
+
+
+
+---
+class: inverse, center, middle
+name: webdata
+
+# Web data for data science
+
+&lt;html&gt;&lt;div style='float:left'&gt;&lt;/div&gt;&lt;hr color='#EB811B' size=1px style="width:1000px; margin:auto;"/&gt;&lt;/html&gt;
+
+
+---
+# What is web data?
+
+
+
+---
+# Why data from the web is attractive
+
+- Data is abundant online.
+- Human behavior increasingly takes place online.
+- Countless services track human behavior.
+
+- Getting data from the web is cheap and often quick.
+- An analysis workflow that involves web data can often be easily updated.
+
+
+
+
+---
+# What is web scraping?
+
+Web scraping is the process of
+1. Getting (unstructured) data from the web and
+2. Bringing it into shape (e.g., into a format ready for analysis).
+
+---
+# From web scraping to automated web data collection
+
+### The philosophy behind web data collection with R (or any other scripting language)
+
+- No point-and-click procedure
+- Script the entire process from start to finish
+- Automate
+  - The downloading of files
+  - The scraping of information from web sites
+  - Tapping APIs
+  - Parsing of web content
+  - Data tidying, text data processing
+- Easily scale up scraping procedures
+- Scheduling of scraping tasks
+
+
+
+---
+# Technologies of the world wide web
+
+&lt;div align="center"&gt;
+&lt;img src="pics/webtechnologies.png" width=700&gt;
+&lt;/div&gt;
+
+
+
+---
+class: inverse, center, middle
+name: html
+
+# HTML basics
+
+&lt;html&gt;&lt;div style='float:left'&gt;&lt;/div&gt;&lt;hr color='#EB811B' size=1px style="width:1000px; margin:auto;"/&gt;&lt;/html&gt;
+
+
+---
+# HTML background
+
+### What is HTML?
+
+- **H**yper**T**ext **M**arkup **L**anguage
+- Markup language = plain text + markups
+- [W3C](https://en.wikipedia.org/wiki/World_Wide_Web_Consortium) standard for the construction of websites
+- Lies underneath of what you see in your browser
+
+### Why do we need to know about it?
+
+- It determines where and how information is stored.
+- A basic understanding of HTML helps us locate the information we want to retrieve.
+- A (mostly) passive understanding of HTML is sufficient though.
+
+
+
+---
+# HTML tree structure
+
+.pull-left[
+
+]
+
+
+.pull-right[
+
+
+```html
+R&gt; &lt;!DOCTYPE html&gt; 
++   &lt;html&gt; 
++     &lt;head&gt;
++       &lt;title id=1&gt;First HTML&lt;/title&gt;
++     &lt;/head&gt;
++   &lt;body&gt;
++     I am your first HTML file! 
++   &lt;/body&gt;
++ &lt;/html&gt;
+```
+
+&lt;div align="center"&gt;
+&lt;img src="pics/htmltree.png" width=700&gt;
+&lt;/div&gt;
+]
+
+---
+# HTML: elements and attributes
+
+.pull-left[
+### Elements
+
+- Elements are a combination of start tags, content, and end tags.
+- Example: `&lt;title&gt;First HTML&lt;/title&gt;`
+- Syntax:
+
+| Component  |  Representation |
+|---|---|
+| Element title  | `title` |
+|  Start tag |  `&lt;title&gt;` |
+|  End tag |  `&lt;/title&gt;` |
+|  Value |  `First HTML` |
+]
+
+.pull-right[
+### Attributes
+
+- Attributes describe elements and are stored in the start tag.
+- In HTML, there are specific attributes for specific elements.
+- Example: `&lt;a href="http://www.r-datacollection.com/"&gt;Link to Homepage&lt;/a&gt;`
+- Syntax:
+  - Name-value pairs: `name="value"`
+  - Simple and double quotation marks possible
+  - Several attributes per element possible
+  
+### Why tags and attributes are important for us
+
+- Tags structure HTML documents.
+- Everything that structures a document can be used to locate information.
+- In the context of web scraping, the structure can be exploited to locate and extract data from websites
+
+]
+
+---
+# Important tags and attributes
+
+### Anchor tag `&lt;a&gt;`
+
+- Links to other pages or resources.
+- Classical links are always formatted with an anchor tag.
+- The `href` attribute determines the target location.
+- The value is the name of the link.
+
+Link to another resource:
+
+```html
+R&gt; &lt;a href="en.wikipedia.org/wiki/List_of_lists_of_lists"&gt;Link with absolute path&lt;/a&gt;
+```
+
+Reference within a document:
+
+```html
+R&gt; &lt;a id="top"&gt;Reference point&lt;/a&gt;
+```
+
+Link to a reference within a document:
+
+```html
+R&gt; &lt;a href="#top"&gt;Link to reference point&lt;/a&gt;
+```
+
+---
+# Important tags and attributes
+
+### Heading tags `&lt;1&gt;`, `&lt;2&gt;`, ..., and paragraph tag `&lt;p&gt;`
+
+- Structure text and paragraphs.
+- Heading tags range from level 1 to 6.
+- Paragraph tag induces a line break
+
+Examples:
+
+```html
+R&gt; &lt;p&gt;This text is going to be a paragraph one day and separated from other text by line breaks.&lt;/p&gt;
+```
+
+
+```html
+R&gt; &lt;h1&gt;heading of level 1 - this will be BIG&lt;/h1&gt;
++ ...
++ &lt;h6&gt;heading of level 6 - the smallest heading&lt;/h6&gt;
+```
+
+
+
+---
+# Important tags and attributes
+
+### Listing tags `&lt;ul&gt;`, `&lt;ol&gt;`, and `&lt;dl&gt;`
+
+- The `&lt;ol&gt;` tag creates a numeric list.
+- The `&lt;ul&gt;` tag creates an unnumbered list.
+- The `&lt;dl&gt;` tag creates a description list.
+- List elements within `&lt;ol&gt;` and `&lt;ul&gt;` are indicated with the `&lt;li&gt;` tag.
+
+Example:
+
+```html
+R&gt; &lt;ul&gt;
++   &lt;li&gt;Dogs&lt;/li&gt;
++   &lt;li&gt;Cats&lt;/li&gt;
++   &lt;li&gt;Fish&lt;/li&gt;
++ &lt;/ul&gt;
+```
+
+
+---
+# Important tags and attributes
+
+### Organizational and styling tags `&lt;div&gt;` and `&lt;span&gt;`
+
+- They are used to group content over lines (`&lt;div&gt;`, creating a block-level element) or within lines (`&lt;span&gt;`, creating an inline-element).
+- By grouping or dividing content into blocks, it's easier to identify or apply different styling to them.
+- They do not change the layout themselves but work together with CSS (see later!).
+
+.pull-left[
+Example of CSS definition:
+
+
+```css
+R&gt; div.happy {
++   color:pink; 
++   font-family:"Comic Sans MS";
++   font-size:120% 
++ } 
++ span.happy { 
++   color:pink; 
++   font-family:"Comic Sans MS"; 
++   font-size:120% 
++ }
+```
+]
+
+.pull-right[
+In the HTML document:
+
+
+```html
+R&gt; &lt;div class="happy"&gt;
++   &lt;p&gt;I am a happy-styled paragraph&lt;/p&gt;
++ &lt;/div&gt;
++ unhappy text with 
++ &lt;span class="happy"&gt;some happiness&lt;/span&gt;
+```
+]
+
+
+---
+# Important tags and attributes
+
+### Form tag `&lt;form&gt;`
+
+- Allows to incorporate HTML forms.
+- Client can send information to the server via forms.
+- Whenever you type something into a field or click on radio buttons in your browser, you are interacting with forms.
+
+Example:
+
+
+```html
+R&gt; &lt;form name="submitPW" action="Passed.html" method="get"&gt;
++   password:
++   &lt;input name="pw" type="text" value=""&gt;
++   &lt;input type="submit" value="SubmitButtonText"
++ &lt;/form&gt;
+```
+
+
+---
+# Important tags and attributes
+
+### Table tags `&lt;table&gt;`, `&lt;tr&gt;`, `&lt;td&gt;`, and `&lt;th&gt;`
+
+- Standard HTML tables always follow a standard architecture.
+- The different tags allow defining the table as a whole, individual rows (including the heading), and cells.
+- If the data is hidden in tables, scraping will be straightforward.
+
+Example:
+
+
+```html
+R&gt; &lt;table&gt; 
++   &lt;tr&gt; &lt;th&gt;Rank&lt;/th&gt; &lt;th&gt;Nominal GDP&lt;/th&gt; &lt;th&gt;Name&lt;/th&gt; &lt;/tr&gt; 
++   &lt;tr&gt; &lt;th&gt;&lt;/th&gt; &lt;th&gt;(per capita, USD)&lt;/th&gt; &lt;th&gt;&lt;/th&gt; &lt;/tr&gt; 
++   &lt;tr&gt; &lt;td&gt;1&lt;/td&gt; &lt;td&gt;170,373&lt;/td&gt; &lt;td&gt;Lichtenstein&lt;/td&gt; &lt;/tr&gt; 
++   &lt;tr&gt; &lt;td&gt;2&lt;/td&gt; &lt;td&gt;167,021&lt;/td&gt; &lt;td&gt;Monaco&lt;/td&gt; &lt;/tr&gt; 
++   &lt;tr&gt; &lt;td&gt;3&lt;/td&gt; &lt;td&gt;115,377&lt;/td&gt; &lt;td&gt;Luxembourg&lt;/td&gt; &lt;/tr&gt; 
++   &lt;tr&gt; &lt;td&gt;4&lt;/td&gt; &lt;td&gt;98,565&lt;/td&gt; &lt;td&gt;Norway&lt;/td&gt; &lt;/tr&gt; 
++   &lt;tr&gt; &lt;td&gt;5&lt;/td&gt; &lt;td&gt;92,682&lt;/td&gt; &lt;td&gt;Qatar&lt;/td&gt; &lt;/tr&gt;
++ &lt;/table&gt;
+```
+
+
+---
+# More resources on HTML
+
+
+
+
+---
+# Accessing the web using your browser vs. R
+
+### Using your browser to access webpages
+
+1. You click on a link, enter a URL, run a Google query, etc.
+2. Browser/your machine sends request to server that hosts website
+3. Server returns resource (often an HTML document)
+4. Browser interprets HTML and renders it in a nice fashion
+
+### Using R to access webpages
+
+1. You manually specify a resource.
+2. R/your machine sends a request to the server that hosts the website.
+3. The server returns a resource (e.g., an HTML file).
+4. R parses the HTML, but does not render it in a nice fashion.
+5. It's up to you to tell R what content to extract.
+
+
+
+---
+# Interacting with your browser
+
+### On web browsers
+
+- Modern browsers are complex pieces of software that take care of multiple operations while you browse the web.
+- Common operations: retrieve resources, render and display information, provide interface for user-webpage interaction
+- Although our goal is to automate web data retrieval, the browser is an important tool in web scraping workﬂow
+
+### The use of browsers for web scraping
+
+- Give you an intuitive impression of the architecture of a webpage
+- Allow you to inspect the source code
+- Let you construct XPath/CSS selector expressions with plugins
+- Render dynamic web content (JavaScript interpreter)
+
+### A note on browser differences
+
+- Inspecting the source code (as shown on the following slides) works more or less identically in Chrome and Firefox
+- In Safari, go to → Preferences, then → Advanced and select "Show Develop menu in menu bar". This unlocks the "Show Page Source" and "Inspect" options and the Web Developer Tools.
+
+
+
+
+---
+# Inspecting HTML source code
+
+Step-by-step description
+
+
+
+---
+# Inspecting HTML source code
+
+
+GIF
+
+
+
+---
+# Inspecting the live HTML source code with the DOM explorer
+
+Step-by-step description
+
+
+---
+# Inspecting the live HTML source code with the DOM explorer
+
+GIF
+
+
+---
+# When to do what with your browser
+
+.pull-left[
+
+### When to inspect the complete page source
+
+- Check whether data/information is in static source code (the search function helps!)
+- For small HTML files: understand structure
+- Count tables/elements
+
+### When to use the DOM explorer
+
+- Almost always
+- Particularly useful to construct XPath/CSS selector expressions
+- To monitor dynamic changes in the DOM tree
+]
+
+.pull-right[
+&lt;div align="center"&gt;
+&lt;img src="pics/dom-tree.png" width=700&gt;
+&lt;/div&gt;
+
+`Credit` [watershedcreative.com](http://watershedcreative.com/naked/html-tree.html)
+]
+
+
+---
+class: inverse, center, middle
+name: xpath
+
+# XPath basics
+
+&lt;html&gt;&lt;div style='float:left'&gt;&lt;/div&gt;&lt;hr color='#EB811B' size=1px style="width:1000px; margin:auto;"/&gt;&lt;/html&gt;
+
+---
+# Accessing the DOM tree with R
+
+### Getting HTML into R
+
+- HTML documents are human-readable.
+- HTML tags structure the document, comprising the DOM.
+- **Web user perspective**: The browser interprets the code and renders the page.
+- **Web scraper perspective**: Parse the document retaining the structure, use the tree/tags to locate information.
+
+### HTML parsing
+
+- Our goal is to get HTML into R while retaining the tree structure. That's similar to getting a spreadsheet into R and retaining the rectangular structure.
+- HTML is human-readable, so we could also import HTML files as plain text via `readLines()`. That's a bad option though - the document's structure would not be retained
+- The `xml2` package allows us to parse XML-style documents. HTML is a "flavor" of XML, so it works for us.
+- The `rvest` package, which we will mainly use for scraping, wraps the `xml2` package, so we rarely have to load it manually. 
+- There is one high-level function to remember: `read_html()`. It represents the HTML in a list-style fashion.
+
+---
+# Parsing HTML with R
+
+Parsing a website is straightforward:
+
+
+```r
+R&gt; library(rvest)
+R&gt; parsed_doc &lt;- read_html("https://google.com")
+R&gt; parsed_doc
+```
+
+```
+## {html_document}
+## &lt;html lang="de" dir="ltr"&gt;
+## [1] &lt;head&gt;\n&lt;meta http-equiv="Content-Type" content="text/html; charset=UTF-8 ...
+## [2] &lt;body&gt;\n&lt;div class="signin"&gt;&lt;a href="https://accounts.google.com/ServiceL ...
+```
+
+There are various functions to inspect the parsed document. They aren't really helpful - better use the browser instead if you want to dive into the HTML.
+
+
+```r
+R&gt; xml2::html_structure(parsed_doc)
+```
+
+```
+## &lt;html [lang, dir]&gt;
+##   &lt;head&gt;
+##     &lt;meta [http-equiv, content]&gt;
+##     &lt;style [nonce]&gt;
+##       {cdata}
+##     &lt;title&gt;
+##       {text}
+##     &lt;meta [name, content]&gt;
+##     &lt;link [rel, href]&gt;
+##   &lt;body&gt;
+##     &lt;div.signin&gt;
+##       &lt;a.button [href]&gt;
+##         {text}
+##     &lt;div.box&gt;
+##       &lt;img [src, srcset, width, height, alt]&gt;
+##       &lt;div.productLogoContainer&gt;
+##         &lt;img.image [src, alt, width, height, aria-hidden]&gt;
+##       &lt;h1&gt;
+##         {text}
+##       &lt;div.contentText&gt;
+##         {text}
+##         &lt;a [href, target]&gt;
+##           {text}
+##         {text}
+##         &lt;ul&gt;
+##           &lt;li&gt;
+##             {text}
+##           &lt;li&gt;
+##             {text}
+##         {text}
+##         &lt;ul&gt;
+##           &lt;li&gt;
+##             {text}
+##           &lt;li&gt;
+##             {text}
+##           &lt;li&gt;
+##             {text}
+##           &lt;li&gt;
+##             {text}
+##         {text}
+##         &lt;p&gt;
+##           {text}
+##       &lt;div&gt;
+##         &lt;a.button [href]&gt;
+##           {text}
+##         &lt;form [action, method, style]&gt;
+##           &lt;input [type, name, value]&gt;
+##           &lt;input [type, name, value]&gt;
+##           &lt;input [type, name, value]&gt;
+##           &lt;input [type, name, value]&gt;
+##           &lt;input [type, name, value]&gt;
+##           &lt;input [type, name, value]&gt;
+##           &lt;input [type, name, value]&gt;
+##           &lt;input [type, name, value]&gt;
+##           &lt;input [type, name, value]&gt;
+##           &lt;input [type, name, value]&gt;
+##           &lt;input.button [type, value, aria-label]&gt;
+##     &lt;div.footer&gt;
+##       &lt;form [action, method]&gt;
+##         &lt;select#languageselect [name]&gt;
+##           &lt;option [value]&gt;
+##             {text}
+##           &lt;option [value]&gt;
+##             {text}
+##           &lt;option [value]&gt;
+##             {text}
+##           &lt;option [value]&gt;
+##             {text}
+##           &lt;option [value]&gt;
+##             {text}
+##           &lt;option [value]&gt;
+##             {text}
+##           &lt;option [value]&gt;
+##             {text}
+##           &lt;option [value, selected]&gt;
+##             {text}
+##           &lt;option [value]&gt;
+##             {text}
+##           &lt;option [value]&gt;
+##             {text}
+##           &lt;option [value]&gt;
+##             {text}
+##           &lt;option [value]&gt;
+##             {text}
+##           &lt;option [value]&gt;
+##             {text}
+##           &lt;option [value]&gt;
+##             {text}
+##           &lt;option [value]&gt;
+##             {text}
+##           &lt;option [value]&gt;
+##             {text}
+##           &lt;option [value]&gt;
+##             {text}
+##           &lt;option [value]&gt;
+##             {text}
+##           &lt;option [value]&gt;
+##             {text}
+##           &lt;option [value]&gt;
+##             {text}
+##           &lt;option [value]&gt;
+##             {text}
+##           &lt;option [value]&gt;
+##             {text}
+##           &lt;option [value]&gt;
+##             {text}
+##           &lt;option [value]&gt;
+##             {text}
+##           &lt;option [value]&gt;
+##             {text}
+##           &lt;option [value]&gt;
+##             {text}
+##           &lt;option [value]&gt;
+##             {text}
+##           &lt;option [value]&gt;
+##             {text}
+##           &lt;option [value]&gt;
+##             {text}
+##           &lt;option [value]&gt;
+##             {text}
+##           &lt;option [value]&gt;
+##             {text}
+##           &lt;option [value]&gt;
+##             {text}
+##           &lt;option [value]&gt;
+##             {text}
+##           &lt;option [value]&gt;
+##             {text}
+##           &lt;option [value]&gt;
+##             {text}
+##           &lt;option [value]&gt;
+##             {text}
+##           &lt;option [value]&gt;
+##             {text}
+##           &lt;option [value]&gt;
+##             {text}
+##           &lt;option [value]&gt;
+##             {text}
+##           &lt;option [value]&gt;
+##             {text}
+##           &lt;option [value]&gt;
+##             {text}
+##           &lt;option [value]&gt;
+##             {text}
+##           &lt;option [value]&gt;
+##             {text}
+##           &lt;option [value]&gt;
+##             {text}
+##           &lt;option [value]&gt;
+##             {text}
+##           &lt;option [value]&gt;
+##             {text}
+##           &lt;option [value]&gt;
+##             {text}
+##           &lt;option [value]&gt;
+##             {text}
+##           &lt;option [value]&gt;
+##             {text}
+##           &lt;option [value]&gt;
+##             {text}
+##           &lt;option [value]&gt;
+##             {text}
+##           &lt;option [value]&gt;
+##             {text}
+##           &lt;option [value]&gt;
+##             {text}
+##           &lt;option [value]&gt;
+##             {text}
+##           &lt;option [value]&gt;
+##             {text}
+##           &lt;option [value]&gt;
+##             {text}
+##           &lt;option [value]&gt;
+##             {text}
+##           &lt;option [value]&gt;
+##             {text}
+##           &lt;option [value]&gt;
+##             {text}
+##           &lt;option [value]&gt;
+##             {text}
+##           &lt;option [value]&gt;
+##             {text}
+##           &lt;option [value]&gt;
+##             {text}
+##           &lt;option [value]&gt;
+##             {text}
+##           &lt;option [value]&gt;
+##             {text}
+##           &lt;option [value]&gt;
+##             {text}
+##           &lt;option [value]&gt;
+##             {text}
+##           &lt;option [value]&gt;
+##             {text}
+##           &lt;option [value]&gt;
+##             {text}
+##           &lt;option [value]&gt;
+##             {text}
+##           &lt;option [value]&gt;
+##             {text}
+##           &lt;option [value]&gt;
+##             {text}
+##           &lt;option [value]&gt;
+##             {text}
+##           &lt;option [value]&gt;
+##             {text}
+##           &lt;option [value]&gt;
+##             {text}
+##           &lt;option [value]&gt;
+##             {text}
+##           &lt;option [value]&gt;
+##             {text}
+##           &lt;option [value]&gt;
+##             {text}
+##           &lt;option [value]&gt;
+##             {text}
+##           &lt;option [value]&gt;
+##             {text}
+##           &lt;option [value]&gt;
+##             {text}
+##           &lt;option [value]&gt;
+##             {text}
+##           &lt;option [value]&gt;
+##             {text}
+##           &lt;option [value]&gt;
+##             {text}
+##         &lt;input [type, name, value]&gt;
+##         &lt;input [type, name, value]&gt;
+##         &lt;input [type, name, value]&gt;
+##         &lt;input [type, name, value]&gt;
+##         &lt;input [type, name, value]&gt;
+##         &lt;input [type, name, value]&gt;
+##         &lt;input [type, value]&gt;
+##       &lt;a [href]&gt;
+##         {text}
+##       {text}
+##       &lt;a [href]&gt;
+##         {text}
+```
+
+```r
+R&gt; xml2::as_list(parsed_doc)
+```
+
+```
+## $html
+## $html$head
+## $html$head$meta
+## list()
+## attr(,"http-equiv")
+## [1] "Content-Type"
+## attr(,"content")
+## [1] "text/html; charset=UTF-8"
+## 
+## $html$head$style
+## $html$head$style[[1]]
+## [1] "\na, a:link, a:visited, a:active, a:hover {\n  color: #1a73e8;\n  text-decoration: none;\n}\nbody {\n  font-family: Roboto,RobotoDraft,Helvetica,Arial,sans-serif;\n  text-align: center;\n  -ms-text-size-adjust: 100%;\n  -moz-text-size-adjust: 100%;\n  -webkit-text-size-adjust: 100%;\n}\n.box {\n  border: 1px solid #dadce0;\n  box-sizing: border-box;\n  border-radius: 8px;\n  margin: 24px auto 5px auto;\n  max-width: 520px;\n  padding: 24px;\n}\nh1 {\n  color: #2c2c2c;\n  font-size: 24px;\n  hyphens: auto;\n  margin: 24px 0;\n}\np, .sub, .contentText {\n  color: #5f6368;;\n  font-size: 14px;\n  line-height: 20px;\n  letter-spacing: 0.2px;\n  text-align: left;\n}\n.signin {\n  text-align: right;\n}\n.image {\n  display: block;\n  margin: 14px auto;\n}\na.button {\n  color: #fff;\n}\nbutton, .button {\n  border-radius: 4px;\n  background-color: #1a73e8;\n  border: none;\n  color: #fff;\n  cursor: pointer;\n  font-family: Roboto,RobotoDraft,Helvetica,Arial,sans-serif;\n  font-size: 14px;\n  font-weight: 500;\n  height: 36px;\n  margin: 0 4px;\n  padding: 10px 24px;\n}\ninput.button {\n  -webkit-appearance: none;\n}\n.error {\n  border: 2px solid #d93025;\n  border-radius: 5px;\n  color: #d93025;\n  margin: auto;\n  padding: 5px;\n}\n.footer {\n  margin-top: 16px;\n}\n.footer a {\n  margin-left: 24px;\n  white-space: nowrap;\n}\n.footer a, .footer select, .footer input {\n  color: #757575;\n  font-size: 12px;\n}\n.languagepicker {\n  display: inline-flex;\n  margin: 2px 0;\n}\n#languageform,\n#languageselect {\n  margin: 0 2px;\n}\n#languageselect {\n  color: #757575;\n}\n.detailspage {\n  margin: 24px auto 0 auto;\n  max-width: 700px;\n}\n.detailspage h1, .detailspage h2 {\n  font-size: 22px\n}\n.setting {\n  border: 1px solid #dadce0;\n  box-sizing: border-box;\n  border-radius: 8px;\n  margin-bottom: 11px;\n  padding: 24px 24px 20px 24px;\n  text-align: right;\n}\n.sub {\n  padding: 24px 24px 20px 24px;\n}\nhr {\n  margin: 12px -24px 12px;\n  border: 0;\n  border-top: 1px solid #dadce0;\n}\nfieldset {\n  border: none;\n  padding: 0;\n}\nlabel {\n  margin: 24px;\n}\ntd {\n  vertical-align: top;\n}\n.setting h2, .setting h3, h4 {\n  color: #3c4043;\n  margin: 0;\n  text-align: left;\n}\n.yt-text {\n  color: #5f6368;\n  font-size: 14px;\n  font-weight: 300;\n}\n.productLogoContainer {\n  margin: auto;\n  max-width: 360px;\n}\n\n/** Narrow screen (for example a mobile device). */\n@media only screen and (max-width: 480px) {\n  body {\n    margin: 18px 14px;\n  }\n  .imgContainer {\n    min-width: 96px;\n  }\n  .hideOnSmallWidth {\n    display: none;\n  }\n  .footer form {\n    margin-bottom: 3px;\n  }\n}\n\n@media only screen and (max-width: 380px) {\n  .imgContainer {\n    min-width: 72px;\n  }\n}\n\n/** Normal/non-narrow screen. */\n@media not screen and (max-width: 480px) {\n  body {\n    margin: 18px 25px;\n  }\n  .imgContainer {\n    width: 51%;\n  }\n  .hideOnNormalWidth {\n    display: none;\n  }\n  .footer form {\n    display: inline;\n  }\n}\n"
+## 
+## attr(,"nonce")
+## [1] "FghZEhoZcCOqOt2LQEpBrg"
+## 
+## $html$head$title
+## $html$head$title[[1]]
+## [1] "Bevor Sie zur Google Suche weitergehen"
+## 
+## 
+## $html$head$meta
+## list()
+## attr(,"name")
+## [1] "viewport"
+## attr(,"content")
+## [1] "initial-scale=1, maximum-scale=5, width=device-width"
+## 
+## $html$head$link
+## list()
+## attr(,"rel")
+## [1] "shortcut icon"
+## attr(,"href")
+## [1] "//www.google.com/favicon.ico"
+## 
+## 
+## $html$body
+## $html$body$div
+## $html$body$div$a
+## $html$body$div$a[[1]]
+## [1] "Anmelden"
+## 
+## attr(,"href")
+## [1] "https://accounts.google.com/ServiceLogin?hl=de&amp;continue=https://www.google.com/&amp;gae=cb-"
+## attr(,".class")
+## [1] "button"
+## 
+## attr(,".class")
+## [1] "signin"
+## 
+## $html$body$div
+## $html$body$div$img
+## list()
+## attr(,"src")
+## [1] "//www.gstatic.com/images/branding/googlelogo/1x/googlelogo_color_68x28dp.png"
+## attr(,"srcset")
+## [1] "//www.gstatic.com/images/branding/googlelogo/2x/googlelogo_color_68x28dp.png 2x"
+## attr(,"width")
+## [1] "68"
+## attr(,"height")
+## [1] "28"
+## attr(,"alt")
+## [1] "Google"
+## 
+## $html$body$div$div
+## $html$body$div$div$img
+## list()
+## attr(,"src")
+## [1] "https://www.gstatic.com/ac/cb/scene_cookie_wall_search_v2.svg"
+## attr(,"alt")
+## [1] ""
+## attr(,"width")
+## [1] "100%"
+## attr(,"height")
+## [1] "100%"
+## attr(,".class")
+## [1] "image"
+## attr(,"aria-hidden")
+## [1] "true"
+## 
+## attr(,".class")
+## [1] "productLogoContainer"
+## 
+## $html$body$div$h1
+## $html$body$div$h1[[1]]
+## [1] "Bevor Sie zur Google Suche weitergehen"
+## 
+## 
+## $html$body$div$div
+## $html$body$div$div[[1]]
+## [1] "Google verwendet "
+## 
+## $html$body$div$div$a
+## $html$body$div$div$a[[1]]
+## [1] "Cookies"
+## 
+## attr(,"href")
+## [1] "https://policies.google.com/technologies/cookies?hl=de&amp;utm_source=ucb"
+## attr(,"target")
+## [1] "_blank"
+## 
+## $html$body$div$div[[3]]
+## [1] " und Daten für Folgendes:"
+## 
+## $html$body$div$div$ul
+## $html$body$div$div$ul$li
+## $html$body$div$div$ul$li[[1]]
+## [1] "Dienste anbieten und betreiben, z. B. Störungen prüfen und Maßnahmen gegen Spam, Betrug oder Missbrauch ergreifen"
+## 
+## 
+## $html$body$div$div$ul$li
+## $html$body$div$div$ul$li[[1]]
+## [1] "Daten zu Zielgruppeninteraktionen und Websitestatistiken erheben, um zu verstehen, wie unsere Dienste verwendet werden"
+## 
+## 
+## 
+## $html$body$div$div[[5]]
+## [1] "Wenn Sie zustimmen, verwenden wir Cookies und Daten auch für Folgendes:"
+## 
+## $html$body$div$div$ul
+## $html$body$div$div$ul$li
+## $html$body$div$div$ul$li[[1]]
+## [1] "Qualität unserer Dienste verbessern und neue Dienste entwickeln"
+## 
+## 
+## $html$body$div$div$ul$li
+## $html$body$div$div$ul$li[[1]]
+## [1] "Werbung ausliefern und die Effektivität von Werbung messen"
+## 
+## 
+## $html$body$div$div$ul$li
+## $html$body$div$div$ul$li[[1]]
+## [1] "Personalisierte Inhalte anzeigen, abhängig von Ihren Einstellungen"
+## 
+## 
+## $html$body$div$div$ul$li
+## $html$body$div$div$ul$li[[1]]
+## [1] "Personalisierte oder allgemeine Werbung bei Google und im Web anzeigen, abhängig von Ihren Einstellungen"
+## 
+## 
+## 
+## $html$body$div$div[[7]]
+## [1] "Die Auswahl nicht personalisierter Inhalte und Werbeanzeigen kann davon abhängen, welche Inhalte Sie sich gerade ansehen und wo Sie sich befinden (die Anzeigenbereitstellung basiert auf dem allgemeinen Standort). Personalisierte Inhalte und Werbeanzeigen können ebenfalls darauf basieren, darüber hinaus aber auch auf Aktivitäten wie Suchanfragen bei Google und Videos, die Sie sich bei YouTube ansehen. Zu personalisierten Inhalten und Werbeanzeigen gehören beispielsweise Dinge wie relevantere Ergebnisse und Empfehlungen, eine individuelle YouTube-Startseite und Werbung, die auf Ihre Interessen zugeschnitten ist."
+## 
+## $html$body$div$div$p
+## $html$body$div$div$p[[1]]
+## [1] "Klicken Sie auf „Anpassen“, um sich Ihre Möglichkeiten anzusehen. Zu diesen gehören zum Beispiel Steuerelemente, um Cookies für die Personalisierung zu deaktivieren, oder Informationen zu Steuerelementen auf Browserebene, mit denen einige oder alle Cookies für andere Zwecke deaktiviert werden können.  Besuchen Sie bei Bedarf jederzeit g.co/privacytools."
+## 
+## 
+## attr(,".class")
+## [1] "contentText"
+## 
+## $html$body$div$div
+## $html$body$div$div$a
+## $html$body$div$div$a[[1]]
+## [1] "Anpassen"
+## 
+## attr(,"href")
+## [1] "https://consent.google.com/dl?continue=https://www.google.com/&amp;gl=DE&amp;hl=de&amp;pc=shp&amp;src=1"
+## attr(,".class")
+## [1] "button"
+## 
+## $html$body$div$div$form
+## $html$body$div$div$form$input
+## list()
+## attr(,"type")
+## [1] "hidden"
+## attr(,"name")
+## [1] "gl"
+## attr(,"value")
+## [1] "DE"
+## 
+## $html$body$div$div$form$input
+## list()
+## attr(,"type")
+## [1] "hidden"
+## attr(,"name")
+## [1] "m"
+## attr(,"value")
+## [1] "0"
+## 
+## $html$body$div$div$form$input
+## list()
+## attr(,"type")
+## [1] "hidden"
+## attr(,"name")
+## [1] "pc"
+## attr(,"value")
+## [1] "shp"
+## 
+## $html$body$div$div$form$input
+## list()
+## attr(,"type")
+## [1] "hidden"
+## attr(,"name")
+## [1] "continue"
+## attr(,"value")
+## [1] "https://www.google.com/"
+## 
+## $html$body$div$div$form$input
+## list()
+## attr(,"type")
+## [1] "hidden"
+## attr(,"name")
+## [1] "ca"
+## attr(,"value")
+## [1] "r"
+## 
+## $html$body$div$div$form$input
+## list()
+## attr(,"type")
+## [1] "hidden"
+## attr(,"name")
+## [1] "x"
+## attr(,"value")
+## [1] "8"
+## 
+## $html$body$div$div$form$input
+## list()
+## attr(,"type")
+## [1] "hidden"
+## attr(,"name")
+## [1] "v"
+## attr(,"value")
+## [1] "cb.20210921-01-p1.de+FX+730"
+## 
+## $html$body$div$div$form$input
+## list()
+## attr(,"type")
+## [1] "hidden"
+## attr(,"name")
+## [1] "t"
+## attr(,"value")
+## [1] "ADw3F8j9PgTN8ph08KOBzj38ovFfR2obPQ:1632498024711"
+## 
+## $html$body$div$div$form$input
+## list()
+## attr(,"type")
+## [1] "hidden"
+## attr(,"name")
+## [1] "hl"
+## attr(,"value")
+## [1] "de"
+## 
+## $html$body$div$div$form$input
+## list()
+## attr(,"type")
+## [1] "hidden"
+## attr(,"name")
+## [1] "src"
+## attr(,"value")
+## [1] "1"
+## 
+## $html$body$div$div$form$input
+## list()
+## attr(,"type")
+## [1] "submit"
+## attr(,"value")
+## [1] "Ich stimme zu"
+## attr(,".class")
+## [1] "button"
+## attr(,"aria-label")
+## [1] "In die Verwendung von Cookies und anderen Daten zu den beschriebenen Zwecken einwilligen"
+## 
+## attr(,"action")
+## [1] "https://consent.google.com/s"
+## attr(,"method")
+## [1] "POST"
+## attr(,"style")
+## [1] "display:inline;"
+## 
+## 
+## attr(,".class")
+## [1] "box"
+## 
+## $html$body$div
+## $html$body$div$form
+## $html$body$div$form$select
+## $html$body$div$form$select$option
+## $html$body$div$form$select$option[[1]]
+## [1] "Afrikaans"
+## 
+## attr(,"value")
+## [1] "af"
+## 
+## $html$body$div$form$select$option
+## $html$body$div$form$select$option[[1]]
+## [1] "azərbaycan"
+## 
+## attr(,"value")
+## [1] "az"
+## 
+## $html$body$div$form$select$option
+## $html$body$div$form$select$option[[1]]
+## [1] "bosanski"
+## 
+## attr(,"value")
+## [1] "bs"
+## 
+## $html$body$div$form$select$option
+## $html$body$div$form$select$option[[1]]
+## [1] "català"
+## 
+## attr(,"value")
+## [1] "ca"
+## 
+## $html$body$div$form$select$option
+## $html$body$div$form$select$option[[1]]
+## [1] "Čeština"
+## 
+## attr(,"value")
+## [1] "cs"
+## 
+## $html$body$div$form$select$option
+## $html$body$div$form$select$option[[1]]
+## [1] "Cymraeg"
+## 
+## attr(,"value")
+## [1] "cy"
+## 
+## $html$body$div$form$select$option
+## $html$body$div$form$select$option[[1]]
+## [1] "Dansk"
+## 
+## attr(,"value")
+## [1] "da"
+## 
+## $html$body$div$form$select$option
+## $html$body$div$form$select$option[[1]]
+## [1] "Deutsch"
+## 
+## attr(,"value")
+## [1] "de"
+## attr(,"selected")
+## [1] "selected"
+## 
+## $html$body$div$form$select$option
+## $html$body$div$form$select$option[[1]]
+## [1] "eesti"
+## 
+## attr(,"value")
+## [1] "et"
+## 
+## $html$body$div$form$select$option
+## $html$body$div$form$select$option[[1]]
+## [1] "English (United Kingdom)"
+## 
+## attr(,"value")
+## [1] "en-GB"
+## 
+## $html$body$div$form$select$option
+## $html$body$div$form$select$option[[1]]
+## [1] "English (United States)"
+## 
+## attr(,"value")
+## [1] "en"
+## 
+## $html$body$div$form$select$option
+## $html$body$div$form$select$option[[1]]
+## [1] "Español (España)"
+## 
+## attr(,"value")
+## [1] "es"
+## 
+## $html$body$div$form$select$option
+## $html$body$div$form$select$option[[1]]
+## [1] "Español (Latinoamérica)"
+## 
+## attr(,"value")
+## [1] "es-419"
+## 
+## $html$body$div$form$select$option
+## $html$body$div$form$select$option[[1]]
+## [1] "euskara"
+## 
+## attr(,"value")
+## [1] "eu"
+## 
+## $html$body$div$form$select$option
+## $html$body$div$form$select$option[[1]]
+## [1] "Filipino"
+## 
+## attr(,"value")
+## [1] "fil"
+## 
+## $html$body$div$form$select$option
+## $html$body$div$form$select$option[[1]]
+## [1] "Français (Canada)"
+## 
+## attr(,"value")
+## [1] "fr-CA"
+## 
+## $html$body$div$form$select$option
+## $html$body$div$form$select$option[[1]]
+## [1] "Français (France)"
+## 
+## attr(,"value")
+## [1] "fr"
+## 
+## $html$body$div$form$select$option
+## $html$body$div$form$select$option[[1]]
+## [1] "Gaeilge"
+## 
+## attr(,"value")
+## [1] "ga"
+## 
+## $html$body$div$form$select$option
+## $html$body$div$form$select$option[[1]]
+## [1] "galego"
+## 
+## attr(,"value")
+## [1] "gl"
+## 
+## $html$body$div$form$select$option
+## $html$body$div$form$select$option[[1]]
+## [1] "Hrvatski"
+## 
+## attr(,"value")
+## [1] "hr"
+## 
+## $html$body$div$form$select$option
+## $html$body$div$form$select$option[[1]]
+## [1] "Indonesia"
+## 
+## attr(,"value")
+## [1] "id"
+## 
+## $html$body$div$form$select$option
+## $html$body$div$form$select$option[[1]]
+## [1] "isiZulu"
+## 
+## attr(,"value")
+## [1] "zu"
+## 
+## $html$body$div$form$select$option
+## $html$body$div$form$select$option[[1]]
+## [1] "íslenska"
+## 
+## attr(,"value")
+## [1] "is"
+## 
+## $html$body$div$form$select$option
+## $html$body$div$form$select$option[[1]]
+## [1] "Italiano"
+## 
+## attr(,"value")
+## [1] "it"
+## 
+## $html$body$div$form$select$option
+## $html$body$div$form$select$option[[1]]
+## [1] "Kiswahili"
+## 
+## attr(,"value")
+## [1] "sw"
+## 
+## $html$body$div$form$select$option
+## $html$body$div$form$select$option[[1]]
+## [1] "latviešu"
+## 
+## attr(,"value")
+## [1] "lv"
+## 
+## $html$body$div$form$select$option
+## $html$body$div$form$select$option[[1]]
+## [1] "lietuvių"
+## 
+## attr(,"value")
+## [1] "lt"
+## 
+## $html$body$div$form$select$option
+## $html$body$div$form$select$option[[1]]
+## [1] "magyar"
+## 
+## attr(,"value")
+## [1] "hu"
+## 
+## $html$body$div$form$select$option
+## $html$body$div$form$select$option[[1]]
+## [1] "Melayu"
+## 
+## attr(,"value")
+## [1] "ms"
+## 
+## $html$body$div$form$select$option
+## $html$body$div$form$select$option[[1]]
+## [1] "Nederlands"
+## 
+## attr(,"value")
+## [1] "nl"
+## 
+## $html$body$div$form$select$option
+## $html$body$div$form$select$option[[1]]
+## [1] "norsk"
+## 
+## attr(,"value")
+## [1] "no"
+## 
+## $html$body$div$form$select$option
+## $html$body$div$form$select$option[[1]]
+## [1] "o‘zbek"
+## 
+## attr(,"value")
+## [1] "uz"
+## 
+## $html$body$div$form$select$option
+## $html$body$div$form$select$option[[1]]
+## [1] "polski"
+## 
+## attr(,"value")
+## [1] "pl"
+## 
+## $html$body$div$form$select$option
+## $html$body$div$form$select$option[[1]]
+## [1] "Português (Brasil)"
+## 
+## attr(,"value")
+## [1] "pt-BR"
+## 
+## $html$body$div$form$select$option
+## $html$body$div$form$select$option[[1]]
+## [1] "Português (Portugal)"
+## 
+## attr(,"value")
+## [1] "pt-PT"
+## 
+## $html$body$div$form$select$option
+## $html$body$div$form$select$option[[1]]
+## [1] "română"
+## 
+## attr(,"value")
+## [1] "ro"
+## 
+## $html$body$div$form$select$option
+## $html$body$div$form$select$option[[1]]
+## [1] "shqip"
+## 
+## attr(,"value")
+## [1] "sq"
+## 
+## $html$body$div$form$select$option
+## $html$body$div$form$select$option[[1]]
+## [1] "Slovenčina"
+## 
+## attr(,"value")
+## [1] "sk"
+## 
+## $html$body$div$form$select$option
+## $html$body$div$form$select$option[[1]]
+## [1] "slovenščina"
+## 
+## attr(,"value")
+## [1] "sl"
+## 
+## $html$body$div$form$select$option
+## $html$body$div$form$select$option[[1]]
+## [1] "srpski (latinica)"
+## 
+## attr(,"value")
+## [1] "sr-Latn"
+## 
+## $html$body$div$form$select$option
+## $html$body$div$form$select$option[[1]]
+## [1] "Suomi"
+## 
+## attr(,"value")
+## [1] "fi"
+## 
+## $html$body$div$form$select$option
+## $html$body$div$form$select$option[[1]]
+## [1] "Svenska"
+## 
+## attr(,"value")
+## [1] "sv"
+## 
+## $html$body$div$form$select$option
+## $html$body$div$form$select$option[[1]]
+## [1] "Tiếng Việt"
+## 
+## attr(,"value")
+## [1] "vi"
+## 
+## $html$body$div$form$select$option
+## $html$body$div$form$select$option[[1]]
+## [1] "Türkçe"
+## 
+## attr(,"value")
+## [1] "tr"
+## 
+## $html$body$div$form$select$option
+## $html$body$div$form$select$option[[1]]
+## [1] "Ελληνικά"
+## 
+## attr(,"value")
+## [1] "el"
+## 
+## $html$body$div$form$select$option
+## $html$body$div$form$select$option[[1]]
+## [1] "беларуская"
+## 
+## attr(,"value")
+## [1] "be"
+## 
+## $html$body$div$form$select$option
+## $html$body$div$form$select$option[[1]]
+## [1] "български"
+## 
+## attr(,"value")
+## [1] "bg"
+## 
+## $html$body$div$form$select$option
+## $html$body$div$form$select$option[[1]]
+## [1] "кыргызча"
+## 
+## attr(,"value")
+## [1] "ky"
+## 
+## $html$body$div$form$select$option
+## $html$body$div$form$select$option[[1]]
+## [1] "қазақ тілі"
+## 
+## attr(,"value")
+## [1] "kk"
+## 
+## $html$body$div$form$select$option
+## $html$body$div$form$select$option[[1]]
+## [1] "македонски"
+## 
+## attr(,"value")
+## [1] "mk"
+## 
+## $html$body$div$form$select$option
+## $html$body$div$form$select$option[[1]]
+## [1] "монгол"
+## 
+## attr(,"value")
+## [1] "mn"
+## 
+## $html$body$div$form$select$option
+## $html$body$div$form$select$option[[1]]
+## [1] "Русский"
+## 
+## attr(,"value")
+## [1] "ru"
+## 
+## $html$body$div$form$select$option
+## $html$body$div$form$select$option[[1]]
+## [1] "српски"
+## 
+## attr(,"value")
+## [1] "sr"
+## 
+## $html$body$div$form$select$option
+## $html$body$div$form$select$option[[1]]
+## [1] "Українська"
+## 
+## attr(,"value")
+## [1] "uk"
+## 
+## $html$body$div$form$select$option
+## $html$body$div$form$select$option[[1]]
+## [1] "ქართული"
+## 
+## attr(,"value")
+## [1] "ka"
+## 
+## $html$body$div$form$select$option
+## $html$body$div$form$select$option[[1]]
+## [1] "հայերեն"
+## 
+## attr(,"value")
+## [1] "hy"
+## 
+## $html$body$div$form$select$option
+## $html$body$div$form$select$option[[1]]
+## [1] "עברית"
+## 
+## attr(,"value")
+## [1] "iw"
+## 
+## $html$body$div$form$select$option
+## $html$body$div$form$select$option[[1]]
+## [1] "اردو"
+## 
+## attr(,"value")
+## [1] "ur"
+## 
+## $html$body$div$form$select$option
+## $html$body$div$form$select$option[[1]]
+## [1] "العربية"
+## 
+## attr(,"value")
+## [1] "ar"
+## 
+## $html$body$div$form$select$option
+## $html$body$div$form$select$option[[1]]
+## [1] "فارسی"
+## 
+## attr(,"value")
+## [1] "fa"
+## 
+## $html$body$div$form$select$option
+## $html$body$div$form$select$option[[1]]
+## [1] "አማርኛ"
+## 
+## attr(,"value")
+## [1] "am"
+## 
+## $html$body$div$form$select$option
+## $html$body$div$form$select$option[[1]]
+## [1] "नेपाली"
+## 
+## attr(,"value")
+## [1] "ne"
+## 
+## $html$body$div$form$select$option
+## $html$body$div$form$select$option[[1]]
+## [1] "मराठी"
+## 
+## attr(,"value")
+## [1] "mr"
+## 
+## $html$body$div$form$select$option
+## $html$body$div$form$select$option[[1]]
+## [1] "हिन्दी"
+## 
+## attr(,"value")
+## [1] "hi"
+## 
+## $html$body$div$form$select$option
+## $html$body$div$form$select$option[[1]]
+## [1] "অসমীয়া"
+## 
+## attr(,"value")
+## [1] "as"
+## 
+## $html$body$div$form$select$option
+## $html$body$div$form$select$option[[1]]
+## [1] "বাংলা"
+## 
+## attr(,"value")
+## [1] "bn"
+## 
+## $html$body$div$form$select$option
+## $html$body$div$form$select$option[[1]]
+## [1] "ਪੰਜਾਬੀ"
+## 
+## attr(,"value")
+## [1] "pa"
+## 
+## $html$body$div$form$select$option
+## $html$body$div$form$select$option[[1]]
+## [1] "ગુજરાતી"
+## 
+## attr(,"value")
+## [1] "gu"
+## 
+## $html$body$div$form$select$option
+## $html$body$div$form$select$option[[1]]
+## [1] "ଓଡ଼ିଆ"
+## 
+## attr(,"value")
+## [1] "or"
+## 
+## $html$body$div$form$select$option
+## $html$body$div$form$select$option[[1]]
+## [1] "தமிழ்"
+## 
+## attr(,"value")
+## [1] "ta"
+## 
+## $html$body$div$form$select$option
+## $html$body$div$form$select$option[[1]]
+## [1] "తెలుగు"
+## 
+## attr(,"value")
+## [1] "te"
+## 
+## $html$body$div$form$select$option
+## $html$body$div$form$select$option[[1]]
+## [1] "ಕನ್ನಡ"
+## 
+## attr(,"value")
+## [1] "kn"
+## 
+## $html$body$div$form$select$option
+## $html$body$div$form$select$option[[1]]
+## [1] "മലയാളം"
+## 
+## attr(,"value")
+## [1] "ml"
+## 
+## $html$body$div$form$select$option
+## $html$body$div$form$select$option[[1]]
+## [1] "සිංහල"
+## 
+## attr(,"value")
+## [1] "si"
+## 
+## $html$body$div$form$select$option
+## $html$body$div$form$select$option[[1]]
+## [1] "ไทย"
+## 
+## attr(,"value")
+## [1] "th"
+## 
+## $html$body$div$form$select$option
+## $html$body$div$form$select$option[[1]]
+## [1] "ລາວ"
+## 
+## attr(,"value")
+## [1] "lo"
+## 
+## $html$body$div$form$select$option
+## $html$body$div$form$select$option[[1]]
+## [1] "မြန်မာ"
+## 
+## attr(,"value")
+## [1] "my"
+## 
+## $html$body$div$form$select$option
+## $html$body$div$form$select$option[[1]]
+## [1] "ខ្មែរ"
+## 
+## attr(,"value")
+## [1] "km"
+## 
+## $html$body$div$form$select$option
+## $html$body$div$form$select$option[[1]]
+## [1] "한국어"
+## 
+## attr(,"value")
+## [1] "ko"
+## 
+## $html$body$div$form$select$option
+## $html$body$div$form$select$option[[1]]
+## [1] "日本語"
+## 
+## attr(,"value")
+## [1] "ja"
+## 
+## $html$body$div$form$select$option
+## $html$body$div$form$select$option[[1]]
+## [1] "简体中文"
+## 
+## attr(,"value")
+## [1] "zh-CN"
+## 
+## $html$body$div$form$select$option
+## $html$body$div$form$select$option[[1]]
+## [1] "繁體中文"
+## 
+## attr(,"value")
+## [1] "zh-TW"
+## 
+## $html$body$div$form$select$option
+## $html$body$div$form$select$option[[1]]
+## [1] "繁體中文 (香港)"
+## 
+## attr(,"value")
+## [1] "zh-HK"
+## 
+## attr(,"id")
+## [1] "languageselect"
+## attr(,"name")
+## [1] "hl"
+## 
+## $html$body$div$form$input
+## list()
+## attr(,"type")
+## [1] "hidden"
+## attr(,"name")
+## [1] "oldhl"
+## attr(,"value")
+## [1] "de"
+## 
+## $html$body$div$form$input
+## list()
+## attr(,"type")
+## [1] "hidden"
+## attr(,"name")
+## [1] "gl"
+## attr(,"value")
+## [1] "DE"
+## 
+## $html$body$div$form$input
+## list()
+## attr(,"type")
+## [1] "hidden"
+## attr(,"name")
+## [1] "m"
+## attr(,"value")
+## [1] "0"
+## 
+## $html$body$div$form$input
+## list()
+## attr(,"type")
+## [1] "hidden"
+## attr(,"name")
+## [1] "pc"
+## attr(,"value")
+## [1] "shp"
+## 
+## $html$body$div$form$input
+## list()
+## attr(,"type")
+## [1] "hidden"
+## attr(,"name")
+## [1] "continue"
+## attr(,"value")
+## [1] "https://www.google.com/"
+## 
+## $html$body$div$form$input
+## list()
+## attr(,"type")
+## [1] "hidden"
+## attr(,"name")
+## [1] "src"
+## attr(,"value")
+## [1] "1"
+## 
+## $html$body$div$form$input
+## list()
+## attr(,"type")
+## [1] "submit"
+## attr(,"value")
+## [1] "Sprache ändern"
+## 
+## attr(,"action")
+## [1] "https://consent.google.com/ml"
+## attr(,"method")
+## [1] "get"
+## 
+## $html$body$div$a
+## $html$body$div$a[[1]]
+## [1] "Datenschutzerklärung"
+## 
+## attr(,"href")
+## [1] "https://policies.google.com/privacy?hl=de&amp;utm_source=ucb"
+## 
+## $html$body$div[[3]]
+## [1] " "
+## 
+## $html$body$div$a
+## $html$body$div$a[[1]]
+## [1] "Nutzungsbedingungen"
+## 
+## attr(,"href")
+## [1] "https://policies.google.com/terms?hl=de&amp;utm_source=ucb"
+## 
+## attr(,".class")
+## [1] "footer"
+## 
+## 
+## attr(,"lang")
+## [1] "de"
+## attr(,"dir")
+## [1] "ltr"
+```
+
+---
+# What's XPath?
+
+### Definition
+
+- Short for **XML Path Language**, another W3C standard.
+- A query language for XML-based documents (including HTML).
+- With XPath we can access node sets (elements) and extract content.
+
+### Why XPath for web scraping?
+
+- Source code of webpages (HTML) structures both layout and content
+- Not only content, but context matters!
+- Enables us to extract content based on its location in the document and (usually) regardless of shape
+
+
+
+---
+# Example
+
+
+```html
+R&gt; 
++ &lt;!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN"&gt;
++ &lt;html&gt; &lt;head&gt;
++ &lt;title&gt;Collected R wisdoms&lt;/title&gt;
++ &lt;/head&gt;
++ 
++ &lt;body&gt;
++ &lt;div id="R Inventor" lang="english" date="June/2003"&gt;
++   &lt;h1&gt;Robert Gentleman&lt;/h1&gt;
++   &lt;p&gt;&lt;i&gt;'What we have is nice, but we need something very different'&lt;/i&gt;&lt;/p&gt;
++   &lt;p&gt;&lt;b&gt;Source: &lt;/b&gt;Statistical Computing 2003, Reisensburg&lt;/p&gt;
++ &lt;/div&gt;
++ 
++ &lt;div lang="english" date="October/2011"&gt;
++   &lt;h1&gt;Rolf Turner&lt;/h1&gt;
++   &lt;p&gt;&lt;i&gt;'R is wonderful, but it cannot work magic'&lt;/i&gt; &lt;br&gt;&lt;emph&gt;answering a request for automatic generation of 'data from a known mean and 95% CI'&lt;/emph&gt;&lt;/p&gt;
++   &lt;p&gt;&lt;b&gt;Source: &lt;/b&gt;&lt;a href="https://stat.ethz.ch/mailman/listinfo/r-help"&gt;R-help&lt;/a&gt;&lt;/p&gt;
++ &lt;/div&gt;
++ 
++ &lt;address&gt;&lt;a href="http://www.rdatacollectionbook.com"&gt;&lt;i&gt;The book homepage&lt;/i&gt;&lt;a/&gt;&lt;/address&gt;
++ 
++ &lt;/body&gt; &lt;/html&gt;
+```
+
+---
+# Example
+
+&lt;div align="center"&gt;
+&lt;img src="pics/htmltree-2.png" width=820&gt;
+&lt;/div&gt;
+
+
+
+---
+# Applying XPath on HTML in R
+
+- Load package `rvest`
+- Parse HTML document with `read_html()`
+
+
+```r
+R&gt; library(rvest)
+R&gt; parsed_doc &lt;- read_html("materials/fortunes.html")
+R&gt; parsed_doc
+```
+
+```
+## {html_document}
+## &lt;html&gt;
+## [1] &lt;head&gt;\n&lt;meta http-equiv="Content-Type" content="text/html; charset=UTF-8 ...
+## [2] &lt;body&gt;\n&lt;div id="R Inventor" lang="english" date="June/2003"&gt;\n  &lt;h1&gt;Robe ...
+```
+
+- Query document with XPath expression using `html_tables()`
+- `rvest` can process XPath queries as well as CSS selectors.
+- Today, we'll focus on XPath:
+
+
+```r
+R&gt; html_elements(parsed_doc, xpath = "//div[last()]/p/i")
+```
+
+```
+## {xml_nodeset (1)}
+## [1] &lt;i&gt;'R is wonderful, but it cannot work magic'&lt;/i&gt;
+```
+
+
+---
+# Grammar of XPath
+
+### Basic rules
+
+1. We access nodes by writing down the hierarchical structure in the DOM that locates the element set of interest.
+2. A sequence of nodes is separated by `/`.
+3. The easiest localization of a element is given by the absolute path (but often not the most eﬃcient one!).
+4. Apply XPath on DOM in R using `html_elements()`.
+
+
+```r
+R&gt; html_elements(parsed_doc, xpath = "//div[last()]/p/i")
+```
+
+```
+## {xml_nodeset (1)}
+## [1] &lt;i&gt;'R is wonderful, but it cannot work magic'&lt;/i&gt;
+```
+
+
+---
+# Grammar of XPath
+
+### Absolute vs. relative paths
+
+**Absolute paths** start at the root element and follow the whole way down to the target element (with simple slashes, `/`).
+
+
+```r
+R&gt; html_elements(parsed_doc, xpath = "/html/body/div/p/i")
+```
+
+```
+## {xml_nodeset (2)}
+## [1] &lt;i&gt;'What we have is nice, but we need something very different'&lt;/i&gt;
+## [2] &lt;i&gt;'R is wonderful, but it cannot work magic'&lt;/i&gt;
+```
+
+**Relative paths** skip nodes (with double slashes, `//`).
+
+
+```r
+R&gt; html_elements(parsed_doc, xpath = "//body//p/i")
+```
+
+```
+## {xml_nodeset (2)}
+## [1] &lt;i&gt;'What we have is nice, but we need something very different'&lt;/i&gt;
+## [2] &lt;i&gt;'R is wonderful, but it cannot work magic'&lt;/i&gt;
+```
+
+Relative paths are often preferrable. They are faster to write and more comprehensive. On the other hand, they are less targeted and therefore potentially less robust, and running them takes more computing time, as the entire tree has to be evaluated. But that's usually not relevant for reasonably small documents.
+
+---
+# Grammar of XPath
+
+### The wildcard operator
+
+- Meta symbol `*`
+- Matches any element
+- Works only for one arbitrary element
+- Far less important than, e.g., wildcards in content-based queries (regex!).
+
+
+```r
+R&gt; html_elements(parsed_doc, xpath = "/html/body/div/*/i")
+```
+
+```
+## {xml_nodeset (2)}
+## [1] &lt;i&gt;'What we have is nice, but we need something very different'&lt;/i&gt;
+## [2] &lt;i&gt;'R is wonderful, but it cannot work magic'&lt;/i&gt;
+```
+
+```r
+R&gt; # the following does not work:
+R&gt; html_elements(parsed_doc, xpath = "/html/body/div/*/i")
+```
+
+```
+## {xml_nodeset (2)}
+## [1] &lt;i&gt;'What we have is nice, but we need something very different'&lt;/i&gt;
+## [2] &lt;i&gt;'R is wonderful, but it cannot work magic'&lt;/i&gt;
+```
+
+---
+# Grammar of XPath
+
+### Navigational operators `"."`and `".."`
+
+- `"."` acesses elements on the same level ("self axis"), which is useful when working with predicates.
+- `".."` accesses elements at a higher hierarchical level.
+
+
+```r
+R&gt; html_elements(parsed_doc, xpath = "//title/..")
+```
+
+```
+## {xml_nodeset (1)}
+## [1] &lt;head&gt;\n&lt;meta http-equiv="Content-Type" content="text/html; charset=UTF-8 ...
+```
+
+
+---
+# Element (node) relations ("axes") in XPath
+
+.pull-left[
+### Family relations between elements
+
+- The tools learned so far are sometimes not sufficient to access specific elements without accessing other, undesired elements as well.
+- Relationship statuses are useful to establish unambiguity. 
+- Can be combined with other elements of the grammar
+- Basic syntax: `element1/relation::element2`
+- We describe relation of `element2` to `element1`
+- `element2` is to be extracted - we always extract the element at the end!
+]
+
+.pull-right[
+&lt;div align="center"&gt;
+&lt;img src="pics/noderelations.png" width=350&gt;
+&lt;/div&gt;
+]
+
+---
+# Element (node) relations in XPath
+
+| Axis name  |  Description |
+|---|---|
+| `ancestor` | All ancestors (parent, grandparent etc.) of the current element |
+| `ancestor-or-self` | All ancestors of the current element and the current element itself |
+| `attribute` |  All attributes of the current element |
+| `child` | All children of the current element  |
+| `descendant` | All descendants (children, grandchildren etc.) of the current element  |
+| `descendant-or-self` |  All descendants of the current element and the current element itself |
+| `following` | Everything in the document after the closing tag of the current element  |
+| `following-sibling` | All siblings after the current element  |
+| `parent` | The parent of the current element  |
+| `preceding` | All elements that appear before the current element in the document, except ancestors and attribute elements  |
+| `preceding-sibling` | All siblings before the current element  |
+| `self` | The current element  |
+
+---
+# Element (node) relations in XPath
+
+Example: access the `&lt;div&gt;` elements that are ancestors to an `&lt;a&gt;` element:
+
+
+```r
+R&gt; html_elements(parsed_doc, xpath = "//a/ancestor::div")
+```
+
+```
+## {xml_nodeset (1)}
+## [1] &lt;div lang="english" date="October/2011"&gt;\n  &lt;h1&gt;Rolf Turner&lt;/h1&gt;\n  &lt;p&gt;&lt;i ...
+```
+
+Another example: Select all &lt;h1&gt; nodes that precede a &lt;p&gt; node:
+
+
+```r
+R&gt; html_elements(parsed_doc, xpath = "//p/preceding-sibling::h1")
+```
+
+```
+## {xml_nodeset (2)}
+## [1] &lt;h1&gt;Robert Gentleman&lt;/h1&gt;
+## [2] &lt;h1&gt;Rolf Turner&lt;/h1&gt;
+```
+
+
+---
+# Predicates
+
+### What are predicates?
+
+- Predicates are conditions based on an element's features (`true/false`).
+- Think of them as ways to filter nodesets.
+- They are applicable to a variety of features: name, value attribute.
+- Basic syntax: `element[predicate]`
+
+Examples:
+
+
+```html
+R&gt; //div[true()]
++ //div[@class="head"]
++ //div[@class="head"][@id="top"]
+```
+
+
+
+
+---
+# More XPath?
+
+
+Cheat sheet: https://devhints.io/xpath
+XPath expression testbed: http://www.whitebeam.org/library/guide/TechNotes/xpathtestbed.rhtm
+
+Tutorial?
+
+
+
+
+---
+class: inverse, center, middle
+name: css
+
+# CSS basics
+
+&lt;html&gt;&lt;div style='float:left'&gt;&lt;/div&gt;&lt;hr color='#EB811B' size=1px style="width:1000px; margin:auto;"/&gt;&lt;/html&gt;
+
+
+
+---
+class: inverse, center, middle
+name: scrapingstatic
+
+# Scraping static webpages with R
+
+&lt;html&gt;&lt;div style='float:left'&gt;&lt;/div&gt;&lt;hr color='#EB811B' size=1px style="width:1000px; margin:auto;"/&gt;&lt;/html&gt;
+
+
+
+---
+class: inverse, center, middle
+name: goodpractice
+
+# Web scraping: good practice
+
+&lt;html&gt;&lt;div style='float:left'&gt;&lt;/div&gt;&lt;hr color='#EB811B' size=1px style="width:1000px; margin:auto;"/&gt;&lt;/html&gt;
+
+
+
+---
+class: inverse, center, middle
+name: summary
+
+# Summary
+
+&lt;html&gt;&lt;div style='float:left'&gt;&lt;/div&gt;&lt;hr color='#EB811B' size=1px style="width:1000px; margin:auto;"/&gt;&lt;/html&gt;
+
+
+
+
+
+
+---
+
+# Coming up
+
+&lt;br&gt;&lt;br&gt; 
+
+### Assignment
+
+None! But you'll get the chance to practice databasing with R in the lab.
+
+
+### Next lecture
+
+Web data and technologies - relational data structures FTW!
+
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false,
+"ratio": "16:9",
+"hash": true
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

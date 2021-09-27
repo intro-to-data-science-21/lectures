@@ -1,0 +1,909 @@
+---
+title: "Introduction to Data Science"
+subtitle: "Session 5: Web data and technologies"
+author: "Simon Munzert"
+institute: "Hertie School | [GRAD-C11/E1339](https://github.com/intro-to-data-science-21)" #"`r format(Sys.time(), '%d %B %Y')`"
+output:
+  xaringan::moon_reader:
+    css: [default, 'simons-touch.css', metropolis, metropolis-fonts] 
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+      ratio: '16:9'
+      hash: true
+---
+
+
+```{css, echo=FALSE} 
+@media print { # print out incremental slides; see https://stackoverflow.com/questions/56373198/get-xaringan-incremental-animations-to-print-to-pdf/56374619#56374619
+  .has-continuation {
+    display: block !important;
+  }
+}
+```
+
+```{r setup, include=FALSE}
+# figures formatting setup
+options(htmltools.dir.version = FALSE)
+library(knitr)
+opts_chunk$set(
+  prompt = T,
+  fig.align="center", #fig.width=6, fig.height=4.5, 
+  # out.width="748px", #out.length="520.75px",
+  dpi=300, #fig.path='Figs/',
+  cache=F, #echo=F, warning=F, message=F
+  engine.opts = list(bash = "-l")
+  )
+
+## Next hook based on this SO answer: https://stackoverflow.com/a/39025054
+knit_hooks$set(
+  prompt = function(before, options, envir) {
+    options(
+      prompt = if (options$engine %in% c('sh','bash')) '$ ' else 'R> ',
+      continue = if (options$engine %in% c('sh','bash')) '$ ' else '+ '
+      )
+})
+
+library(tidyverse)
+```
+
+
+# Table of contents
+
+<br>
+
+1. [Web data for data science](#webdata)
+
+2. [HTML basics](#html)
+
+3. [XPath basics](#xpath)
+
+4. [CSS basics](#css)
+
+5. [Scraping static webpages with R](#scrapingstatic)
+
+6. [Web scraping: good practice](#goodpractice)
+
+7. [Summary](#summary)
+
+
+
+---
+class: inverse, center, middle
+name: webdata
+
+# Web data for data science
+
+<html><div style='float:left'></div><hr color='#EB811B' size=1px style="width:1000px; margin:auto;"/></html>
+
+
+---
+# What is web data?
+
+
+
+---
+# Why data from the web is attractive
+
+- Data is abundant online.
+- Human behavior increasingly takes place online.
+- Countless services track human behavior.
+
+- Getting data from the web is cheap and often quick.
+- An analysis workflow that involves web data can often be easily updated.
+
+
+
+
+---
+# What is web scraping?
+
+Web scraping is the process of
+1. Getting (unstructured) data from the web and
+2. Bringing it into shape (e.g., into a format ready for analysis).
+
+---
+# From web scraping to automated web data collection
+
+### The philosophy behind web data collection with R (or any other scripting language)
+
+- No point-and-click procedure
+- Script the entire process from start to finish
+- Automate
+  - The downloading of files
+  - The scraping of information from web sites
+  - Tapping APIs
+  - Parsing of web content
+  - Data tidying, text data processing
+- Easily scale up scraping procedures
+- Scheduling of scraping tasks
+
+
+
+---
+# Technologies of the world wide web
+
+<div align="center">
+<img src="pics/webtechnologies.png" width=700>
+</div>
+
+
+
+---
+class: inverse, center, middle
+name: html
+
+# HTML basics
+
+<html><div style='float:left'></div><hr color='#EB811B' size=1px style="width:1000px; margin:auto;"/></html>
+
+
+---
+# HTML background
+
+### What is HTML?
+
+- **H**yper**T**ext **M**arkup **L**anguage
+- Markup language = plain text + markups
+- [W3C](https://en.wikipedia.org/wiki/World_Wide_Web_Consortium) standard for the construction of websites
+- Lies underneath of what you see in your browser
+
+### Why do we need to know about it?
+
+- It determines where and how information is stored.
+- A basic understanding of HTML helps us locate the information we want to retrieve.
+- A (mostly) passive understanding of HTML is sufficient though.
+
+
+
+---
+# HTML tree structure
+
+.pull-left[
+
+]
+
+
+.pull-right[
+
+```{html, eval = FALSE}
+<!DOCTYPE html> 
+  <html> 
+    <head>
+      <title id=1>First HTML</title>
+    </head>
+  <body>
+    I am your first HTML file! 
+  </body>
+</html>
+```
+
+<div align="center">
+<img src="pics/htmltree.png" width=700>
+</div>
+]
+
+---
+# HTML: elements and attributes
+
+.pull-left[
+### Elements
+
+- Elements are a combination of start tags, content, and end tags.
+- Example: `<title>First HTML</title>`
+- Syntax:
+
+| Component  |  Representation |
+|---|---|
+| Element title  | `title` |
+|  Start tag |  `<title>` |
+|  End tag |  `</title>` |
+|  Value |  `First HTML` |
+]
+
+.pull-right[
+### Attributes
+
+- Attributes describe elements and are stored in the start tag.
+- In HTML, there are specific attributes for specific elements.
+- Example: `<a href="http://www.r-datacollection.com/">Link to Homepage</a>`
+- Syntax:
+  - Name-value pairs: `name="value"`
+  - Simple and double quotation marks possible
+  - Several attributes per element possible
+  
+### Why tags and attributes are important for us
+
+- Tags structure HTML documents.
+- Everything that structures a document can be used to locate information.
+- In the context of web scraping, the structure can be exploited to locate and extract data from websites
+
+]
+
+---
+# Important tags and attributes
+
+### Anchor tag `<a>`
+
+- Links to other pages or resources.
+- Classical links are always formatted with an anchor tag.
+- The `href` attribute determines the target location.
+- The value is the name of the link.
+
+Link to another resource:
+```{html, eval = FALSE}
+<a href="en.wikipedia.org/wiki/List_of_lists_of_lists">Link with absolute path</a>
+```
+
+Reference within a document:
+```{html, eval = FALSE}
+<a id="top">Reference point</a>
+```
+
+Link to a reference within a document:
+```{html, eval = FALSE}
+<a href="#top">Link to reference point</a>
+```
+
+---
+# Important tags and attributes
+
+### Heading tags `<1>`, `<2>`, ..., and paragraph tag `<p>`
+
+- Structure text and paragraphs.
+- Heading tags range from level 1 to 6.
+- Paragraph tag induces a line break
+
+Examples:
+```{html, eval = FALSE}
+<p>This text is going to be a paragraph one day and separated from other text by line breaks.</p>
+```
+
+```{html, eval = FALSE}
+<h1>heading of level 1 - this will be BIG</h1>
+...
+<h6>heading of level 6 - the smallest heading</h6>
+```
+
+
+
+---
+# Important tags and attributes
+
+### Listing tags `<ul>`, `<ol>`, and `<dl>`
+
+- The `<ol>` tag creates a numeric list.
+- The `<ul>` tag creates an unnumbered list.
+- The `<dl>` tag creates a description list.
+- List elements within `<ol>` and `<ul>` are indicated with the `<li>` tag.
+
+Example:
+```{html, eval = FALSE}
+<ul>
+  <li>Dogs</li>
+  <li>Cats</li>
+  <li>Fish</li>
+</ul>
+```
+
+
+---
+# Important tags and attributes
+
+### Organizational and styling tags `<div>` and `<span>`
+
+- They are used to group content over lines (`<div>`, creating a block-level element) or within lines (`<span>`, creating an inline-element).
+- By grouping or dividing content into blocks, it's easier to identify or apply different styling to them.
+- They do not change the layout themselves but work together with CSS (see later!).
+
+.pull-left[
+Example of CSS definition:
+
+```{css, eval = FALSE}
+div.happy {
+  color:pink; 
+  font-family:"Comic Sans MS";
+  font-size:120% 
+} 
+span.happy { 
+  color:pink; 
+  font-family:"Comic Sans MS"; 
+  font-size:120% 
+}
+```
+]
+
+.pull-right[
+In the HTML document:
+
+```{html, eval = FALSE}
+<div class="happy">
+  <p>I am a happy-styled paragraph</p>
+</div>
+unhappy text with 
+<span class="happy">some happiness</span>
+```
+]
+
+
+---
+# Important tags and attributes
+
+### Form tag `<form>`
+
+- Allows to incorporate HTML forms.
+- Client can send information to the server via forms.
+- Whenever you type something into a field or click on radio buttons in your browser, you are interacting with forms.
+
+Example:
+
+```{html, eval = FALSE}
+<form name="submitPW" action="Passed.html" method="get">
+  password:
+  <input name="pw" type="text" value="">
+  <input type="submit" value="SubmitButtonText"
+</form>
+```
+
+
+---
+# Important tags and attributes
+
+### Table tags `<table>`, `<tr>`, `<td>`, and `<th>`
+
+- Standard HTML tables always follow a standard architecture.
+- The different tags allow defining the table as a whole, individual rows (including the heading), and cells.
+- If the data is hidden in tables, scraping will be straightforward.
+
+Example:
+
+```{html, eval = FALSE}
+<table> 
+  <tr> <th>Rank</th> <th>Nominal GDP</th> <th>Name</th> </tr> 
+  <tr> <th></th> <th>(per capita, USD)</th> <th></th> </tr> 
+  <tr> <td>1</td> <td>170,373</td> <td>Lichtenstein</td> </tr> 
+  <tr> <td>2</td> <td>167,021</td> <td>Monaco</td> </tr> 
+  <tr> <td>3</td> <td>115,377</td> <td>Luxembourg</td> </tr> 
+  <tr> <td>4</td> <td>98,565</td> <td>Norway</td> </tr> 
+  <tr> <td>5</td> <td>92,682</td> <td>Qatar</td> </tr>
+</table>
+```
+
+
+---
+# More resources on HTML
+
+
+
+
+---
+# Accessing the web using your browser vs. R
+
+### Using your browser to access webpages
+
+1. You click on a link, enter a URL, run a Google query, etc.
+2. Browser/your machine sends request to server that hosts website
+3. Server returns resource (often an HTML document)
+4. Browser interprets HTML and renders it in a nice fashion
+
+### Using R to access webpages
+
+1. You manually specify a resource.
+2. R/your machine sends a request to the server that hosts the website.
+3. The server returns a resource (e.g., an HTML file).
+4. R parses the HTML, but does not render it in a nice fashion.
+5. It's up to you to tell R what content to extract.
+
+
+
+---
+# Interacting with your browser
+
+### On web browsers
+
+- Modern browsers are complex pieces of software that take care of multiple operations while you browse the web.
+- Common operations: retrieve resources, render and display information, provide interface for user-webpage interaction
+- Although our goal is to automate web data retrieval, the browser is an important tool in web scraping workﬂow
+
+### The use of browsers for web scraping
+
+- Give you an intuitive impression of the architecture of a webpage
+- Allow you to inspect the source code
+- Let you construct XPath/CSS selector expressions with plugins
+- Render dynamic web content (JavaScript interpreter)
+
+### A note on browser differences
+
+- Inspecting the source code (as shown on the following slides) works more or less identically in Chrome and Firefox
+- In Safari, go to → Preferences, then → Advanced and select "Show Develop menu in menu bar". This unlocks the "Show Page Source" and "Inspect" options and the Web Developer Tools.
+
+
+
+
+---
+# Inspecting HTML source code
+
+Step-by-step description
+
+
+
+---
+# Inspecting HTML source code
+
+
+GIF
+
+
+
+---
+# Inspecting the live HTML source code with the DOM explorer
+
+Step-by-step description
+
+
+---
+# Inspecting the live HTML source code with the DOM explorer
+
+GIF
+
+
+---
+# When to do what with your browser
+
+.pull-left[
+
+### When to inspect the complete page source
+
+- Check whether data/information is in static source code (the search function helps!)
+- For small HTML files: understand structure
+- Count tables/elements
+
+### When to use the DOM explorer
+
+- Almost always
+- Particularly useful to construct XPath/CSS selector expressions
+- To monitor dynamic changes in the DOM tree
+]
+
+.pull-right[
+<div align="center">
+<img src="pics/dom-tree.png" width=700>
+</div>
+
+`Credit` [watershedcreative.com](http://watershedcreative.com/naked/html-tree.html)
+]
+
+
+---
+class: inverse, center, middle
+name: xpath
+
+# XPath basics
+
+<html><div style='float:left'></div><hr color='#EB811B' size=1px style="width:1000px; margin:auto;"/></html>
+
+---
+# Accessing the DOM tree with R
+
+### Getting HTML into R
+
+- HTML documents are human-readable.
+- HTML tags structure the document, comprising the DOM.
+- **Web user perspective**: The browser interprets the code and renders the page.
+- **Web scraper perspective**: Parse the document retaining the structure, use the tree/tags to locate information.
+
+### HTML parsing
+
+- Our goal is to get HTML into R while retaining the tree structure. That's similar to getting a spreadsheet into R and retaining the rectangular structure.
+- HTML is human-readable, so we could also import HTML files as plain text via `readLines()`. That's a bad option though - the document's structure would not be retained
+- The `xml2` package allows us to parse XML-style documents. HTML is a "flavor" of XML, so it works for us.
+- The `rvest` package, which we will mainly use for scraping, wraps the `xml2` package, so we rarely have to load it manually. 
+- There is one high-level function to remember: `read_html()`. It represents the HTML in a list-style fashion.
+
+---
+# Parsing HTML with R
+
+Parsing a website is straightforward:
+
+```{r, eval = TRUE, message= FALSE}
+library(rvest)
+parsed_doc <- read_html("https://google.com")
+parsed_doc
+```
+
+There are various functions to inspect the parsed document. They aren't really helpful - better use the browser instead if you want to dive into the HTML.
+
+```{r, eval = TRUE, message= FALSE}
+xml2::html_structure(parsed_doc)
+xml2::as_list(parsed_doc)
+```
+
+---
+# What's XPath?
+
+### Definition
+
+- Short for **XML Path Language**, another W3C standard.
+- A query language for XML-based documents (including HTML).
+- With XPath we can access node sets (elements) and extract content.
+
+### Why XPath for web scraping?
+
+- Source code of webpages (HTML) structures both layout and content
+- Not only content, but context matters!
+- Enables us to extract content based on its location in the document and (usually) regardless of shape
+
+
+
+---
+# Example
+
+```{html, eval = FALSE}
+
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html> <head>
+<title>Collected R wisdoms</title>
+</head>
+
+<body>
+<div id="R Inventor" lang="english" date="June/2003">
+  <h1>Robert Gentleman</h1>
+  <p><i>'What we have is nice, but we need something very different'</i></p>
+  <p><b>Source: </b>Statistical Computing 2003, Reisensburg</p>
+</div>
+
+<div lang="english" date="October/2011">
+  <h1>Rolf Turner</h1>
+  <p><i>'R is wonderful, but it cannot work magic'</i> <br><emph>answering a request for automatic generation of 'data from a known mean and 95% CI'</emph></p>
+  <p><b>Source: </b><a href="https://stat.ethz.ch/mailman/listinfo/r-help">R-help</a></p>
+</div>
+
+<address><a href="http://www.rdatacollectionbook.com"><i>The book homepage</i><a/></address>
+
+</body> </html>
+```
+
+---
+# Example
+
+<div align="center">
+<img src="pics/htmltree-2.png" width=820>
+</div>
+
+
+---
+# Slide explaining DOM TREE
+
+also nodes vs. elements and why I use it interchangeably
+nodeset
+
+
+---
+# Applying XPath on HTML in R
+
+- Load package `rvest`
+- Parse HTML document with `read_html()`
+
+```{r, eval = TRUE, message= FALSE}
+library(rvest)
+parsed_doc <- read_html("materials/fortunes.html")
+parsed_doc
+```
+
+- Query document with XPath expression using `html_tables()`
+- `rvest` can process XPath queries as well as CSS selectors.
+- Today, we'll focus on XPath:
+
+```{r, eval = TRUE, message= FALSE}
+html_elements(parsed_doc, xpath = "//div[last()]/p/i")
+```
+
+
+---
+# Grammar of XPath
+
+### Basic rules
+
+1. We access nodes by writing down the hierarchical structure in the DOM that locates the element set of interest.
+2. A sequence of nodes is separated by `/`.
+3. The easiest localization of a element is given by the absolute path (but often not the most eﬃcient one!).
+4. Apply XPath on DOM in R using `html_elements()`.
+
+```{r, eval = TRUE, message= FALSE}
+html_elements(parsed_doc, xpath = "//div[last()]/p/i")
+```
+
+
+---
+# Grammar of XPath
+
+### Absolute vs. relative paths
+
+**Absolute paths** start at the root element and follow the whole way down to the target element (with simple slashes, `/`).
+
+```{r, eval = TRUE, message= FALSE}
+html_elements(parsed_doc, xpath = "/html/body/div/p/i")
+```
+
+**Relative paths** skip nodes (with double slashes, `//`).
+
+```{r, eval = TRUE, message= FALSE}
+html_elements(parsed_doc, xpath = "//body//p/i")
+```
+
+Relative paths are often preferrable. They are faster to write and more comprehensive. On the other hand, they are less targeted and therefore potentially less robust, and running them takes more computing time, as the entire tree has to be evaluated. But that's usually not relevant for reasonably small documents.
+
+---
+# Grammar of XPath
+
+### The wildcard operator
+
+- Meta symbol `*`
+- Matches any element
+- Works only for one arbitrary element
+- Far less important than, e.g., wildcards in content-based queries (regex!).
+
+```{r, eval = TRUE, message= FALSE}
+html_elements(parsed_doc, xpath = "/html/body/div/*/i")
+
+# the following does not work:
+html_elements(parsed_doc, xpath = "/html/body/div/*/i")
+```
+
+---
+# Grammar of XPath
+
+### Navigational operators `"."`and `".."`
+
+- `"."` acesses elements on the same level ("self axis"), which is useful when working with predicates.
+- `".."` accesses elements at a higher hierarchical level.
+
+```{r, eval = TRUE, message= FALSE}
+html_elements(parsed_doc, xpath = "//title/..")
+```
+
+
+---
+# Element (node) relations ("axes") in XPath
+
+.pull-left[
+### Family relations between elements
+
+- The tools learned so far are sometimes not sufficient to access specific elements without accessing other, undesired elements as well.
+- Relationship statuses are useful to establish unambiguity. 
+- Can be combined with other elements of the grammar
+- Basic syntax: `element1/relation::element2`
+- We describe relation of `element2` to `element1`
+- `element2` is to be extracted - we always extract the element at the end!
+]
+
+.pull-right[
+<div align="center">
+<img src="pics/noderelations.png" width=350>
+</div>
+]
+
+---
+# Element (node) relations in XPath
+
+| Axis name  |  Description |
+|---|---|
+| `ancestor` | All ancestors (parent, grandparent etc.) of the current element |
+| `ancestor-or-self` | All ancestors of the current element and the current element itself |
+| `attribute` |  All attributes of the current element |
+| `child` | All children of the current element  |
+| `descendant` | All descendants (children, grandchildren etc.) of the current element  |
+| `descendant-or-self` |  All descendants of the current element and the current element itself |
+| `following` | Everything in the document after the closing tag of the current element  |
+| `following-sibling` | All siblings after the current element  |
+| `parent` | The parent of the current element  |
+| `preceding` | All elements that appear before the current element in the document, except ancestors and attribute elements  |
+| `preceding-sibling` | All siblings before the current element  |
+| `self` | The current element  |
+
+---
+# Element (node) relations in XPath
+
+Example: access the `<div>` elements that are ancestors to an `<a>` element:
+
+```{r, eval = TRUE, message= FALSE}
+html_elements(parsed_doc, xpath = "//a/ancestor::div")
+```
+
+Another example: Select all `<h1>` nodes that precede a `<p>` node:
+
+```{r, eval = TRUE, message= FALSE}
+html_elements(parsed_doc, xpath = "//p/preceding-sibling::h1")
+```
+
+
+---
+# Predicates
+
+### What are predicates?
+
+- Predicates are conditions based on an element's features (`true/false`).
+- Think of them as ways to filter nodesets.
+- They are applicable to a variety of features: name, value attribute.
+- Basic syntax: `element[predicate]`
+
+Select all first <p> elements that are children of a <div> element, using a **numeric predicate**:
+
+```{r, eval = TRUE, message= FALSE}
+html_elements(parsed_doc, xpath = "//div/p[1]")
+```
+
+--
+
+Can you find out what the following expressions do? 
+
+```{r, eval = FALSE, message= FALSE}
+html_elements(parsed_doc, xpath = "//div/p[last()-1]") html_elements(parsed_doc, xpath = "//div[count(./@*)>2]")
+html_elements(parsed_doc, xpath = "//*[string-length(text())>50]")
+```
+
+---
+# Predicates
+
+Select all <div> nodes that contain an attribute named ’October/2011’, using a **textual predicate**:
+
+```{r, eval = TRUE, message= FALSE}
+html_elements(parsed_doc, xpath ="//div[@date='October/2011']")
+```
+
+Rudimentary string matching is also possible using string functions like `contains()`, `starts-with()`, or `ends-with()`.
+
+Can you tell what the following calls do?
+
+```{r, eval = FALSE, message= FALSE}
+html_elements(parsed_doc, xpath = "//div[starts-with(./@id, 'R')]")
+html_elements(parsed_doc, xpath = "//div[substring-after(./@date, '/')='2003']//i")
+```
+
+---
+# Content extraction 
+
+- Until now, we used XPath expressions to extract complete nodes or nodesets (that is, elements with tags).
+- However, in most cases we're interested in extracting the content only.
+- To that end, we can use extractor functions that are applied on the output of XPath query calls.
+
+| Function  |  Argument | Return value |
+|---|---|---|
+| `html_text()` |  | Element value |
+| `html_text2()` |  | Element value (with a bit more cleanup) |
+| `html_attr()` | `name` | Element attribute |
+| `html_attrs()` |  | (All) element attributes |
+| `html_name()` | `trim` | Element name |
+| `html_children()` |  | Element children |
+
+
+---
+# Content extraction *cont.*
+
+Extracting element values/content
+
+```{r, eval = TRUE}
+html_elements(parsed_doc, xpath = "//title") %>% html_text()
+```
+
+Extracting attributes
+
+```{r, eval = TRUE}
+html_elements(parsed_doc, xpath = "//div") %>% html_attrs()
+```
+
+Extracting attribute values
+
+```{r, eval = TRUE}
+html_elements(parsed_doc, xpath = "//div") %>% html_attr("lang")
+```
+
+
+---
+# More XPath?
+
+
+Cheat sheet: https://devhints.io/xpath
+XPath expression testbed: http://www.whitebeam.org/library/guide/TechNotes/xpathtestbed.rhtm
+
+Tutorial?
+
+### XPath creator tools
+
+- Now, do you really have to construct XPath expressions by your own? No! At least not always.
+- **SelectorGadget**: [http://selectorgadget.com](http://selectorgadget.com): Browser plugin that constructs XPath statements via a point-and-click approach. The generated expressions are not always efficient and effective though.
+- Web developer tools: Internal browser functionality which returns XPath statements for selected nodes.
+
+
+---
+class: inverse, center, middle
+name: css
+
+# CSS basics
+
+<html><div style='float:left'></div><hr color='#EB811B' size=1px style="width:1000px; margin:auto;"/></html>
+
+
+---
+# What is CSS?
+
+- **C**ascading **S**tyle **S**heets (CSS)
+
+
+---
+# CSS selectors
+
+https://flukeout.github.io/
+
+
+
+
+---
+class: inverse, center, middle
+name: scrapingstatic
+
+# Scraping static webpages with R
+
+<html><div style='float:left'></div><hr color='#EB811B' size=1px style="width:1000px; margin:auto;"/></html>
+
+
+---
+# The scraping workflow
+
+
+Scraping workflow
+
+basic rvest
+
+Scraping HTML tables
+
+selectorGadget
+
+scraping multiple pages
+
+
+
+
+
+
+---
+class: inverse, center, middle
+name: goodpractice
+
+# Web scraping: good practice
+
+<html><div style='float:left'></div><hr color='#EB811B' size=1px style="width:1000px; margin:auto;"/></html>
+
+
+
+---
+class: inverse, center, middle
+name: summary
+
+# Summary
+
+<html><div style='float:left'></div><hr color='#EB811B' size=1px style="width:1000px; margin:auto;"/></html>
+
+
+
+
+
+
+---
+
+# Coming up
+
+<br><br> 
+
+### Assignment
+
+None! But you'll get the chance to practice databasing with R in the lab.
+
+
+### Next lecture
+
+Web data and technologies - relational data structures FTW!
+
+
