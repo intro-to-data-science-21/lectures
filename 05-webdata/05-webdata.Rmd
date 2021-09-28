@@ -580,7 +580,7 @@ GIF
 
 ### When to inspect the complete page source
 
-- Check whether data/information is in static source code (the search function helps!)
+- Check whether data is in static source code (the search function helps!)
 - For small HTML files: understand structure
 
 ### When to use the DOM explorer
@@ -958,20 +958,45 @@ name: css
 ---
 # What is CSS?
 
+.pull-left[
 ### Background
 
 - **C**ascading **S**tyle **S**heets (CSS) is a style sheet language that allows web developers to adjust the "look and feel" of websites.
 - By using CSS to adjust style features such as layout, colors, and fonts, it's easier to separate content (HTML) from presentation (CSS).
-- CSS is **yet another** little language that'd be good to know and speak.
 
 ### Three ways to insert CSS into HTML
 
-1. **External CSS.** Inside the `<head>` section of an HTML a reference to the external style sheet file inside the <link> element is used. Example: 
-2. **Internal CSS.**
-3. **Inline CSS.** 
+1. **External CSS.** Inside `<head>` with a reference to the external file inside the `<link>` element.
+2. **Internal CSS.** Inside `<head>` and stored in `<style>` elements. 
+3. **Inline CSS.** Inside `<body>` using the `style` attribute of elements.
   
-- CSS code is 
+]
 
+.pull-right[
+**External CSS**
+```{html, prompt = FALSE, eval = FALSE}
+<head>
+  <link rel="stylesheet" href="mystyle.css">
+</head>
+```
+
+**Internal CSS**
+```{html, prompt = FALSE, eval = FALSE}
+<head>
+   <style>
+      h1 {
+         color: red;
+         margin-left: 20px;
+      }
+   </style>
+</head>
+```
+
+**Inline CSS**
+```{html, prompt = FALSE, eval = FALSE}
+<p style="color: blue;">This is a paragraph.</p>
+```
+]
 
 ---
 # CSS selectors
@@ -980,12 +1005,21 @@ name: css
 
 ### Selectors
 
+- CSS selectors "find/select" the HTML elements that should be styled.
+- There are various categories of selectors. In addition to generic element selector (which are selected just based on the element name, such as `<p>`), we often care about:
+  - **CSS id selectors**, which use the `id` attribute of an HTML element. Think of them as "labels", as in `<p id="para1">`. The respective CSS selector would be `#para1`.
+  - **CSS class selectors**, which use the `class` attribute of an HTML element, as in `<p class = "center large">`. Note that these can refer to more than one class (here: `center` and `large`). The respective CSS selector would be `p.center.large`.
 
 ]
 
-.pull-right-center[
+.pull-right[
 
-https://flukeout.github.io/
+### Writing CSS selectors
+
+- Just as XPath, CSS selectors are a little language of their own.
+- I won't teach you more about it, but you might nevertheless want to learn it.
+- Check out the CSS diner tutorial at https://flukeout.github.io/. It's one of the best tutorials of anything out there.
+
 gif / movie of flukeout tutorial
 
 ]
