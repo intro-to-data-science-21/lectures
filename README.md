@@ -8,7 +8,10 @@
 \[[**.html**](https://raw.githack.com/intro-to-data-science-21/lectures/main/01-introduction/01-introduction.html) | [**.pdf**](https://raw.githack.com/intro-to-data-science-21/lectures/main/01-introduction/01-introduction.pdf) | [**.Rmd**](https://raw.githack.com/intro-to-data-science-21/lectures/main/01-introduction/01-introduction.Rmd)\]
 
 2. Version control and project management \[[**.html**](https://raw.githack.com/intro-to-data-science-21/lectures/main/02-version-control/02-version-control.html) | [**.pdf**](https://raw.githack.com/intro-to-data-science-21/lectures/main/02-version-control/02-version-control.pdf) | [**.Rmd**](https://raw.githack.com/intro-to-data-science-21/lectures/main/02-version-control/02-version-control.Rmd)\]
+
 3. R and the tidyverse \[[**.html**](https://raw.githack.com/intro-to-data-science-21/lectures/main/03-tidyverse/03-tidyverse.html) | [**.pdf**](https://raw.githack.com/intro-to-data-science-21/lectures/main/03-tidyverse/03-tidyverse.pdf) | [**.Rmd**](https://raw.githack.com/intro-to-data-science-21/lectures/main/03-tidyverse/03-tidyverse.Rmd)\]
+
+3. Databases \[[**.html**](https://raw.githack.com/intro-to-data-science-21/lectures/main/04-databases/04-databases.html) | [**.pdf**](https://raw.githack.com/intro-to-data-science-21/lectures/main/04-databases/04-databases.pdf) | [**.Rmd**](https://raw.githack.com/intro-to-data-science-21/lectures/main/04-databases/04-databases.Rmd)\]
 
 ## Summary
 

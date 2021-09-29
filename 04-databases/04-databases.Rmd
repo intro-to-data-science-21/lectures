@@ -467,18 +467,14 @@ The **normal forms** (from least normalized to most normalized):
 
 ]
 
-.pull-right-small[
-
-]
 
 ---
 # Databases and Database Management Systems
 
-
+.pull-left-wide[
 ### What are DBMS?
 
-.pull-left-wide[
-- Database Management Systems (DBMS) provide **efficient**, **reliable**, **convenient**, **safe**, **multi-user** storage of and access to **massive** amounts of data.
+- Database Management Systems (DBMS) provide **efficient**, **reliable**, **convenient**, **safe**, **multi-user** storage of and access to **massive** data.
     - **Massive**: Think Terabytes, not Gigabytes. Handle data that resides outside memory.
     - **Safe**: Robust to power outages, node failures, etc.
     - **Multi-user**: Concurrency control. Not one user, but multiple.
@@ -486,12 +482,21 @@ The **normal forms** (from least normalized to most normalized):
     - **Efficient**: Just fast.
     - **Reliable**: High uptime.
 - There are [so many DBMS](https://en.wikipedia.org/wiki/List_of_relational_database_management_systems) for relational database structures alone.
+- RDBMS differ in terms of capabilities, implemented features, operating system support, and much more. 
+- You'll probably not be in the position to decide which database to use. If you're still interested in the differences, [this](https://www.digitalocean.com/community/tutorials/sqlite-vs-mysql-vs-postgresql-a-comparison-of-relational-database-management-systems) or [this overview](https://en.wikipedia.org/wiki/Comparison_of_relational_database_management_systems) might be a good starting point.
+- Also, I've heard good things about [DuckDB](https://duckdb.org/).
 
 ]
 
 .pull-right-small[
 
-CONTINUE HERE: LOGOS, TABULAR OVERVIEW OF FEATURES ETC.
+<br>
+<div align="center">
+<img src="pics/mysql-logo.png" height=120>
+<img src="pics/postgresql-logo.png" height=150>
+<img src="pics/sqlite-logo.png" height=110>
+<img src="pics/duckdb-logo.png" height=50>
+</div>
 
 ]
 
@@ -525,7 +530,7 @@ data(flights)
 ```
 
 ---
-# Relational data in R *cont.*
+# Relational data in R (cont.)
 
 The package contains the tables `flights`, `airlines`, `airports`, `planes`, and `weather`.
 
@@ -538,7 +543,7 @@ head(airlines, 10)
 
 
 ---
-# Relational data in R *cont.*
+# Relational data in R (cont.)
 
 The package contains the tables `flights`, `airlines`, `airports`, `planes`, and `weather`.
 
@@ -549,7 +554,7 @@ head(airports, 10)
 
 
 ---
-# Relational data in R *cont.*
+# Relational data in R (cont.)
 
 The package contains the tables `flights`, `airlines`, `airports`, `planes`, and `weather`.
 
@@ -560,7 +565,7 @@ head(planes, 10)
 ```
 
 ---
-# Relational data in R *cont.*
+# Relational data in R (cont.)
 
 The package contains the tables `flights`, `airlines`, `airports`, `planes`, and `weather`.
 
@@ -570,7 +575,7 @@ head(weather, 10)
 ```
 
 ---
-# Relational data in R *cont.*
+# Relational data in R (cont.)
 
 The package contains the tables `flights`, `airlines`, `airports`, `planes`, and `weather`.
 
@@ -582,7 +587,7 @@ head(flights, 10)
 
 
 ---
-# Relational data in R *cont.*
+# Relational data in R (cont.)
 
 .pull-left[
 - We can illustrate the relationships between the different tables with a schematic drawing.<sup>1</sup>
@@ -604,7 +609,7 @@ head(flights, 10)
 .footnote[<sup>1</sup> Of course there are R packages that help you create such data models visually, e.g., the [dm package](https://cynkra.github.io/dm/).]
 
 ---
-# Relational data in R *cont.*
+# Relational data in R (cont.)
 
 .pull-left[
 ### Question time
@@ -696,7 +701,7 @@ In an actual join, matches will be indicated with dots. The number of dots = the
 
 ---
 
-# The logic of joins *cont.*
+# The logic of joins (cont.)
 
 .pull-left-wide[
 
@@ -770,7 +775,7 @@ left_join(flights, planes) %>%
 
 ---
 
-# Joins in R *cont.*
+# Joins in R (cont.)
 
 Note that `dplyr` made a reasonable guess about which columns to join on (i.e. columns that share the same name). It also told us its choices: 
 
@@ -789,7 +794,7 @@ Luckily, there's an easy way to avoid this problem.
 
 ---
 
-# Joins in R *cont.*
+# Joins in R (cont.)
 
 
 You just need to be more explicit in your join call by using the `by = ` argument.
@@ -806,7 +811,7 @@ left_join(
 
 ---
 
-# Joins in R *cont.*
+# Joins in R (cont.)
 
 Last thing to mention on joins for now; note what happens if we again specify the join column... but don't rename the ambiguous "year" column in at least one of the given data frames:
 
@@ -829,8 +834,7 @@ Make sure you know what "year.x" and "year.y" are. Again, it pays to be specific
 
 # Duplicate keys
 
-- If you're lucky, keys are unique. But that's not always the case.
-- There are two common scenarios:
+If you're lucky, keys are unique. But that's not always the case. There are two common scenarios:
 
 --
 
@@ -842,7 +846,9 @@ Make sure you know what "year.x" and "year.y" are. Again, it pays to be specific
 
 --
 
-2. Both tables have duplicate keys. This is usually an error because in neither table do the keys uniquely identify an observation. When joining duplicated keys, we get all possible combinations (the Cartesian product, a many-to-many relationship):
+<ol start="2">
+  <li>Both tables have duplicate keys. This is usually an error because in neither table do the keys uniquely identify an observation. When joining duplicated keys, we get all possible combinations (the Cartesian product, a many-to-many relationship):</li>
+</ol>
   
 <div align="center">
 <img src="pics/join-many-to-many.png" height=140>
@@ -913,7 +919,7 @@ SELECT columns or computations
 
 
 ---
-# General SQL syntax *cont.*
+# General SQL syntax (cont.)
 
 .pull-left[
 
@@ -947,7 +953,7 @@ several lines
 ]
 
 ---
-# General SQL syntax *cont.*
+# General SQL syntax (cont.)
 
 ### Notes from a dplyr user
 
@@ -966,13 +972,15 @@ several lines
 ---
 # More resources to get started with SQL
 
-Another hands-on beginner SQL tutorial at [DataQuest](https://www.dataquest.io/blog/sql-basics).
+Probably the best way to learn SQL hands-on is the interactive tutorial at [SQLBolt](https://sqlbolt.com/).
 
-A good starting point to learn about the basics of SQL at [Codeacademy](https://www.codecademy.com/learn/learn-sql).
+Another hands-on beginner SQL tutorial is at [DataQuest](https://www.dataquest.io/blog/sql-basics).
+
+Yet another good starting point to learn about the basics of SQL lives at [Codeacademy](https://www.codecademy.com/learn/learn-sql).
 
 If you want to know more about how indexes work in SQLite, check out [this resource](https://www.sqlite.org/queryplanner.html).
 
-Another good read is [10 easy steps to a complete understanding of SQL](https://blog.jooq.org/10-easy-steps-to-a-complete-understanding-of-sql/) by Lukas Eder.
+Finally, another good read is [10 easy steps to a complete understanding of SQL](https://blog.jooq.org/10-easy-steps-to-a-complete-understanding-of-sql/) by Lukas Eder.
 
 
 
@@ -996,9 +1004,9 @@ name: dbr
 ### A database interface
 
 - DBMS implement SQL but all have somewhat different conventions.
-- R can connect to all major existing databases types (and to virtually anything else, too).
-- The R package [`DBI`](https://cran.r-project.org/web/packages/DBI/vignettes/DBI-proposal.html) (**D**ata**B**ase **I**nterface) is a unified interface to them.
-- In addition, we need a separate "driver" for each DBMS.
+- R can connect to all major existing databases types.
+- The R package [`DBI`](https://cran.r-project.org/web/packages/DBI/vignettes/DBI-proposal.html) (**D**ata**B**ase **I**nterface) is a unified interface to them (car analogy: wheel, pedals).
+- In addition, we need a separate "driver" to connect to the database engine (car analogy: fuel (?)).
 
 
 ### Drivers for open-source/commercial DBs 
@@ -1030,8 +1038,8 @@ Google BigQuery ([`bigrquery`](https://cran.r-project.org/web/packages/bigrquery
 
 - Good news: `dplyr` is able to interact with databases directly by translating the `dplyr` verbs into SQL queries. This convenient feature allows you to "speak" directly with the database from R.
 - Using `dplyr` as an interface allows you to:
-  1. Run data exploration routines over all of the data, instead of importing part of the data into R.
-  2. Use the SQL Engine to run the data transformations. In effect, computation is being pushed to the database.
+  1. Run data exploration routines over all of the data, instead of importing parts of the data into R.
+  2. Use the SQL engine to run the data transformations. In effect, computation is being pushed to the database.
   3. Collect into R only a targeted dataset.
   4. Keep all your code in R. There is no need to alternate between languages or tools to perform the data exploration.
 ]
@@ -1050,7 +1058,7 @@ Google BigQuery ([`bigrquery`](https://cran.r-project.org/web/packages/bigrquery
 
 Before we start, we load the `DBI` package to connect to a DBMS and the `RSQLite` package to communicate with an SQLite database. Tidyverse and `dplyr`/`dbplyr` will be used, too. Also, we will rely on `nycflights13` for some toy data sets.
 
-```{r}
+```{r, warning=F, message=F}
 library(DBI)
 library(RSQLite)
 library(tidyverse)
@@ -1083,9 +1091,9 @@ Also, in real life, chances are that the database lives on a server and you have
 
 ```{r, eval = FALSE}
 con <- DBI::dbConnect(RSQLite::SQLite(), 
-                      host = "mydatabase.host.com",
-                      user = "simon",
-                      password = "mypassword"
+                       host = "mydatabase.host.com",
+                       user = "simon",
+                       password = "mypassword"
 )
 ```
 
@@ -1129,7 +1137,7 @@ We can also explicitly set up indexes that will allow us to quickly process the 
 ---
 # Querying the database
 
-Now it's time to start querying our database. First, we generate reference table from the database using `dplyr`'s `tbl`():
+Now it's time to start querying our database. First, we generate a reference table from the database using `dplyr`'s `tbl`():
 
 ```{r, cache = FALSE}
 flights_db <- tbl(con, "flights")
@@ -1147,7 +1155,7 @@ Yes, we can use `dplyr` syntax to do database queries!
 ---
 # Querying the database
 
-The most important difference between ordinary data frames and remote database queries is that your R code is translated into SQL and executed in the database on the remote server, not in R on your local machine. When working with databases, **`dplyr` tries to be as lazy as possible**:
+The most important difference between ordinary data frames and remote database queries is that your R code is translated into SQL and executed in the database on the remote server, not in R on your local machine. When working with databases, `dplyr` **tries to be as lazy as possible**:
  - It never pulls data into R unless you explicitly ask for it.
  - It delays doing any work until the last possible moment: it collects together everything you want to do and then sends it to the database in one step.
 
@@ -1190,16 +1198,15 @@ tailnum_delay
 
 # Using SQL directly in R
 
-- Again, because it is so cool: Yes, we can use `dplyr` syntax to do database queries! 
-- Behind the scenes, `dplyr` is translating your R code into SQL. 
-- The `dbplyr` package is doing the work for us.
-- You can use the `show_query()` function to display the SQL code that was used to generate a queried table: 
+Again, because it is so cool: Yes, we can use `dplyr` syntax to do database queries! Behind the scenes, `dplyr` is translating your R code into SQL. The `dbplyr` package is doing the work for us.
+
+You can use the `show_query()` function to display the SQL code that was used to generate a queried table: 
 
 ```{r, warning = FALSE}
 tailnum_delay_db %>% show_query()
 ```
 
-- If you still want to formulate SQL queries and pass them on to the DBMS, use `DBI::dbGetQuery()`:
+If you still want to formulate SQL queries and pass them on to the DBMS, use `DBI::dbGetQuery()`:
 
 ```{r}
 sql_query <- "SELECT * FROM flights WHERE dep_delay > 240.0 LIMIT 5"
@@ -1213,14 +1220,25 @@ DBI::dbDisconnect(con)
 
 
 ---
-# More useful resources to get started with R and databases
+# More useful resources to get started with databases
 
-A comprehensive overview of database interaction using R from RStudio at [db.rstudio.com](https://db.rstudio.com/getting-started/overview). This also features a set of best practices that go beyond what we covered today.
+### Relational databases FTW
 
-[Databases 101](https://raw.githack.com/uo-ec607/lectures/master/16-databases/16-databases.html) by Grant McDermott, also featuring example code to connect to Google BigQuery.
+A comprehensive overview of database interaction using R is available at [db.rstudio.com](https://db.rstudio.com/getting-started/overview). It also features a set of best practices that go beyond what we covered today.
 
-An [introduction to `dbplyr`](https://cran.r-project.org/web/packages/dbplyr/vignettes/dbplyr.html) coming as a package vignette.
+Not to mention [Databases 101](https://raw.githack.com/uo-ec607/lectures/master/16-databases/16-databases.html) by Grant McDermott, which also features example code to connect to DuckDB and Google BigQuery.
 
+Finally, there is the [introduction to `dbplyr`](https://cran.r-project.org/web/packages/dbplyr/vignettes/dbplyr.html) which comes as a package vignette.
+
+
+---
+# And what about NoSQL databases?
+
+We haven't talked about non-relational databases so far, but you might encounter them in the future. NoSQL became popular in the 2000s as a consequence of several developments: Cost of data storage decreased, which made the need of efficient, non-redundant but complex data storage less urgent. At the same time, heterogeneity in data formats increased and coming up with well-defined schemas was difficult. NoSQL offered more flexibility.
+
+There are several types of NoSQL databases, including document DBs where documents contain pairs of fields and values (think: JSON), key-value DBs, or graph DBs.
+
+Depending on your use case, this might be exactly what you need. If you want to learn more, start [here](https://www.mongodb.com/nosql-explained) or [here](https://www.digitalvidya.com/blog/nosql-tutorial/).
 
 
 
@@ -1248,7 +1266,10 @@ Lots of academic data work consists of working with *bad re-inventions* of the r
 
 Thinking about data relationally **will help you with statistics**.
 
-- Multilevel models, time-series, network analysis, NLP
+- Multilevel models
+- Time-series
+- Network analysis
+- NLP
 ]
 
 .pull-right[
