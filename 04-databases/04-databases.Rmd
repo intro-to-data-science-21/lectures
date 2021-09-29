@@ -37,7 +37,7 @@ opts_chunk$set(
   engine.opts = list(bash = "-l")
   )
 
-## Next hook based on this SO answer: https://stackoverflow.com/a/39025054
+### Next hook based on this SO answer: https://stackoverflow.com/a/39025054
 knit_hooks$set(
   prompt = function(before, options, envir) {
     options(
@@ -82,7 +82,7 @@ name: whydb
 # The ubiqity of multi-dimensional data structures
 
 .pull-left[
-## From data frames...
+### From data frames...
 
 - When you have a background in social sciences, your top-of-the-head mental image of data might be a rectangular [spreadsheet](https://en.wikipedia.org/wiki/Spreadsheet).
 - In fact, much of classical "statistical" software (SPSS, Stata, MS Excel) operates with rectangular data frames by default. 
@@ -107,13 +107,13 @@ name: whydb
 
 .pull-left-center[
 <div align="center">
-<img src="pics/legislator-structure.png" height=500> 
+<img src="pics/legislator-structure.png" height=520> 
 </div>
 `Credit` [saschagobel/legislatoR](https://github.com/saschagobel/legislatoR)
 ]
 
 .pull-right[
-## ... to complex data structures
+### ... to complex data structures
 
 - However, the longer you think about it, the more problematic it becomes to store your data in two-dimensional structures.
 - **Examples**:
@@ -132,21 +132,23 @@ name: whydb
 # When databases become useful
 
 .pull-left[
-## Accessibility and concurrency
-- You want to present or **make data available on a website**. Using a database, you only need one tool to achieve this.
-- You **collaborate with others** on a data collection project. With a database, you have a common, simultaneously accessible, and reliable infrastructure at hand that multiple users can access at the same time.
-- When several parties are involved, who is allowed to do what with the database might differ (e.g., read-only, access to parts of the data, limited admin rights, etc.). Most databases allow **defining different usage rights for different users**.
+### Size and speed
+- You have **loads of data that exceed the working memory** on your computer. Databases are only limited by available disk size (or can be distributed across multiple disks/machines).
+- Your **data structure is complex**. Databases allow/encourage you to store, retrieve and subset data with complex data structures.
+- Your data is big and you have to **access/subset/operate frequently**. Querying databases is fast.
+- You care about **data quality** and have clear expectations how data should look like. Using databases you can define specific rules for extending and updating your database.
 ]
 
 --
 
 .pull-right[
-## Size and speed
-- You have **loads of data that exceed the working memory** on your computer. Databases are limited by available disk size (or can be distributed across multiple disks/machines).
-- Your **data structure is complex**. Databases allow/encourage you to store, retrieve and subset data with complex data structures.
-- Your data is big and you have to **access/subset/operate frequently**. Querying databases is fast.
-- You care about **data quality** and have clear expectations how data should look like. Using databases you can define specific rules for extending and updating your database.
+### Accessibility and concurrency
+- You **collaborate with others** on a data collection project. With a database, you have a common, simultaneously accessible, and reliable infrastructure at hand that multiple users can access at the same time.
+- When several parties are involved, who is allowed to do what with the database might differ (e.g., read-only, access to parts of the data, limited admin rights, etc.). Most databases allow **defining different usage rights for different users**.
 ]
+
+
+
 
 
 ---
@@ -155,13 +157,13 @@ name: whydb
 
 .pull-left[
 
-## What we should distinguish
+### What we should distinguish
 
 - The **types of databases**, e.g.: relational, navigational, NoSQL, NewSQL
 - The **database management system**, e.g.: PostgreSQL, Oracle, SQL Server, SQLite
 - The **data structure**, e.g.: tables, columns, keys, normal forms
 - The **data manipulations**, e.g.: selects, joins, grouping
-- The **query language**, e.g., SQL
+- The **query language**, e.g., SQL, SPARQL
 
 Also, there are so many more ways to [classify databases](https://en.wikipedia.org/wiki/Database#Classification). But that's enough for now.
 
@@ -171,9 +173,9 @@ Today, **we focus on relational databases**. They are by no means the only type 
 --
 .pull-right[
 
-## Databases versus data frames
+### Databases versus data frames
 
-When reading/talking about features of databases, you will encounter a particular jargon. Here's how database concepts map onty R data frame jargon:
+When reading/talking about features of databases, you will encounter a particular jargon. Here's how database concepts map onto R data frame jargon:
 
 | R jargon  |  Database jargon |
 |---|---|
@@ -201,8 +203,8 @@ name: relationaldb
 # Codd's relational model for databases
 
 .pull-left[
-- The concept of relational databases builds on the [relational model (RM) for database management](https://en.wikipedia.org/wiki/Relational_model), as proposed by [Edgar F. "Ted" Codd](https://en.wikipedia.org/wiki/Edgar_F._Codd) in 1969/1970.<sup>1</sup>
-- Todd described the RM formally in mathematical terms, but also introduced it using concepts that are still in use today (normalization, keys, joins, redundancy, etc.).
+- The concept of relational databases builds on the [relational model (RM) for database management](https://en.wikipedia.org/wiki/Relational_model), as proposed by [Edgar F. "Ted" Codd](https://en.wikipedia.org/wiki/Edgar_F._Codd) in 1969/1970.
+- Todd described the RM formally, but also introduced it using concepts that are still in use today (normalization, keys, joins, redundancy, etc.).
 - The key assumption of the relational model is that all data can be represented as relations (tables).
 - Information is then represented by data values in relations.
 - When you think this is trivial, check out the [history of databases](https://en.wikipedia.org/wiki/Database) and live through the pain of the early era of navigational DBMS in the 1960s and the NoSQL era that we've (not yet) overcome.
@@ -228,13 +230,13 @@ name: relationaldb
 # Codd's relational model for databases (cont.)
 
 .pull-left[
-## Storing data in tables
+### Storing data in tables
 
 - Again, the key concept of relational databases is that all information can be represented in a table.
 - A single table already introduces relations: All data in one row belongs to the same record.
 - If we want to represent more complex relations (i.e., measuring a person's weight twice or measuring the weight of their children as well), we can relate data from one table to another.
 
-## Example
+### Example
 
 - We have collected data on Peter, Paul, and Mary.
 - We have information on birthdays, telephone numbers, and favorite foods.
@@ -263,13 +265,13 @@ name: relationaldb
 # Codd's relational model for databases (cont.)
 
 .pull-left[
-## Storing data in tables
+### Storing data in tables
 
 - Again, the key concept of relational databases is that all information can be represented in a table.
 - A single table already introduces relations: All data in one row belongs to the same record.
 - If we want to represent more complex relations (i.e., measuring a person's weight twice or measuring the weight of their children as well), we can relate data from one table to another.
 
-## Example
+### Example
 
 - We have collected data on Peter, Paul, and Mary.
 - We have information on birthdays, telephone numbers, and favorite foods.
@@ -293,13 +295,13 @@ name: relationaldb
 # Codd's relational model for databases (cont.)
 
 .pull-left[
-## Storing data in tables
+### Storing data in tables
 
 - Again, the key concept of relational databases is that all information can be represented in a table.
 - A single table already introduces relations: All data in one row belongs to the same record.
 - If we want to represent more complex relations (i.e., measuring a person's weight twice or measuring the weight of their children as well), we can relate data from one table to another.
 
-## Example
+### Example
 
 - We have collected data on Peter, Paul, and Mary.
 - We have information on birthdays, telephone numbers, and favorite foods.
@@ -322,13 +324,13 @@ name: relationaldb
 # Codd's relational model for databases (cont.)
 
 .pull-left[
-## Storing data in tables
+### Storing data in tables
 
 - Again, the key concept of relational databases is that all information can be represented in a table.
 - A single table already introduces relations: All data in one row belongs to the same record.
 - If we want to represent more complex relations (i.e., measuring a person's weight twice or measuring the weight of their children as well), we can relate data from one table to another.
 
-## Example
+### Example
 
 - We have collected data on Peter, Paul, and Mary.
 - We have information on birthdays, telephone numbers, and favorite foods.
@@ -351,42 +353,13 @@ name: relationaldb
 ]
 
 
----
-# Database schema
-
-.pull-left[
-
-## What schemas are
-
-- The database schema describes the structure of a database. It represents the map or blueprint of how the database is constructed.
-- The schema specifies all core ingredients of the database, including tables, fields, keys relationships, views, etc.
-- The visualization helps database users understand the relationships between the tables.
-
-<br>
-<div align="center">
-<img src="pics/adcr-database-schema.png" width=550>
-</div>
-
-]
-
-.pull-right[
-
-## How they can look like
-
-<div align="center">
-<img src="pics/Mediawiki-schema.png" width=600>
-</div>
-`Credit` [Timo Tijhof/Wikimedia Commons](https://commons.wikimedia.org/wiki/File:MediaWiki_1.19_database_schema_(r102798))
-]
-
-
 
 
 ---
 # Database normalization
 
 .pull-left[
-## What is database normalization?
+### What is database normalization?
 
 **From the [Wikipedia](https://en.wikipedia.org/wiki/Database_normalization)**: "Database normalization is the process of **structuring a database**, usually a relational database, in accordance with a series of so-called **normal forms** in order to **reduce data redundancy and improve data integrity**. It was first proposed by Edgar F. Codd as part of his relational model."
 
@@ -398,7 +371,7 @@ name: relationaldb
 --
 
 .pull-right[
-## Normalization and tidy data
+### Normalization and tidy data
 
 There is also a straightforward link to [Hadley Wickham's "tidy data"](https://www.jstatsoft.org/article/view/v059i10): 
 
@@ -438,6 +411,36 @@ The **normal forms** (from least normalized to most normalized):
 
 
 
+---
+# Database schema
+
+.pull-left[
+
+### What schemas are
+
+- The database schema describes the structure of a database. It represents the map or blueprint of how the database is constructed.
+- The schema specifies all core ingredients of the database, including tables, fields, keys relationships, views, etc.
+- The visualization helps database users understand the relationships between the tables.
+
+<br>
+<div align="center">
+<img src="pics/adcr-database-schema.png" width=550>
+</div>
+
+]
+
+.pull-right[
+
+### How they can look like
+
+<div align="center">
+<img src="pics/Mediawiki-schema.png" width=600>
+</div>
+`Credit` [Timo Tijhof/Wikimedia Commons](https://en.wikipedia.org/wiki/Database_schema#/media/File:MediaWiki_1.28.0_database_schema.svg)
+]
+
+
+
 
 ---
 
@@ -445,7 +448,7 @@ The **normal forms** (from least normalized to most normalized):
 
 .pull-left-wide[
 
-## What are databases?
+### What are databases?
 
 - Databases are an organized collection of data.
 - They are organized to afford efficient retrieval of (selections) of data.
@@ -453,7 +456,7 @@ The **normal forms** (from least normalized to most normalized):
 - They are generally accessed through a database management system.
 
 
-## Where are databases?
+### Where are databases?
 
 - Databases can exist locally or remotely, in-memory or on-disk.
 - When they are stored locally, they are not stored as binary file (not text file). 
@@ -472,7 +475,7 @@ The **normal forms** (from least normalized to most normalized):
 # Databases and Database Management Systems
 
 
-## What are DBMS?
+### What are DBMS?
 
 .pull-left-wide[
 - Database Management Systems (DBMS) provide **efficient**, **reliable**, **convenient**, **safe**, **multi-user** storage of and access to **massive** amounts of data.
@@ -488,6 +491,7 @@ The **normal forms** (from least normalized to most normalized):
 
 .pull-right-small[
 
+CONTINUE HERE: LOGOS, TABULAR OVERVIEW OF FEATURES ETC.
 
 ]
 
@@ -603,7 +607,7 @@ head(flights, 10)
 # Relational data in R *cont.*
 
 .pull-left[
-## Question time
+### Question time
 
 1. Imagine you wanted to draw (approximately) the route each plane flies from its origin to its destination. What variables would you need? What tables would you need to combine?
 
@@ -696,14 +700,14 @@ In an actual join, matches will be indicated with dots. The number of dots = the
 
 .pull-left-wide[
 
-## Inner join
+### Inner join
 
 - An inner join matches pairs of observations when their keys are equal.
 - The output of an inner join is a new table that contains the key and values of both tables.
 - Unmatched rows are not included in the result. To be used with caution, because [it's easy to lose observations](https://twitter.com/SolomonMg/status/1436742352039669760)!
 
 
-## Outer joins
+### Outer joins
 
 - Outer joins keep observations that appear in at least one of the tables.
 - There are three types of outer joins:
@@ -733,7 +737,7 @@ In an actual join, matches will be indicated with dots. The number of dots = the
 
 --
 
-## Primary keys
+### Primary keys
 
 - A primary key uniquely identifies an observation in its own table.
 - It is either a column containing a (sometimes autogenerated and otherwise meaningless) identifier that uniquely identifies each row, or
@@ -741,7 +745,7 @@ In an actual join, matches will be indicated with dots. The number of dots = the
 
 --
 
-## Foreign keys
+### Foreign keys
 
 - A foreign key is a column containing primary key(s) from another table.
 - It is the piece of information necessary to join both tables.
@@ -771,7 +775,7 @@ left_join(flights, planes) %>%
 Note that `dplyr` made a reasonable guess about which columns to join on (i.e. columns that share the same name). It also told us its choices: 
 
 ```
-*## Joining, by = c("year", "tailnum")
+*### Joining, by = c("year", "tailnum")
 ```
 
 However, there's an obvious problem here: the variable "year" does not have a consistent meaning across our joining datasets!
@@ -793,11 +797,11 @@ You just need to be more explicit in your join call by using the `by = ` argumen
 ```{r join2}
 left_join(
   flights,
-  planes %>% rename(year_built = year), ## Not necessary w/ below line, but helpful
-  by = "tailnum" ## Be specific about the joining column
+  planes %>% rename(year_built = year), ### Not necessary w/ below line, but helpful
+  by = "tailnum" ### Be specific about the joining column
   ) %>%
   select(year, month, day, dep_time, arr_time, carrier, flight, tailnum, year_built, type, model) %>%
-  head(3) ## Just to save vertical space on the slide
+  head(3) ### Just to save vertical space on the slide
 ```
 
 ---
@@ -809,7 +813,7 @@ Last thing to mention on joins for now; note what happens if we again specify th
 ```{r join3}
 left_join(
   flights,
-  planes, ## Not renaming "year" to "year_built" this time
+  planes, ### Not renaming "year" to "year_built" this time
   by = "tailnum"
   ) %>%
   select(contains("year"), month, day, dep_time, arr_time, carrier, flight, tailnum, type, model) %>%
@@ -861,7 +865,7 @@ name: sql
 ---
 # What is SQL?
 
-## Background and history
+### Background and history
 
 - SQL (pronounced [ɛsˌkjuːˈɛl] as in S-Q-L, or [siːkwəl] as in sequel)  stands for **Structured Query Language**. Initially it was called SEQUEL (Structured English Query Language), but this was dropped due to trademark issues.
 - It's a domain-specific language designed to query data contained in relational databases.
@@ -869,7 +873,7 @@ name: sql
 
 --
 
-## Why SQL?
+### Why SQL?
 
 - While database types differ, most of the relational databases you'll encounter speak SQL.
 - The key skill to work with databases (outside R) is to learn how to speak SQL. Once you've mastered this, you should be able to work with any of them.
@@ -879,7 +883,7 @@ name: sql
 ---
 # General SQL syntax
 
-## Classes of SQL syntax
+### Classes of SQL syntax
 
 - **Data query language** (DQL) to perform queries on the data [`SELECT`, `FROM`, `WHERE`]
 - **Data definition language** (DDL) to describe data structure and its relations (create tables, columns, define data types, keys, constraints) [`CREATE`, `ALTER`, `DROP`]
@@ -888,7 +892,7 @@ name: sql
 
 --
 
-## A generic query
+### A generic query
 
 The main SQL tool is `SELECT`, which allows you to perform queries on a table in a database. It has the generic form:
 
@@ -913,7 +917,7 @@ SELECT columns or computations
 
 .pull-left[
 
-## Basic rules
+### Basic rules
 
 - SQL statements start with a command describing the desired action (`SELECT`), followed by the unit on which it should be executed (`SELECT column1`), and one or more clauses (`WHERE column 2 = 1`).
 - Although it's customary to write all SQL statements in capital letters, SQL is actually case insensitive towards its key words. 
@@ -945,14 +949,14 @@ several lines
 ---
 # General SQL syntax *cont.*
 
-## Notes from a dplyr user
+### Notes from a dplyr user
 
 - SQL syntax is intuitive [until it isn't](https://blog.jooq.org/a-beginners-guide-to-the-true-order-of-sql-operations/).
 - A key problem: SQL imposes a **lexical order** of operations which does not necessarily match the **logical order** of operations you'd have in mind.
 
 --
 
-## The good news
+### The good news
 
 - With `dplyr` we have a package that can effectively speak SQL for us.
 - Those queries (formulated with `dplyr` commands!) can then easily be submitted as SQL queries to the database (also thanks to the `DBI` package).
@@ -989,7 +993,7 @@ name: dbr
 
 .pull-left-wide[
 
-## A database interface
+### A database interface
 
 - DBMS implement SQL but all have somewhat different conventions.
 - R can connect to all major existing databases types (and to virtually anything else, too).
@@ -997,7 +1001,7 @@ name: dbr
 - In addition, we need a separate "driver" for each DBMS.
 
 
-## Drivers for open-source/commercial DBs 
+### Drivers for open-source/commercial DBs 
 
 - There are various R packages that allow you to connect to particular **open-source** database types including SQLite (via [`RSQLite`](https://cran.r-project.org/web/packages/RSQLite/index.html)),  MySQL ([`RMySQL`](https://cran.r-project.org/web/packages/RMySQL/index.html)), 
 PostgreSQL ([`RPostgres`](https://cran.r-project.org/web/packages/RPostgres/index.html)),
@@ -1022,7 +1026,7 @@ Google BigQuery ([`bigrquery`](https://cran.r-project.org/web/packages/bigrquery
 # Talking to databases
 
 .pull-left[
-## dplyr as a database interface
+### dplyr as a database interface
 
 - Good news: `dplyr` is able to interact with databases directly by translating the `dplyr` verbs into SQL queries. This convenient feature allows you to "speak" directly with the database from R.
 - Using `dplyr` as an interface allows you to:
