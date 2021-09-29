@@ -86,7 +86,6 @@ name: webdata
 <div align="center">
 <img src="pics/upworthy-paper.png" height=440>
 <img src="pics/cld-paper.png" height=440>
-
 </div>
 
 
@@ -549,29 +548,43 @@ Example:
 ---
 # Inspecting HTML source code
 
-Step-by-step description
+.pull-left-small[
+<br><br>
+- Goal: retrieving data from a Wikipedia page on [List of tallest buildings](https://en.wikipedia.org/wiki/List_of_tallest_buildings)
+- Right-click on page (anywhere)
+- Select "View Page Source"
+- HTML (CSS, JavaScript) code can be ugly
+- But looking more closely, we find the displayed information
+]
 
-
-
----
-# Inspecting HTML source code
-
-
-GIF
+.pull-right-wide[
+<br>
+<video width="768" height="432" controls>
+  <source src="pics/inspect-pagesource.mp4" type="video/mp4">
+Your browser does not support the video tag.
+</video>
+]
 
 
 
 ---
 # Inspecting the live HTML source code with the DOM explorer
 
-Step-by-step description
+.pull-left-small[
+- Goal: retrieving data from a Wikipedia page on [List of tallest buildings](https://en.wikipedia.org/wiki/List_of_tallest_buildings)
+- Right-click on the element of interest
+- Select "Inspect"
+- The Web Developer Tools window pops up
+- Corresponding part in the HTML tree is highlighted
+- Interaction with the tree possible!
+]
 
-
----
-# Inspecting the live HTML source code with the DOM explorer
-
-GIF
-
+.pull-right-wide[
+<video width="768" height="432" controls>
+  <source src="pics/inspect-pagedom.mp4" type="video/mp4">
+Your browser does not support the video tag.
+</video>
+]
 
 ---
 # When to do what with your browser
@@ -1020,12 +1033,10 @@ name: css
 - I won't teach you more about it, but you might nevertheless want to learn it.
 - Check out the CSS diner tutorial at https://flukeout.github.io/. It's one of the best tutorials of anything out there.
 
-gif / movie of flukeout tutorial
-
+<div align="center">
+<img src="pics/flukeout-demo.gif" width=420>
+</div>
 ]
-
-
-
 
 
 
@@ -1043,7 +1054,7 @@ name: scrapingstatic
 # The scraping workflow
 
 .pull-left[
-# The key tools for scraping static webpages
+### The key tools for scraping static webpages
 
 1. You are able to inspect HTML pages in your browser using the web developer tools.
 2. You are able to parse HTML into R with `rvest`.
@@ -1054,7 +1065,7 @@ name: scrapingstatic
 
 .pull-right[
 <div align="center">
-<img src="pics/scraping-workflow.png" width=350>
+<img src="pics/scraping-workflow.png" width=550>
 </div>
 ]
 
@@ -1174,6 +1185,60 @@ name: goodpractice
 
 
 ---
+# Scraping: the rules of the game
+
+<br>
+
+1. You take all the responsibility for your web scraping work.
+
+2. Think about the nature of the data. Does it entail sensitive information? Do not collect personal data without explicit permission.
+
+3. Take all copyrights of a country’s jurisdiction into account. If you publish data, do not commit copyright fraud.
+
+4. If possible, stay identifiable. Stay polite. Stay friendly. Obey the scraping etiquette.
+
+5. If in doubt, ask the author/creator/provider of data for permission—if your interest is entirely scientific, chances aren’t bad that you get data.
+
+---
+# Consult robots.txt
+
+.pull-left[
+### What's robots.txt?
+
+-  "[Robots exclusion standard](https://en.wikipedia.org/wiki/Robots_exclusion_standard)", informal protocol to prohibit web robots from crawling content
+- Located in the root directory of a website (e.g.,  [google.com/robots.txt](https://www.google.com/robots.txt))
+- Documents which bot is allowed to crawl which resources (and which not)
+- Not a technical barrier, but a sign that asks for compliance
+
+### What's robots.txt?
+
+- Not an official W3C standard
+- Rules listed bot by bot
+- General rule listed under `User-agent: *` (most interesting entry for R-based crawlers)
+- Directories folders listed separately
+]
+
+.pull-right[
+
+**Example**
+
+```{txt, prompt = FALSE, eval = FALSE}
+User-agent: Googlebot 
+Disallow: /images/ 
+Disallow: /private/
+```
+
+**Universal ban**
+
+```{txt, prompt = FALSE, eval = FALSE}
+User-agent: * 
+Disallow: /
+```
+
+]
+
+
+---
 # Downloading HTML files
 
 .pull-left[
@@ -1187,16 +1252,15 @@ name: goodpractice
 ### Two easy-to-implement practices
 
 1. Do not bombard the server with requests - and if you have to, do so at modest pace.
-2. Store web data on your local/remote drive first, then parse.
+2. Store web data on your local drive first, then parse.
 
-### Looping over a list of URLs
-
-- `!file.exists()` checks whether a file does not exist in the specified location.
-- `download.file()` downloads the file to a folder. The destination file (location + name) has to be specified.
-- `Sys.sleep()` suspends the execution of R code for a given time interval (in seconds).
 ]
 
+
+
 .pull-right[
+
+### Looping over a list of URLs
 
 ```{r, eval = FALSE}
 for (i in 1:length(list_of_urls)) { 
@@ -1209,6 +1273,10 @@ for (i in 1:length(list_of_urls)) {
 }
 ```
 
+- `!file.exists()` checks whether a file does not exist in the specified location.
+- `download.file()` downloads the file to a folder. The destination file (location + name) has to be specified.
+- `Sys.sleep()` suspends the execution of R code for a given time interval (in seconds).
+]
 
 ---
 # Staying identifiable
@@ -1225,14 +1293,12 @@ for (i in 1:length(list_of_urls)) {
 1. Get in touch with website administrators / data owners.
 2. Use HTTP header fields `From` and `User-Agend` to provide information about yourself.
 
-### Staying identifiable in practice
-
-- `rvest`'s `session()` creates a session object that responds to HTTP and HTML methods.
-- Here, we provide our email address and the current R version as `User-Agent` information.
-- This will pop up in the server logs: The webpage administrator has the chance to easily get in touch with you.
 ]
 
+
 .pull-right[
+
+### Staying identifiable in practice
 
 ```{r, eval = FALSE}
 url <- "http://a-totally-random-website.com"
@@ -1246,7 +1312,22 @@ headlines <- rvest_session %>%
              html_text()
 ```
 
+
+- `rvest`'s `session()` creates a session object that responds to HTTP and HTML methods.
+- Here, we provide our email address and the current R version as `User-Agent` information.
+- This will pop up in the server logs: The webpage administrator has the chance to easily get in touch with you.
+
 ]
+
+
+
+---
+# Scraping etiquette (cont.)
+
+<div align="center">
+<img src="pics/scraping-etiquette.png" height=540>
+</div>
+
 
 
 ---

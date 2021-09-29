@@ -8,4 +8,5 @@
 **/*_cache/
 **/cache/
 **/logs/
+clips/
 .DS_Store
