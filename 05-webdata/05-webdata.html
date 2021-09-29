@@ -624,7 +624,7 @@ name: xpath
 ---
 # Accessing the DOM tree with R
 
-### Getting HTML into R
+### Different perspectives on HTML
 
 - HTML documents are human-readable.
 - HTML tags structure the document, comprising the DOM.
@@ -640,7 +640,9 @@ name: xpath
 - There is one high-level function to remember: `read_html()`. It represents the HTML in a list-style fashion.
 
 ---
-# Parsing HTML with R
+# Accessing the DOM tree with R (cont.)
+
+### Getting HTML into R
 
 Parsing a website is straightforward:
 
@@ -1162,74 +1164,148 @@ name: scrapingstatic
 # The scraping workflow
 
 .pull-left[
-### The key tools for scraping static webpages
+### Key tools for scraping static webpages
 
 1. You are able to inspect HTML pages in your browser using the web developer tools.
 2. You are able to parse HTML into R with `rvest`.
 3. You are able to speak XPath (or CSS selectors).
 4. You are able to apply XPath expressions with `rvest`.
 5. You are able to tidy web data with R/`dplyr`/`regex`.
+
+
+### The big picture
+
+- Every scraping project is different, but the coding pipeline is fundamentally similar.
+- The (technically) hardest steps are location (XPath, CSS selectors) and extraction (clean-up), sometimes the scaling (from one to multiple sources).
 ]
 
 .pull-right[
+&lt;br&gt;&lt;br&gt;&lt;br&gt;
 &lt;div align="center"&gt;
 &lt;img src="pics/scraping-workflow.png" width=550&gt;
 &lt;/div&gt;
 ]
 
 ---
-# rvest: a suite of scraping tools for R
+# Web scraping with rvest
 
-- what it is
-- workflow: 
-`read_html()`
-`html_elements()`
-`html_text2()`
+.pull-left-wide[
 
-https://rvest.tidyverse.org/reference/index.html#section-html
-https://rvest.tidyverse.org/
+`rvest` is a suite of scraping tools. It is part of the tidyverse and has made scraping with R much more convenient.
 
-Webscraping basics: See Grant McDermott's "webscraping basics" server-side vs client-side
+There are three key `rvest` verbs that you need to learn.&lt;sup&gt;1&lt;/sup&gt;
+
+1. `read_html()`: Read (parsing) an HTML resource.
+
+2. `html_elements()`: Find elements that match a CSS selector or XPath expression.
+
+3. `html_text2()`: Extract the text/value inside the node set.
+
+
+]
+
+.footnote[
+&lt;sup&gt;1&lt;/sup&gt; There is more in `rvest`. Have a glimpse at the [overview at tidyverse.org](https://rvest.tidyverse.org/ and at this excellent (unofficial) [cheat sheet](https://github.com/yusuzech/r-web-scraping-cheat-sheet).
+]
+
+
+.pull-right-small-center[
+&lt;div align="center"&gt;
+&lt;br&gt;
+&lt;img src="pics/rvest.png" height=250&gt;
+&lt;/div&gt;
+]
 
 
 ---
-# Scraping HTML tables
+# Web scraping with rvest: example
 
-- HTML tables are everywhere.
-- They are easy to spot in the wild - just look for `&lt;table&gt;` tags!
-- Exactly because scraping tables is an easy and repetitive task, there is a dedicated `rvest` function for it: `html_table()`.
+.pull-left-vsmall[
+- We are going to scrape a information from a Wikipedia article on women philosophers available at [https://en.wikipedia.org/wiki/](https://en.wikipedia.org/wiki/List_of_women_philosophers) [List_of_women_philosophers](https://en.wikipedia.org/wiki/List_of_women_philosophers).
+- The article provides two types of lists - one by period and one sorted alphabetically. We want the alphabetial list.
+- The information we are actually interested in - names - are stored in unordered list elements.
+]
 
+.pull-right-vwide[
+&lt;div align="center"&gt;
+&lt;img src="pics/wiki-philosophers-1.png" height=250&gt;
+&lt;img src="pics/wiki-philosophers-2.png" height=250&gt;
+&lt;br&gt;
+&lt;img src="pics/wiki-philosophers-3.png" height=250&gt;
+&lt;img src="pics/wiki-philosophers-4.png" height=220&gt;
+&lt;/div&gt;
+]
+
+
+---
+# Scraping HTML tables: example (cont.)
+
+**Step 1:** Parse the page
 
 ```r
-R&gt; html_table(x, 
-+             header = NA,
-+             trim = TRUE,
-+             dec = ".",
-+             na.strings = "NA",
-+             convert = TRUE
-+  )
+R&gt; url_p &lt;- read_html("https://en.wikipedia.org/wiki/List_of_women_philosophers")
 ```
 
-| Argument |  Description |
-|---|---|
-| `x` | Usually a document (from `read_html()`) or node set (from `html_elements()`). |
-| `header` | Use first row as header? If `NA`, will use first row if it consists of `&lt;th&gt;` tags. |
-| `trim` | Remove leading and trailing whitespace within each cell? |
-| `dec` | The character used as decimal place marker. |
-| `na.strings` | Character vector of values that will be converted to `NA` if `convert` is `TRUE`. |
-| `convert` | If `TRUE`, will run `type.convert()` to interpret texts as integer, double, or `NA`. |
 
 
----
-# Scraping HTML tables: example
+--
+
+**Step 2:** Develop an XPath expression (or multiple) that select the information of interest and apply it
 
 
 ```r
-R&gt; library(rvest)
-R&gt; url_p &lt;- read_html("https://en.wikipedia.org/wiki/List_of_human_ spaceflights")
-R&gt; tables &lt;- html_table(url_p, header = TRUE)
-R&gt; spaceflights &lt;- tables[[1]]
-R&gt; spaceflights
+R&gt; elements_set &lt;- html_elements(url_p, xpath = "//h2/span[text()='Alphabetically']//following::li/a[1]")
+```
+
+--
+
+The XPath expression reads:
+
+- `//h2`: Look for  `h2` elements anywhere in the document.
+- `/span[text()='Alphabetically']`: Within that element look for `span` elements with the content `"Alphabetically"`.
+- `//following::li`: In the DOM tree following that element (at any level), look for `li` elements.
+- `/a[1]` within these elements look for the first `a` element you can find.
+
+---
+# Scraping HTML tables: example (cont.)
+
+**Step 3:** Extract information and clean it up
+
+
+```r
+R&gt; phil_names &lt;- elements_set %&gt;% html_text2()
+R&gt; phil_names[c(1:2, 101:102)]
+```
+
+```
+## [1] "A"                    "B"                    "Elisabeth of Bohemia"
+## [4] "Dorothy Emmet"
+```
+
+--
+
+**Step 4:** Clean up
+
+
+```r
+R&gt; names_iffer &lt;-
++   seq_along(phil_names) &gt;=  seq_along(phil_names)[str_detect(phil_names, "Felicia Nimue Ackerman")] &amp;
++   seq_along(phil_names) &lt;=   seq_along(phil_names)[str_detect(phil_names, "Alenka Zupančič")]
+R&gt; philosopher_names_clean &lt;- phil_names[names_iffer]
+R&gt; length(philosopher_names_clean)
+```
+
+```
+## [1] 267
+```
+
+```r
+R&gt; philosopher_names_clean[1:5]
+```
+
+```
+## [1] "Felicia Nimue Ackerman" "Marilyn McCord Adams"   "Aedesia"               
+## [4] "Alia Al-Saji"           "Lilli Alanen"
 ```
 
 
@@ -1242,8 +1318,8 @@ R&gt; spaceflights
 
 ### The hassle with XPath
 
-- The most cumbersome part of web scraping (data tidying aside) is the construction of XPath expressions that match the components of a page you want to extract
-- It will take a couple of scraping projects until you’ll truly have mastered XPath
+- The most cumbersome part of web scraping (data tidying aside) is the construction of XPath expressions that match the components of a page you want to extract.
+- It will take a couple of scraping projects until you’ll truly have mastered XPath.
 
 ### A much-appreciated helper
 
@@ -1259,29 +1335,162 @@ R&gt; spaceflights
 
 ### What does SelectorGadget do?
 
-- You active the tool on any webpage you want to scrape.
-- Based on your selection of components, the tool learns about your desired components and generates an XPath expression (or CSS selector) for you
+- You activate the tool on any webpage you want to scrape.
+- Based on your selection of components, the tool learns about your desired components and generates an XPath expression (or CSS selector) for you.
 
 ### Under the hood
 
-- Based on your selection(s), the tool looks for similar elements on the page
-- The underlying algorithm, which draws on Google’s diff-match-patch libraries, focuses on CSS characteristics, such as tag names and `&lt;div&gt;` and `&lt;span&gt;` attributes
+- Based on your selection(s), the tool looks for similar elements on the page.
+- The underlying algorithm, which draws on Google’s diff-match-patch libraries, focuses on CSS characteristics, such as tag names and `&lt;div&gt;` and `&lt;span&gt;` attributes.
 
 ]
 
+---
+# SelectorGadget: example
+
+&lt;video width="980" height="551" controls&gt;
+  &lt;source src="pics/selectorgadget-nytimes.mp4" type="video/mp4"&gt;
+Your browser does not support the video tag.
+&lt;/video&gt;
+
 
 ---
-# More usecases
-
-scraping multiple pages
-
-forms
-
-authentication
-
-crawling
+# SelectorGadget: example (cont.)
 
 
+```r
+R&gt; library(rvest)
+R&gt; url_p &lt;- read_html("https://www.nytimes.com")
+R&gt; # xpath: paste the expression from Selectorgadget!
+R&gt; # note: we use single quotation marks here (' instead of ") to wrap around the expression!
+R&gt; xpath &lt;- '//*[contains(concat( " ", @class, " " ), concat( " ", "erslblw0", " " ))]//*[contains(concat( " ", @class, " " ), concat( " ", "e1lsht870", " " ))]'
+R&gt; headlines &lt;- html_elements(url_p, xpath = xpath) 
+R&gt; headlines_raw &lt;- html_text(headlines)
+R&gt; length(headlines_raw)
+R&gt; head(headlines_raw)
+```
+
+
+```
+## [1] 29
+```
+
+```
+## [1] "Retailers’ Latest Headache: Shutdowns at Their Vietnamese SuppliersRetailers’ Latest Headache: Shutdowns at Their Vietnamese Suppliers"
+## [2] "With virus restrictions waning, it’s becoming clear: Britain’s gas crisis is a Brexit crisis, too. Here’s why."                        
+## [3] "Business updates: U.S. stock futures signaled a rebound as bond yields fell back."                                                     
+## [4] "Republicans at Odds Over Infrastructure Bill as Vote ApproachesRepublicans at Odds Over Infrastructure Bill as Vote Approaches"        
+## [5] "Liberals Dig In Against Infrastructure Bill as Party Divisions Persist"                                                                
+## [6] "Successful programs from around the world could guide Congress in designing a paid family leave plan."
+```
+
+
+---
+# SelectorGadget: when to use and not to use it
+
+Having learned about a semi-automated approach to generating XPath expressions, you might ask: Why bother with learning XPath at all? Well...
+
+- SelectorGadget is not perfect. Sometimes, the algorithm will fail.
+- Starting from a different element sometimes (but not always!) helps.
+- Often the generated expressions are unnecessarily complex and therefore difficult to debug.
+- In my experience, SelectorGadget works 50-60% of the times when scraping from static webpages.
+- You are also prepared for the remaining 40-50%!
+
+
+
+---
+# Scraping HTML tables
+
+&lt;div align="center"&gt;
+&lt;img src="pics/html-table-1.png" height=250&gt;
+&lt;img src="pics/html-table-2.png" height=250&gt;
+&lt;br&gt;
+&lt;img src="pics/html-table-3.png" height=300&gt;
+&lt;/div&gt;
+
+
+---
+# Scraping HTML tables
+
+- HTML tables are everywhere.
+- They are easy to spot in the wild - just look for `&lt;table&gt;` tags!
+- Exactly because scraping tables is an easy and repetitive task, there is a dedicated `rvest` function for it: `html_table()`.
+
+.pull-left-vsmall[
+&lt;br&gt;
+&lt;br&gt;
+**Function definition**
+
+```r
+R&gt; html_table(x, 
++     header = NA,
++     trim = TRUE,
++     dec = ".",
++     na.strings = "NA",
++     convert = TRUE
++  )
+```
+]
+
+.pull-right-vwide[
+&lt;br&gt;
+
+| Argument |  Description |
+|---|---|
+| `x` | Document (from `read_html()`) or node set (from `html_elements()`). |
+| `header` | Use first row as header? If `NA`, will use first row if it consists of `&lt;th&gt;` tags. |
+| `trim` | Remove leading and trailing whitespace within each cell? |
+| `dec` | The character used as decimal place marker. |
+| `na.strings` | Character vector of values that will be converted to `NA` if `convert` is `TRUE`. |
+| `convert` | If `TRUE`, will run `type.convert()` to interpret texts as int, dbl, or `NA`. |
+]
+
+---
+# Scraping HTML tables: example
+
+.pull-left-small[
+- We are going to scrape a small table from the Wikipedia page [https://en.wikipedia.org/wiki/](https://en.wikipedia.org/wiki/List_of_human_spaceflights) [List_of_human_spaceflights](https://en.wikipedia.org/wiki/List_of_human_spaceflights).
+- (Note that we're actually using an old version of the page (dating back to May 1, 2018, and accessible under  https://en.wikipedia.org/w/index.php?title=List_of_human_spaceflights&amp;oldid=778165808. Wikipedia pages change, but this old revision won't.))
+- The table is not entirely clean: There are some empty cells, but also images and links.
+- The HTML code looks straightforward though.
+]
+
+.pull-right-wide[
+&lt;div align="center"&gt;
+&lt;img src="pics/wiki-spaceflights-2.png" height=250&gt;
+&lt;img src="pics/wiki-spaceflights-3.png" height=250&gt;
+&lt;br&gt;
+&lt;img src="pics/wiki-spaceflights-4.png" width=300&gt;
+&lt;/div&gt;
+]
+
+---
+# Scraping HTML tables: example (cont.)
+
+
+```r
+R&gt; library(rvest)
+R&gt; url &lt;- "https://en.wikipedia.org/wiki/List_of_human_spaceflights"
+R&gt; url_p &lt;- read_html(url)
+R&gt; tables &lt;- html_table(url_p, header = TRUE)
+R&gt; spaceflights &lt;- tables[[1]]
+R&gt; spaceflights
+```
+
+
+
+```
+## # A tibble: 7 × 5
+##   ``        `Russia  Soviet Union` `United States` China Total
+##   &lt;chr&gt;     &lt;chr&gt;                  &lt;chr&gt;           &lt;int&gt; &lt;chr&gt;
+## 1 1961–1970 16                     25                 NA 41   
+## 2 1971–1980 30                     8                  NA 38   
+## 3 1981–1990 *25                    *38                NA *63  
+## 4 1991–2000 20                     63                 NA 83   
+## 5 2001–2010 24                     34                  3 61   
+## 6 2011–2020 24                     3                   3 30   
+## 7 Total     *139                   *171                6 *316
+```
 
 
 ---
@@ -1346,6 +1555,24 @@ Disallow: /private/
 User-agent: * 
 Disallow: /
 ```
+
+**Allow declaration**
+
+
+```txt
+User-agent: * 
+Disallow: /images/ 
+Allow: /images/public/
+```
+
+**Crawl delay (in seconds)**
+
+
+```txt
+User-agent: *
+Crawl-delay: 2
+```
+
 
 ]
 
@@ -1466,7 +1693,14 @@ name: summary
 ---
 # Outlook
 
-Outlook: dynamic webpages, APIs
+Until now, the toy examples were limited to single HTML pages. However, often we want to **scrape data from multiple pages**. You might think of newspaper articles, Wikipedia pages, shopping items and the like. In such scenarios, automating the scraping process becomes really powerful. Also, principles of polite scraping are more relevant.
+
+In other cases, you might be confronted with **forms**, **authentication**, **dynamic (JavaScript-enriched) content**, or want to **automatically navigate through pages interactively**.
+
+Moreover, we've ignored a major alternative way to collect data from the web so far which goes beyond scraping: accessing [web APIs](https://en.wikipedia.org/wiki/Web_API). Be sure to check out the respective sessions in the workshop.
+
+There's only so much we can cover in one session. Check out more material online [here](https://github.com/hertie-data-science-lab/ds-workshop-webscraping) and [there](https://github.com/yusuzech/r-web-scraping-cheat-sheet) to learn about solutions to some of these problems.
+
 
 
 
@@ -1478,12 +1712,11 @@ Outlook: dynamic webpages, APIs
 
 ### Assignment
 
-None! But you'll get the chance to practice databasing with R in the lab.
-
+Assignment 3 is about to go online on GitHub Classroom. Check it out and start scraping the web (politely).
 
 ### Next lecture
 
-Web data and technologies - relational data structures FTW!
+Model fitting and simulation. Now that we know how to retrieve data, let's learn how to learn from them.
 
 
     </textarea>
