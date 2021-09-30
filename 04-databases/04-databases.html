@@ -443,7 +443,7 @@ The **normal forms** (from least normalized to most normalized):
 ### Where are databases?
 
 - Databases can exist locally or remotely, in-memory or on-disk.
-- When they are stored locally, they are not stored as binary file (not text file). 
+- When they are stored locally, they are stored as binary file (not text file). 
 - Commonly, we think of a **client-server model**:
   - Databases live on a **server**, which manages them
   - Users interact with the server through a **client** program.
@@ -1074,7 +1074,9 @@ R&gt; -- One line comment.
 ### Notes from a dplyr user
 
 - SQL syntax is intuitive [until it isn't](https://blog.jooq.org/a-beginners-guide-to-the-true-order-of-sql-operations/).
-- A key problem: SQL imposes a **lexical order** of operations which does not necessarily match the **logical order** of operations you'd have in mind.
+- One problem: SQL imposes a **lexical order** of operations ("order of execution")  which does not necessarily match the **logical order** of operations you'd have in mind.
+- Conceptually, every step (like "`WHERE`") of the query transforms its input. However, the query's steps don't happen in the order they're written (e.g., `SELECT` is written first but the operation comes much later in the process).
+- Compare this to our `dplyr` logic: Take this, do this, then do this, etc.
 
 --
 
