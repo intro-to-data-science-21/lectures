@@ -434,7 +434,7 @@ The **normal forms** (from least normalized to most normalized):
 ### How they can look like
 
 <div align="center">
-<img src="pics/Mediawiki-schema.png" width=600>
+<img src="pics/mediawiki-schema.png" width=600>
 </div>
 `Credit` [Timo Tijhof/Wikimedia Commons](https://en.wikipedia.org/wiki/Database_schema#/media/File:MediaWiki_1.28.0_database_schema.svg)
 ]
