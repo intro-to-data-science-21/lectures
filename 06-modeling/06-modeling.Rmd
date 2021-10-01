@@ -1,0 +1,117 @@
+---
+title: "Introduction to Data Science"
+subtitle: "Session 6: Model fitting and simulation"
+author: "Simon Munzert"
+institute: "Hertie School | [GRAD-C11/E1339](https://github.com/intro-to-data-science-21)" #"`r format(Sys.time(), '%d %B %Y')`"
+output:
+  xaringan::moon_reader:
+    css: [default, 'simons-touch.css', metropolis, metropolis-fonts] 
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+      ratio: '16:9'
+      hash: true
+---
+
+
+```{css, echo=FALSE} 
+@media print { # print out incremental slides; see https://stackoverflow.com/questions/56373198/get-xaringan-incremental-animations-to-print-to-pdf/56374619#56374619
+  .has-continuation {
+    display: block !important;
+  }
+}
+```
+
+```{r setup, include=FALSE}
+# figures formatting setup
+options(htmltools.dir.version = FALSE)
+library(knitr)
+opts_chunk$set(
+  prompt = T,
+  fig.align="center", #fig.width=6, fig.height=4.5, 
+  # out.width="748px", #out.length="520.75px",
+  dpi=300, #fig.path='Figs/',
+  cache=F, #echo=F, warning=F, message=F
+  engine.opts = list(bash = "-l")
+  )
+
+## Next hook based on this SO answer: https://stackoverflow.com/a/39025054
+knit_hooks$set(
+  prompt = function(before, options, envir) {
+    options(
+      prompt = if (options$engine %in% c('sh','bash')) '$ ' else 'R> ',
+      continue = if (options$engine %in% c('sh','bash')) '$ ' else '+ '
+      )
+})
+
+library(tidyverse)
+```
+
+
+# Table of contents
+
+<br>
+
+1. [Web data for data science](#webdata)
+
+2. [HTML basics](#html)
+
+3. [XPath basics](#xpath)
+
+4. [CSS basics](#css)
+
+5. [Scraping static webpages with R](#scrapingstatic)
+
+6. [Web scraping: good practice](#goodpractice)
+
+7. [Summary](#summary)
+
+
+- Specifying models (formula building)
+- Running models (simple, multiple models)
+- Post-estimation
+- Simulating data
+- Tidy modeling practice
+
+## Work on the R script first!
+
+
+
+---
+class: inverse, center, middle
+name: webdata
+
+# Web data for data science
+
+<html><div style='float:left'></div><hr color='#EB811B' size=1px style="width:1000px; margin:auto;"/></html>
+
+
+
+---
+class: inverse, center, middle
+name: summary
+
+# Summary
+
+<html><div style='float:left'></div><hr color='#EB811B' size=1px style="width:1000px; margin:auto;"/></html>
+
+
+
+
+---
+
+# Coming up
+
+<br><br> 
+
+### Assignment
+
+Assignment 4 is about to go online on GitHub Classroom. Check it out and start modeling and simulating.
+
+### Next lecture
+
+Visualization. But first: Mid-term Exam Week - no class!
+
+
