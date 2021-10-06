@@ -11,7 +11,10 @@
 
 3. R and the tidyverse \[[**.html**](https://raw.githack.com/intro-to-data-science-21/lectures/main/03-tidyverse/03-tidyverse.html) | [**.pdf**](https://raw.githack.com/intro-to-data-science-21/lectures/main/03-tidyverse/03-tidyverse.pdf) | [**.Rmd**](https://raw.githack.com/intro-to-data-science-21/lectures/main/03-tidyverse/03-tidyverse.Rmd)\]
 
-3. Databases \[[**.html**](https://raw.githack.com/intro-to-data-science-21/lectures/main/04-databases/04-databases.html) | [**.pdf**](https://raw.githack.com/intro-to-data-science-21/lectures/main/04-databases/04-databases.pdf) | [**.Rmd**](https://raw.githack.com/intro-to-data-science-21/lectures/main/04-databases/04-databases.Rmd)\]
+4. Databases \[[**.html**](https://raw.githack.com/intro-to-data-science-21/lectures/main/04-databases/04-databases.html) | [**.pdf**](https://raw.githack.com/intro-to-data-science-21/lectures/main/04-databases/04-databases.pdf) | [**.Rmd**](https://raw.githack.com/intro-to-data-science-21/lectures/main/04-databases/04-databases.Rmd)\]
+
+5. Web data and technologies \[[**.html**](https://raw.githack.com/intro-to-data-science-21/lectures/main/05-webdata/05-webdata.html) | [**.pdf**](https://raw.githack.com/intro-to-data-science-21/lectures/main/05-webdata/05-webdata.pdf) | [**.Rmd**](https://raw.githack.com/intro-to-data-science-21/lectures/main/05-webdata/05-webdata.Rmd)\]
+
 
 ## Summary
 
