@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Introduction to Data Science</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Simon Munzert" />
+    <script src="libs/header-attrs/header-attrs.js"></script>
+    <link href="libs/remark-css/default.css" rel="stylesheet" />
+    <link href="libs/remark-css/metropolis.css" rel="stylesheet" />
+    <link href="libs/remark-css/metropolis-fonts.css" rel="stylesheet" />
+    <link rel="stylesheet" href="simons-touch.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Introduction to Data Science
+## Session 6: Model fitting and simulation
+### Simon Munzert
+### Hertie School | <a href="https://github.com/intro-to-data-science-21">GRAD-C11/E1339</a>
+
+---
+
+
+
+&lt;style type="text/css"&gt;
+@media print { # print out incremental slides; see https://stackoverflow.com/questions/56373198/get-xaringan-incremental-animations-to-print-to-pdf/56374619#56374619
+  .has-continuation {
+    display: block !important;
+  }
+}
+&lt;/style&gt;
+
+
+
+
+# Table of contents
+
+&lt;br&gt;
+
+1. [Crafting formulas](#formulas)
+
+2. [Running models](#models)
+
+3. [Processing estimation output](#postestimation)
+
+4. [Reporting modeling results](#reporting)
+
+5. [Simulating fake data](#simulation)
+
+6. [Summary](#summary)
+
+
+---
+# The modeling workflow
+
+.pull-left-wide[
+### Why modeling?
+
+- Modeling is at the heart of the data science workflow.
+- We use models to explore, test, infer, predict based on data.
+- The art and science of statistical modeling is vast.
+- Today, we will focus on key steps of the workflow which are common in most modeling endeavors. We won't touch on theoretical/statistical backgrounds though and ignore workflow issues in particular areas, such as simulation-based Bayesian inference. 
+]
+
+--
+
+.pull-right-small[
+### Steps of the workflow
+
+1. **Choose** a modeling strategy
+2. **Specify** the model (structural components / parameters)
+3. **Run/implement** the model (estimation)
+4. **Evaluate** the model output
+5. **Present** the results
+]
+
+--
+
+&lt;div align="center"&gt;
+&lt;br&gt;
+&lt;img src="pics/data-science-model.png" width=550&gt;
+&lt;/div&gt;
+
+
+
+
+
+&lt;!-- ############################################ --&gt;
+---
+class: inverse, center, middle
+name: formulas
+
+# Crafting formulas
+
+&lt;html&gt;&lt;div style='float:left'&gt;&lt;/div&gt;&lt;hr color='#EB811B' size=1px style="width:1000px; margin:auto;"/&gt;&lt;/html&gt;
+
+
+
+
+---
+background-image: url("pics/albert-einstein-lm.png")
+background-size: contain
+background-color: #000000
+
+# Crafting formulas
+
+
+---
+# Model building
+
+### Systematic + stochastic components of models
+
+- When we try to model data, we often start by assuming a data-generating process that looks like
+
+$$
+Y = f(x) + \epsilon
+$$
+- In doing so, we decompose a model (or data-generating process) into a random or stochastic part (here: `\(\epsilon\)`) and a systematic/structural/deterministic part (here: `\(f(x)\)`).
+- (We might go on to impose further assumptions about the stochastic component, e.g., `\(\epsilon \sim N(0, 1)\)`.)
+
+- In many cases, we want to learn how certain variables systematically relate to each other. To that end, we specify the systematic component of a model and then "let the data speak" to estimate parameters associate with elements of the systematic component.
+- As an example, we might specify
+
+$$
+f(x) = \beta_{0} + \beta_{1}x
+$$
+
+- But how can we express our belief about the model structure in R?
+
+
+---
+# Model building in R
+
+### Model formulas in R
+
+- In R, there's a standardized way to specify models like this: working with the `formula` class.
+- In many cases you can still think of the model formula as just a string specifying the structural part of your model (there are exceptions).
+- But formula class objects also allow you to do more useful things with formula.
+- The basic structure of a formula is the tilde symbol (~) and at least one independent (righthand) variable. In most (but not all) situations, a single dependent (lefthand) variable is also needed. Thus we can construct a formula quite simply by just typing:
+
+
+```r
+R&gt; y ~ x
+```
+
+- Spaces in formulas are not important, but I recommend using them to make the formulas more readable. 
+- Running a model with a formula is straightforward. Note that we don't even have to put the formula in parentheses - it is automatically interpreted as one formula expression when provided as the first argument:
+
+
+```r
+R&gt; lm(arr_delay ~ distance + origin, data = flights)
+```
+
+---
+# Formula syntax
+
+- A more explicit way is to write the formula as string and then use `as.formula()` to turn it into a formula object. This implies that we can store formulas as an R object and check its class.
+
+
+```r
+R&gt; fmla &lt;- as.formula("arr_delay ~ distance + origin")
+R&gt; class(fmla)
+```
+
+```
+## [1] "formula"
+```
+
+- Next, we'd pass on the `formula` object to the model function, e.g.:
+
+
+```r
+R&gt; lm(fmla, data = flights)
+```
+
+```
+## 
+## Call:
+## lm(formula = fmla, data = flights)
+## 
+## Coefficients:
+## (Intercept)     distance    originJFK    originLGA  
+##   13.414049    -0.004045    -2.704255    -4.456169
+```
+
+---
+# Formula syntax (cont.)
+
+- We can use multiple independent variables by simply separating them with the plus (+) symbol:
+
+
+```r
+R&gt; y ~ x1 + x2
+```
+
+- If we use a minus (-) symbol, objects in the formula are ignored in an analysis:
+
+
+```r
+R&gt; y ~ x1 - x2
+```
+
+- We can also use this to drop the intercept:
+
+
+```r
+R&gt; y ~ x1 - x2 - 1
+```
+
+- The `.` operator refers to all other variables in the matrix/data frame not yet included in the model:
+
+
+```r
+R&gt; y ~ .
+```
+
+This is useful when you plan to run a regression on all variables in a matrix/data frame.
+
+
+
+
+&lt;!-- ############################################ --&gt;
+---
+class: inverse, center, middle
+name: models
+
+# Running models
+
+&lt;html&gt;&lt;div style='float:left'&gt;&lt;/div&gt;&lt;hr color='#EB811B' size=1px style="width:1000px; margin:auto;"/&gt;&lt;/html&gt;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+&lt;!-- ############################################ --&gt;
+---
+class: inverse, center, middle
+name: postestimation
+
+# Processing estimation output
+
+&lt;html&gt;&lt;div style='float:left'&gt;&lt;/div&gt;&lt;hr color='#EB811B' size=1px style="width:1000px; margin:auto;"/&gt;&lt;/html&gt;
+
+
+
+
+
+
+
+
+
+&lt;!-- ############################################ --&gt;
+---
+class: inverse, center, middle
+name: reporting
+
+# Reporting modeling results
+
+&lt;html&gt;&lt;div style='float:left'&gt;&lt;/div&gt;&lt;hr color='#EB811B' size=1px style="width:1000px; margin:auto;"/&gt;&lt;/html&gt;
+
+
+
+
+
+
+&lt;!-- ############################################ --&gt;
+---
+class: inverse, center, middle
+name: simulation
+
+# Simulating fake data
+
+&lt;html&gt;&lt;div style='float:left'&gt;&lt;/div&gt;&lt;hr color='#EB811B' size=1px style="width:1000px; margin:auto;"/&gt;&lt;/html&gt;
+
+
+
+
+
+&lt;!-- ############################################ --&gt;
+---
+class: inverse, center, middle
+name: summary
+
+# Summary
+
+&lt;html&gt;&lt;div style='float:left'&gt;&lt;/div&gt;&lt;hr color='#EB811B' size=1px style="width:1000px; margin:auto;"/&gt;&lt;/html&gt;
+
+---
+
+# Coming up
+
+&lt;br&gt;&lt;br&gt; 
+
+### Assignment
+
+Assignment 4 is about to go online on GitHub Classroom. Check it out and start modeling!
+
+### Next lecture
+
+Visualization. But first: Mid-term exam week - no class, enjoy the break!
+
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false,
+"ratio": "16:9",
+"hash": true
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
