@@ -90,7 +90,7 @@ name: webdata
 ### So what is web data, really?
 
 - Not all data you get from the web is "web data".
-- We data is **data that is created on, for, or via the web**. By that definition, a survey dataset that you download from a data repository is not web data.
+- Web data is **data that is created on, for, or via the web**. By that definition, a survey dataset that you download from a data repository is not web data.
 - On the other hand, survey data collected online (i.e., web/mobile questionnaires) is web data but we don't consider it in today's session.
 - Examples of web data: 
   - Online news articles
@@ -99,7 +99,6 @@ name: webdata
   - Server logs (e.g., viewership statistics)
   - Data from surveys, experiments, clickworkers
   - Just any website
-- The vast majority of web data was not created with a data analysis purpose in mind.
   
 ]
 
@@ -107,14 +106,14 @@ name: webdata
 
 .pull-right[
 
-### And why is data from the web attractive?
+### And why is web data attractive?
 
 - Data is abundant online.
 - Human behavior increasingly takes place online.
 - Countless services track human behavior.
 - Getting data from the web is cheap and often quick.
 - An analysis workflow that involves web data can often be easily updated.
-- The fact that much of the data was not created for purposes of analysis is often a feature, not a bug.
+- The vast majority of web data was not created with a data analysis purpose in mind. This fact is often a feature, not a bug.
 
 &lt;p style="color:red"&gt;
 Today, we focus on one particular way of collecting data from the web: &lt;b&gt;web scraping&lt;/b&gt;. This also limits the type of web data we'll be talking about (basically: data from static webpages). But it'll be fun nevertheless.
@@ -130,8 +129,8 @@ Today, we focus on one particular way of collecting data from the web: &lt;b&gt;
 
 ### What is web scraping?
 
-1. Getting (unstructured) data from the web and
-2. Bringing it into shape (e.g., into a format ready for analysis).
+1. Pulling (unstructured) data from websites (HTMLs)
+2. Bringing it into shape (into an analysis-ready format)
 
 ### The philosophy of scraping with R
 
@@ -160,8 +159,8 @@ Today, we focus on one particular way of collecting data from the web: &lt;b&gt;
 
 .pull-left[
 
-- To fully unlock the potential of web data for data science, you have to familiarize with certain web technologies.
-- Importantly, often a passive/pragmatic understanding of these technologies is sufficient as the focus is on web data collection, not web development.
+- To fully unlock the potential of web data for data science, we draw on certain web technologies.
+- Importantly, often a basic understanding of these technologies is sufficient as the focus is on web data collection, not [web development](https://en.wikipedia.org/wiki/Web_development).
 - Specifically, we have to understand
   - How our machine/browser/R communicates with web servers (→ **HTTP/S**)
   - How websites are built (→ **HTML**, **CSS**, basics of **JavaScript**)
@@ -172,8 +171,8 @@ Today, we focus on one particular way of collecting data from the web: &lt;b&gt;
 ]
 
 .pull-right-center[
-&lt;br&gt;
 &lt;div align="center"&gt;
+&lt;br&gt;
 &lt;img src="pics/webtechnologies.png" width=500&gt;
 &lt;/div&gt;
 `Credit` [ADCR](http://r-datacollection.com/)
@@ -206,9 +205,9 @@ name: html
 
 ### What is it good for?
 
-- In the early days, the internet was mainly good for sharing texts. But plain text is boring. Markup is fun!
+- In the early days, the internet was mainly good for sharing texts. But plain text is boring. &lt;span style="font-family:Comic Sans MS"&gt;Markup&lt;/span&gt; &lt;span style="color:purple"&gt;is&lt;/span&gt; *fun*!
 - HTML lies underneath of what you see in your browser. You don't see it because your browser interprets and renders it for you.
-- A basic understanding of HTML helps us locate the information we want to retrieve. A (mostly) passive understanding of HTML is sufficient though.
+- A basic understanding of HTML helps us locate the information we want to retrieve.
 
 ]
 
@@ -218,7 +217,7 @@ name: html
 &lt;div align="center"&gt;
 &lt;img src="pics/Sir_Tim_Berners-Lee_(cropped).jpeg" width=200&gt;
 &lt;br&gt;&lt;br&gt;
-&lt;img src="pics/html5.png" width=200&gt;
+&lt;img src="pics/html5.png" width=180&gt;
 &lt;/div&gt;
 
 ]
@@ -233,12 +232,12 @@ name: html
 
 - HTML documents are hierarchically structured. Think of them as a tree with multiple nodes and branches.
 - When a webpage (HTML resource) is loaded, the browser creates a [Document Object Model](https://en.wikipedia.org/wiki/Document_Object_Model) of that page - the **DOM Tree**.
-- Think of it as a representation that considers all HTML elements as objects than can be accessed,
+- Think of it as a representation that considers all HTML elements as objects than can be accessed.
 
 ### Parts of the tree
 
-- The DOM is constituted of nodes, which are just data types that can be referred to - such as "attribute node", "text node", or "element node".
-- A node set is a set of nodes. This will become relevant when you learn about XPath, which you can use to access multiple nodes (e.g., all `title` nodes).
+- The DOM is constituted of **nodes**, which are just data types that can be referred to - such as "attribute node", "text node", or "element node".
+- A **node set** is a set of nodes. This will become relevant when you learn about XPath, which you can use to access multiple nodes (e.g., all `title` nodes).
 ]
 
 .pull-right[
@@ -294,7 +293,7 @@ name: html
 ### Why tags and attributes are important
 
 - Tags structure HTML documents.
-- In the context of web scraping, the structure can be exploited to locate and extract data from websites
+- In the context of web scraping, the structure can be exploited to locate and extract data from websites.
 
 ]
 
@@ -385,16 +384,16 @@ Example of CSS definition:
 
 
 ```css
-R&gt; div.happy {
-+   color:pink; 
-+   font-family:"Comic Sans MS";
-+   font-size:120% 
-+ } 
-+ span.happy { 
-+   color:pink; 
-+   font-family:"Comic Sans MS"; 
-+   font-size:120% 
-+ }
+div.happy {
+  color:pink; 
+  font-family:"Comic Sans MS";
+  font-size:120% 
+} 
+span.happy { 
+  color:pink; 
+  font-family:"Comic Sans MS"; 
+  font-size:120% 
+}
 ```
 ]
 
@@ -406,8 +405,9 @@ In the HTML document:
 &lt;div class="happy"&gt;
   &lt;p&gt;I am a happy-styled paragraph&lt;/p&gt;
 &lt;/div&gt;
-unhappy text with 
-&lt;span class="happy"&gt;some happiness&lt;/span&gt;
+  
+unhappy text with &lt;span class="happy"&gt;some 
+happiness&lt;/span&gt;
 ```
 ]
 
@@ -477,12 +477,12 @@ Example:
 
 .pull-right-small[
 &lt;div align="center"&gt;
-&lt;br&gt;
+&lt;br&gt;&lt;br&gt;&lt;br&gt;
 &lt;img src="pics/html-oreilly.jpeg" width=130&gt;
-&lt;br&gt;
 &lt;img src="pics/css-oreilly.jpg" width=130&gt;
 &lt;br&gt;
 &lt;img src="pics/javascript-oreilly.jpg" width=130&gt;
+&lt;img src="pics/xpath-oreilly.gif" width=130&gt;
 &lt;/div&gt;
 ]
 
@@ -544,10 +544,10 @@ Example:
 # Inspecting HTML source code
 
 .pull-left-small[
-&lt;br&gt;&lt;br&gt;
+&lt;br&gt;&lt;br&gt;&lt;br&gt;
 - Goal: retrieving data from a Wikipedia page on [List of tallest buildings](https://en.wikipedia.org/wiki/List_of_tallest_buildings)
 - Right-click on page (anywhere)
-- Select "View Page Source"
+- Select `View Page Source`
 - HTML (CSS, JavaScript) code can be ugly
 - But looking more closely, we find the displayed information
 ]
@@ -568,7 +568,7 @@ Your browser does not support the video tag.
 .pull-left-small[
 - Goal: retrieving data from a Wikipedia page on [List of tallest buildings](https://en.wikipedia.org/wiki/List_of_tallest_buildings)
 - Right-click on the element of interest
-- Select "Inspect"
+- Select `Inspect`
 - The Web Developer Tools window pops up
 - Corresponding part in the HTML tree is highlighted
 - Interaction with the tree possible!
@@ -600,7 +600,7 @@ Your browser does not support the video tag.
 ### A note on browser differences
 
 - Inspecting the source code (as shown on the following slides) works more or less identically in Chrome and Firefox.
-- In Safari, go to → Preferences, then → Advanced and select "Show Develop menu in menu bar". This unlocks the "Show Page Source" and "Inspect" options and the Web Developer Tools.
+- In Safari, go to → `Preferences`, then → `Advanced` and select `Show Develop menu in menu bar`. This unlocks the `Show Page Source` and `Inspect` options and the Web Developer Tools.
 ]
 
 .pull-right-small-center[
@@ -630,6 +630,8 @@ name: xpath
 - HTML tags structure the document, comprising the DOM.
 - **Web user perspective**: The browser interprets the code and renders the page.
 - **Web scraper perspective**: Parse the document retaining the structure, use the tree/tags to locate information.
+
+--
 
 ### HTML parsing
 
@@ -689,7 +691,7 @@ R&gt; xml2::as_list(parsed_doc)
 
 
 ---
-# Example
+# Example: source code
 
 
 ```html
@@ -718,7 +720,7 @@ R&gt; xml2::as_list(parsed_doc)
 ```
 
 ---
-# Example
+# Example: DOM tree
 
 &lt;div align="center"&gt;
 &lt;img src="pics/htmltree-2.png" width=820&gt;
@@ -746,7 +748,7 @@ R&gt; parsed_doc
 ## [2] &lt;body&gt;\n&lt;div id="R Inventor" lang="english" date="June/2003"&gt;\n  &lt;h1&gt;Robe ...
 ```
 
-- Query document with XPath expression using `html_tables()`
+- Query document using `html_elements()`
 - `rvest` can process XPath queries as well as CSS selectors.
 - Today, we'll focus on XPath:
 
@@ -766,9 +768,9 @@ R&gt; html_elements(parsed_doc, xpath = "//div[last()]/p/i")
 
 ### Basic rules
 
-1. We access nodes by writing down the hierarchical structure in the DOM that locates the element set of interest.
+1. We access nodes/elements by writing down the hierarchical structure in the DOM that locates the element set of interest.
 2. A sequence of nodes is separated by `/`.
-3. The easiest localization of a element is given by the absolute path (but often not the most eﬃcient one!).
+3. The easiest localization of a element is given by the absolute path (but often not the most efficient one!).
 4. Apply XPath on DOM in R using `html_elements()`.
 
 
@@ -823,7 +825,7 @@ Relative paths are often preferrable. They are faster to write and more comprehe
 - Meta symbol `*`
 - Matches any element
 - Works only for one arbitrary element
-- Far less important than, e.g., wildcards in content-based queries (regex!).
+- Far less important than, e.g., wildcards in content-based queries (regex!)
 
 
 ```r
@@ -852,7 +854,7 @@ R&gt; html_elements(parsed_doc, xpath = "/html/body/div/*/i")
 
 ### Navigational operators `"."`and `".."`
 
-- `"."` acesses elements on the same level ("self axis"), which is useful when working with predicates.
+- `"."` accesses elements on the same level ("self axis"), which is useful when working with predicates (see later!).
 - `".."` accesses elements at a higher hierarchical level.
 
 
@@ -864,6 +866,17 @@ R&gt; html_elements(parsed_doc, xpath = "//title/..")
 ## {xml_nodeset (1)}
 ## [1] &lt;head&gt;\n&lt;meta http-equiv="Content-Type" content="text/html; charset=UTF-8 ...
 ```
+
+
+```r
+R&gt; html_elements(parsed_doc, xpath = "//div[starts-with(./@id, 'R')]")
+```
+
+```
+## {xml_nodeset (1)}
+## [1] &lt;div id="R Inventor" lang="english" date="June/2003"&gt;\n  &lt;h1&gt;Robert Gentl ...
+```
+
 
 
 ---
@@ -985,6 +998,8 @@ R&gt; html_elements(parsed_doc, xpath ="//div[@date='October/2011']")
 
 Rudimentary string matching is also possible using string functions like `contains()`, `starts-with()`, or `ends-with()`.
 
+--
+
 Can you tell what the following calls do?
 
 
@@ -1092,6 +1107,8 @@ name: css
   
 ]
 
+--
+
 .pull-right[
 **External CSS**
 
@@ -1128,12 +1145,14 @@ name: css
 
 ### Selectors
 
-- CSS selectors "find/select" the HTML elements that should be styled.
-- There are various categories of selectors. In addition to generic element selector (which are selected just based on the element name, such as `&lt;p&gt;`), we often care about:
+- CSS selectors find/select the HTML elements that should be styled.
+- There are various categories of selectors. In addition to generic element selectors (which selected just based on the element name, such as `&lt;p&gt;`), we often care about:
   - **CSS id selectors**, which use the `id` attribute of an HTML element. Think of them as "labels", as in `&lt;p id="para1"&gt;`. The respective CSS selector would be `#para1`.
   - **CSS class selectors**, which use the `class` attribute of an HTML element, as in `&lt;p class = "center large"&gt;`. Note that these can refer to more than one class (here: `center` and `large`). The respective CSS selector would be `p.center.large`.
 
 ]
+
+--
 
 .pull-right[
 
@@ -1205,7 +1224,7 @@ There are three key `rvest` verbs that you need to learn.&lt;sup&gt;1&lt;/sup&gt
 ]
 
 .footnote[
-&lt;sup&gt;1&lt;/sup&gt; There is more in `rvest`. Have a glimpse at the [overview at tidyverse.org](https://rvest.tidyverse.org/ and at this excellent (unofficial) [cheat sheet](https://github.com/yusuzech/r-web-scraping-cheat-sheet).
+&lt;sup&gt;1&lt;/sup&gt; There is more in `rvest` than what we can cover today. Have a glimpse at the [overview at tidyverse.org](https://rvest.tidyverse.org/) and at this excellent (unofficial) [cheat sheet](https://github.com/yusuzech/r-web-scraping-cheat-sheet).
 ]
 
 
@@ -1222,8 +1241,8 @@ There are three key `rvest` verbs that you need to learn.&lt;sup&gt;1&lt;/sup&gt
 
 .pull-left-vsmall[
 - We are going to scrape a information from a Wikipedia article on women philosophers available at [https://en.wikipedia.org/wiki/](https://en.wikipedia.org/wiki/List_of_women_philosophers) [List_of_women_philosophers](https://en.wikipedia.org/wiki/List_of_women_philosophers).
-- The article provides two types of lists - one by period and one sorted alphabetically. We want the alphabetial list.
-- The information we are actually interested in - names - are stored in unordered list elements.
+- The article provides two types of lists - one by period and one sorted alphabetically. We want the alphabetical list.
+- The information we are actually interested in - names - is stored in unordered list elements.
 ]
 
 .pull-right-vwide[
@@ -1232,7 +1251,7 @@ There are three key `rvest` verbs that you need to learn.&lt;sup&gt;1&lt;/sup&gt
 &lt;img src="pics/wiki-philosophers-2.png" height=250&gt;
 &lt;br&gt;
 &lt;img src="pics/wiki-philosophers-3.png" height=250&gt;
-&lt;img src="pics/wiki-philosophers-4.png" height=220&gt;
+&lt;img src="pics/wiki-philosophers-4.png" height=210&gt;
 &lt;/div&gt;
 ]
 
@@ -1284,7 +1303,7 @@ R&gt; phil_names[c(1:2, 101:102)]
 
 --
 
-**Step 4:** Clean up
+**Step 4:** Clean up (here: select the subset of links we care about)
 
 
 ```r
@@ -1388,7 +1407,11 @@ R&gt; head(headlines_raw)
 ---
 # SelectorGadget: when to use and not to use it
 
-Having learned about a semi-automated approach to generating XPath expressions, you might ask: Why bother with learning XPath at all? Well...
+Having learned about a semi-automated approach to generating XPath expressions, you might ask: 
+
+**Why bother with learning XPath at all?**
+
+Well...
 
 - SelectorGadget is not perfect. Sometimes, the algorithm will fail.
 - Starting from a different element sometimes (but not always!) helps.
@@ -1450,7 +1473,7 @@ R&gt; html_table(x,
 
 .pull-left-small[
 - We are going to scrape a small table from the Wikipedia page [https://en.wikipedia.org/wiki/](https://en.wikipedia.org/wiki/List_of_human_spaceflights) [List_of_human_spaceflights](https://en.wikipedia.org/wiki/List_of_human_spaceflights).
-- (Note that we're actually using an old version of the page (dating back to May 1, 2018, and accessible under  https://en.wikipedia.org/w/index.php?title=List_of_human_spaceflights&amp;oldid=778165808. Wikipedia pages change, but this old revision won't.))
+- (Note that we're actually using an old version of the page (dating back to May 1, 2018), which is accessible [here](https://en.wikipedia.org/w/index.php?title=List_of_human_spaceflights&amp;oldid=778165808). Wikipedia pages change, but this old revision and associated link won't.))
 - The table is not entirely clean: There are some empty cells, but also images and links.
 - The HTML code looks straightforward though.
 ]
@@ -1631,7 +1654,7 @@ R&gt; for (i in 1:length(list_of_urls)) {
 ### Two easy-to-implement practices
 
 1. Get in touch with website administrators / data owners.
-2. Use HTTP header fields `From` and `User-Agend` to provide information about yourself.
+2. Use HTTP header fields `From` and `User-Agent` to provide information about yourself.
 
 ]
 
@@ -1644,10 +1667,11 @@ R&gt; for (i in 1:length(list_of_urls)) {
 ```r
 R&gt; url &lt;- "http://a-totally-random-website.com"
 R&gt; rvest_session &lt;- session(url, 
-+                         add_headers(From = "my@email.com", 
-+                                     `UserAgent` = R.Version()$version.string
-+                                     )
-+                         ) 
++  add_headers(From = "my@email.com", 
++              `UserAgent` = 
++                R.Version()$version.string
++              )
++ ) 
 R&gt; headlines &lt;- rvest_session %&gt;% 
 +              html_elements(xpath = "p//a") %&gt;% 
 +              html_text()
@@ -1672,15 +1696,6 @@ R&gt; headlines &lt;- rvest_session %&gt;%
 
 
 ---
-# Being nice on the web with the polite package
-
-https://dmi3kno.github.io/polite/
-
-
-
-
-
----
 class: inverse, center, middle
 name: summary
 
@@ -1693,9 +1708,13 @@ name: summary
 ---
 # Outlook
 
-Until now, the toy examples were limited to single HTML pages. However, often we want to **scrape data from multiple pages**. You might think of newspaper articles, Wikipedia pages, shopping items and the like. In such scenarios, automating the scraping process becomes really powerful. Also, principles of polite scraping are more relevant.
+Until now, the toy examples were limited to single HTML pages. However, often we want to **scrape data from multiple pages**. You might think of newspaper articles, Wikipedia pages, shopping items and the like. In such scenarios, automating the scraping process becomes really powerful. Also, principles of polite scraping are more relevant then.
 
-In other cases, you might be confronted with **forms**, **authentication**, **dynamic (JavaScript-enriched) content**, or want to **automatically navigate through pages interactively**.
+In other cases, you might be confronted with 
+- forms, 
+- authentication, 
+- dynamic (JavaScript-enriched) content, or want to 
+- automatically navigate through pages interactively.
 
 Moreover, we've ignored a major alternative way to collect data from the web so far which goes beyond scraping: accessing [web APIs](https://en.wikipedia.org/wiki/Web_API). Be sure to check out the respective sessions in the workshop.
 
@@ -1716,7 +1735,7 @@ Assignment 3 is about to go online on GitHub Classroom. Check it out and start s
 
 ### Next lecture
 
-Model fitting and simulation. Now that we know how to retrieve data, let's learn how to learn from them.
+Model fitting and simulation. Now that we know how to retrieve data, let's learn how to run and learn from them.
 
 
     </textarea>
