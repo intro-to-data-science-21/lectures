@@ -168,7 +168,7 @@ lm(arr_delay ~ distance + origin, data = flights)
 ```
 
 ---
-# Formula syntax
+# Formula syntax: basics
 
 - A more explicit way is to write the formula as string and then use `as.formula()` to turn it into a formula object. This implies that we can store formulas as an R object and check its class.
 
@@ -184,7 +184,7 @@ lm(fmla, data = flights)
 ```
 
 ---
-# Formula syntax (cont.)
+# Formula syntax: basics (cont.)
 
 - We can use multiple independent variables by simply separating them with the plus (+) symbol:
 
@@ -210,8 +210,50 @@ y ~ x1 - x2 - 1
 y ~ .
 ```
 
+---
+# Formula syntax: interactions
+
+In a regression modeling context, we often need to specify interaction terms. There are two ways to do this. If we want to include two variables and their interaction, we use the star/asterisk (`*`) symbol:
+
+```{r, eval = FALSE}
+y ~ x1 * x2
+```
+
+That's equivalent to
+
+```{r, eval = FALSE}
+y ~ x1 + x2 + x1*x2
+```
+
+If you only want their interaction, but not the variables themselves as main effects (which you probably don't want), use the colon symbol:
+
+```{r, eval = FALSE}
+y ~ x1:x2
+```
+
+---
+# Formula syntax: variable transformations
+
+One trick to formulas is that they don't evaluate their contents. So, for example, if we wanted to include x and x^2 in our model, we might be tempted to type:
+
+```{r, eval = FALSE}
+y ~ x + x^2
+```
+
+This won't work though. We therefore have to either calculate and store all of the variables we want to include in the model in advance, or we need to use the `I()` "as-is" operator, short for "Inhibit Interpretation/Conversion of Objects". In a formula function, `I()`is used to inhibit the interpretation of operators such as `+`, `-`, `*` and `^` as formula operators, so they are used as arithmetical operators. To obtain our desired two-term formula, we type:
+
+```{r, eval = FALSE}
+y ~ x + I(x^2)
+```
 
 
+---
+# Specifying multiple models
+
+```{r, eval = FALSE}
+xnam <- paste0("x", 1:25)
+(fmla <- as.formula(paste("y ~ ", paste(xnam, collapse= "+"))))
+```
 
 
 
@@ -225,13 +267,13 @@ name: models
 <html><div style='float:left'></div><hr color='#EB811B' size=1px style="width:1000px; margin:auto;"/></html>
 
 
+---
+# Model overview
 
 
 
-
-
-
-
+---
+# Multiverse analysis and specification curves
 
 
 
