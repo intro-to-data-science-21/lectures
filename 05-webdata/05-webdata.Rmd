@@ -1507,7 +1507,7 @@ for (i in 1:length(list_of_urls)) {
 ### Two easy-to-implement practices
 
 1. Get in touch with website administrators / data owners.
-2. Use HTTP header fields `From` and `User-Agent` to provide information about yourself.
+2. Use HTTP header fields `From` and `User-Agent` to provide information about yourself (by passing these to `add_headers()` from the `httr` library).
 
 ]
 
