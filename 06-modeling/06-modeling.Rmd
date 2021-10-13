@@ -378,15 +378,6 @@ And what did we get? A glimpse at the first list element:
 models_list[[1]]
 ```
 
-<!--
---
-
-**Step 4: Evaluate output**
-
-In the next step, we might want to summarize our estimates to learn about the distribution of effects across multiple specifications. But let's not get ahead of ourselves!
--->
-
-
 
 
 <!-- ############################################ -->

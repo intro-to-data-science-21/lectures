@@ -407,17 +407,8 @@ R&gt; models_list[[1]]
    
    Coefficients:
    (Intercept)    dep_delay  
-        -5.864        1.019
+        -6.032        1.021
 ```
-
-&lt;!--
---
-
-**Step 4: Evaluate output**
-
-In the next step, we might want to summarize our estimates to learn about the distribution of effects across multiple specifications. But let's not get ahead of ourselves!
---&gt;
-
 
 
 
@@ -1396,8 +1387,8 @@ R&gt; models_broom[[1]] # inspect one list entry
    # A tibble: 2 × 5
      term        estimate std.error statistic   p.value
      &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;
-   1 (Intercept)    -5.86   0.187       -31.3 1.50e-205
-   2 dep_delay       1.02   0.00462     221.  0
+   1 (Intercept)    -6.03   0.191       -31.6 2.61e-209
+   2 dep_delay       1.02   0.00446     229.  0
 ```
 
 Next, let's merge them all into one data frame:
