@@ -88,10 +88,17 @@ hr, .title-slide h2::after, .mline h1::after {
   float: left;
   width: 73%;
 }
+
 .pull-right-vwide {
     margin-top: -20px;
   float: right;
   width: 73%;
+}
+
+.pull-right-wide2 {
+    margin-top: -20px;
+  float: right;
+  width: 58%;
 }
 
 
@@ -100,9 +107,27 @@ hr, .title-slide h2::after, .mline h1::after {
   float: left;
   width: 30%;
 }
+
+.pull-left-small2 {
+    margin-top: -20px;
+  float: left;
+  width: 38%;
+}
+
 .pull-right-small {
     margin-top: -20px;
   float: right;
+  width: 30%;
+}
+
+.pull-right-small2 {
+    margin-top: -20px;
+  float: right;
+  width: 34%;
+}
+
+.pull-center-small {
+    margin-top: -20px;
   width: 30%;
 }
 

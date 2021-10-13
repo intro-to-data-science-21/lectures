@@ -1,0 +1,274 @@
+---
+title: "Introduction to Data Science"
+subtitle: "Session 7: Visualization"
+author: "Simon Munzert"
+institute: "Hertie School | [GRAD-C11/E1339](https://github.com/intro-to-data-science-21)" #"`r format(Sys.time(), '%d %B %Y')`"
+output:
+  xaringan::moon_reader:
+    css: [default, 'simons-touch.css', metropolis, metropolis-fonts] 
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+      ratio: '16:9'
+      hash: true
+---
+
+
+```{css, echo=FALSE} 
+@media print { # print out incremental slides; see https://stackoverflow.com/questions/56373198/get-xaringan-incremental-animations-to-print-to-pdf/56374619#56374619
+  .has-continuation {
+    display: block !important;
+  }
+}
+```
+
+```{r setup, include=FALSE}
+# figures formatting setup
+options(htmltools.dir.version = FALSE)
+library(knitr)
+opts_chunk$set(
+  comment = "  ",
+  prompt = T,
+  fig.align="center", #fig.width=6, fig.height=4.5, 
+  # out.width="748px", #out.length="520.75px",
+  dpi=300, #fig.path='Figs/',
+  cache=F, #echo=F, warning=F, message=F
+  engine.opts = list(bash = "-l")
+  )
+
+## Next hook based on this SO answer: https://stackoverflow.com/a/39025054
+knit_hooks$set(
+  prompt = function(before, options, envir) {
+    options(
+      prompt = if (options$engine %in% c('sh','bash')) '$ ' else 'R> ',
+      continue = if (options$engine %in% c('sh','bash')) '$ ' else '+ '
+      )
+})
+
+library(tidyverse)
+library(nycflights13)
+library(kableExtra)
+```
+
+
+# Table of contents
+
+<br>
+
+1. [Why data visualization?](#whyviz)
+
+2. [Data visualization as a method](#method)
+
+3. [Basic rules of good data visualization](#rules)
+
+4. [Visual inference](#vizinference)
+
+5. [Visualization with R](#vizr)
+
+6. [Summary](#summary)
+
+
+
+<!-- ############################################ -->
+---
+class: inverse, center, middle
+name: whyviz
+
+# Why data visualization?
+
+<html><div style='float:left'></div><hr color='#EB811B' size=1px style="width:1000px; margin:auto;"/></html>
+
+
+---
+# You came for this...
+
+.pull-left-small2[
+<div align="center">
+<br>
+<img src="pics/infographic_of_infographics.png" width=400>
+<br>
+<img src="pics/twitter-polarization.png" width=400>
+</div>
+]
+
+.pull-right-small2[
+<div align="center">
+<br>
+<img src="pics/taxonomy-rapnames.jpeg" width=400>
+</div>
+]
+
+.pull-right-small2[
+<div align="center">
+<br>
+<img src="pics/wordcloud-usa.jpeg" width=400>
+<br>
+<img src="pics/cad-drinks.jpeg" width=400>
+</div>
+]
+
+
+---
+# ... but you'll be getting this
+
+
+
+
+
+---
+# 1854 Broad Street cholera outbreak
+
+.pull-left[
+<div align="center">
+<br>
+<img src="pics/snow-cholera-map.jpeg" width=50>
+</div>
+]
+
+
+.pull-right[
+- John Snow's famous cholera case map
+- https://en.wikipedia.org/wiki/1854_Broad_Street_cholera_outbreak
+]
+
+
+
+
+
+
+---
+# Nightingale's rose
+
+
+.pull-left[
+<div align="center">
+<br>
+<img src="pics/nightingales-rose.jpeg" width=50>
+</div>
+]
+
+
+.pull-right[
+- (plus: Gelman's version Source: Gelman & Unwin 2012)
+]
+
+
+
+
+---
+# Minard's map of Napoleon's March
+
+.pull-left[
+<div align="center">
+<br>
+<img src="pics/minards-map.png" width=50>
+</div>
+]
+
+.pull-right[
+- https://de.wikipedia.org/wiki/Charles_Joseph_Minard
+- more historical visualizations: https://storymaps.arcgis.com/stories/9c2f390fa3f54ed4a11a7d4a66e7c8cc
+]
+
+
+
+
+---
+# Why data visualization?
+
+- Visualization is a powerful data analysis tool.
+
+- Visualization lets you see things that would otherwise be invisible.
+
+- Visualization is detective work.
+
+- Sometimes, clichés are just true: A picture is worth a thousand words.
+
+<div align="center">
+<b>Data visualization is a method for making sense of quantitative information. It is not about making pictures of data.</b>
+</div>
+
+
+
+
+
+
+<!-- ############################################ -->
+---
+class: inverse, center, middle
+name: method
+
+# Data visualization as a method
+
+<html><div style='float:left'></div><hr color='#EB811B' size=1px style="width:1000px; margin:auto;"/></html>
+
+
+<!-- ############################################ -->
+---
+class: inverse, center, middle
+name: rules
+
+# Basic rules of good data visualization
+
+<html><div style='float:left'></div><hr color='#EB811B' size=1px style="width:1000px; margin:auto;"/></html>
+
+
+
+
+<!-- ############################################ -->
+---
+class: inverse, center, middle
+name: vizinference
+
+# Visual inference
+
+<html><div style='float:left'></div><hr color='#EB811B' size=1px style="width:1000px; margin:auto;"/></html>
+
+
+
+
+
+<!-- ############################################ -->
+---
+class: inverse, center, middle
+name: vizinference
+
+# Visualization with R
+
+<html><div style='float:left'></div><hr color='#EB811B' size=1px style="width:1000px; margin:auto;"/></html>
+
+
+
+
+
+
+
+
+<!-- ############################################ -->
+---
+class: inverse, center, middle
+name: summary
+
+# Summary
+
+<html><div style='float:left'></div><hr color='#EB811B' size=1px style="width:1000px; margin:auto;"/></html>
+
+
+
+
+---
+# Coming up
+
+<br><br> 
+
+### Assignment
+
+Assignment 5 is about to go online on GitHub Classroom. Check it out and start plotting!
+
+### Next lecture
+
+The workshop! 😱
+
+

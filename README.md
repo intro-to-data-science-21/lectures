@@ -15,6 +15,9 @@
 
 5. Web data and technologies \[[**.html**](https://raw.githack.com/intro-to-data-science-21/lectures/main/05-webdata/05-webdata.html) | [**.pdf**](https://raw.githack.com/intro-to-data-science-21/lectures/main/05-webdata/05-webdata.pdf) | [**.Rmd**](https://raw.githack.com/intro-to-data-science-21/lectures/main/05-webdata/05-webdata.Rmd)\]
 
+6. Modeling \[[**.html**](https://raw.githack.com/intro-to-data-science-21/lectures/main/06-webdata/06-modeling.html) | [**.pdf**](https://raw.githack.com/intro-to-data-science-21/lectures/main/06-webdata/06-modeling.pdf) | [**.Rmd**](https://raw.githack.com/intro-to-data-science-21/lectures/main/06-webdata/06-modeling.Rmd)\]
+
+
 
 ## Summary
 

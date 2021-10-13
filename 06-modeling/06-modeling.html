@@ -8,6 +8,8 @@
     <link href="libs/remark-css/default.css" rel="stylesheet" />
     <link href="libs/remark-css/metropolis.css" rel="stylesheet" />
     <link href="libs/remark-css/metropolis-fonts.css" rel="stylesheet" />
+    <script src="libs/kePrint/kePrint.js"></script>
+    <link href="libs/lightable/lightable.css" rel="stylesheet" />
     <link rel="stylesheet" href="simons-touch.css" type="text/css" />
   </head>
   <body>
@@ -15,7 +17,7 @@
 class: center, middle, inverse, title-slide
 
 # Introduction to Data Science
-## Session 6: Model fitting and simulation
+## Session 6: Model fitting <s>and simulation</s>
 ### Simon Munzert
 ### Hertie School | <a href="https://github.com/intro-to-data-science-21">GRAD-C11/E1339</a>
 
@@ -50,6 +52,15 @@ class: center, middle, inverse, title-slide
 
 6. [Summary](#summary)
 
+
+---
+background-image: url("pics/data-model-jesus.jpeg")
+background-size: contain
+background-color: #000000
+
+# The modeling workflow
+
+`Credit` [David Hood](https://twitter.com/Thoughtfulnz/status/1446972794135216131)
 
 ---
 # The modeling workflow
@@ -113,18 +124,15 @@ background-color: #000000
 
 - When we try to model data, we often start by assuming a data-generating process that looks like
 
-$$
-Y = f(x) + \epsilon
-$$
+`$$Y = f(x) + \epsilon$$`
+
 - In doing so, we decompose a model (or data-generating process) into a random or stochastic part (here: `\(\epsilon\)`) and a systematic/structural/deterministic part (here: `\(f(x)\)`).
 - (We might go on to impose further assumptions about the stochastic component, e.g., `\(\epsilon \sim N(0, 1)\)`.)
 
 - In many cases, we want to learn how certain variables systematically relate to each other. To that end, we specify the systematic component of a model and then "let the data speak" to estimate parameters associate with elements of the systematic component.
 - As an example, we might specify
 
-$$
-f(x) = \beta_{0} + \beta_{1}x
-$$
+`$$f(x) = \beta_{0} + \beta_{1}x$$`
 
 - But how can we express our belief about the model structure in R?
 
@@ -136,7 +144,7 @@ $$
 
 - In R, there's a standardized way to specify models like this: working with the `formula` class.
 - In many cases you can still think of the model formula as just a string specifying the structural part of your model (there are exceptions).
-- But formula class objects also allow you to do more useful things with formula.
+- But `formula` class objects also allow you to do more useful things with formula.
 - The basic structure of a formula is the tilde symbol (~) and at least one independent (righthand) variable. In most (but not all) situations, a single dependent (lefthand) variable is also needed. Thus we can construct a formula quite simply by just typing:
 
 
@@ -153,7 +161,9 @@ R&gt; lm(arr_delay ~ distance + origin, data = flights)
 ```
 
 ---
-# Formula syntax
+# Model formulas in R (cont.)
+
+### Storing formulas 
 
 - A more explicit way is to write the formula as string and then use `as.formula()` to turn it into a formula object. This implies that we can store formulas as an R object and check its class.
 
@@ -164,7 +174,7 @@ R&gt; class(fmla)
 ```
 
 ```
-## [1] "formula"
+   [1] "formula"
 ```
 
 - Next, we'd pass on the `formula` object to the model function, e.g.:
@@ -175,17 +185,17 @@ R&gt; lm(fmla, data = flights)
 ```
 
 ```
-## 
-## Call:
-## lm(formula = fmla, data = flights)
-## 
-## Coefficients:
-## (Intercept)     distance    originJFK    originLGA  
-##   13.414049    -0.004045    -2.704255    -4.456169
+   
+   Call:
+   lm(formula = fmla, data = flights)
+   
+   Coefficients:
+   (Intercept)     distance    originJFK    originLGA  
+     13.414049    -0.004045    -2.704255    -4.456169
 ```
 
 ---
-# Formula syntax (cont.)
+# Formula syntax: basics
 
 - We can use multiple independent variables by simply separating them with the plus (+) symbol:
 
@@ -208,14 +218,205 @@ R&gt; y ~ x1 - x2
 R&gt; y ~ x1 - x2 - 1
 ```
 
-- The `.` operator refers to all other variables in the matrix/data frame not yet included in the model:
+- The `.` operator refers to all other variables in the matrix/data frame not yet included in the model. This is useful when you plan to run a regression on all variables in a matrix/data frame:
 
 
 ```r
 R&gt; y ~ .
 ```
 
-This is useful when you plan to run a regression on all variables in a matrix/data frame.
+---
+# Formula syntax: interactions
+
+In a regression modeling context, we often need to specify interaction terms. There are two ways to do this. If we want to include two variables and their interaction, we use the star/asterisk (`*`) symbol:
+
+
+```r
+R&gt; y ~ x1 * x2
+```
+
+That's equivalent to
+
+
+```r
+R&gt; y ~ x1 + x2 + x1*x2
+```
+
+If you only want their interaction, but not the variables themselves as main effects (which you probably don't want), use the colon symbol:
+
+
+```r
+R&gt; y ~ x1:x2
+```
+
+---
+# Formula syntax: variable transformations
+
+One trick to formulas is that they don't evaluate their contents. So, for example, if we wanted to include `\(x\)` and `\(x^2\)` in our model, we might be tempted to type:
+
+
+```r
+R&gt; y ~ x + x^2
+```
+
+This won't work though. We therefore have to either calculate and store all of the variables we want to include in the model in advance, or we need to use the `I()` "as-is" operator, short for "Inhibit Interpretation/Conversion of Objects". In a formula function, `I()` is used to inhibit the interpretation of operators such as `+`, `-`, `*` and `^` as formula operators, so they are used as arithmetical operators. To obtain our desired two-term formula, we type:
+
+
+```r
+R&gt; y ~ x + I(x^2)
+```
+
+Again, the alternative would have been something like:
+
+
+```r
+R&gt; data$x2 &lt;- (data$x)^2
+R&gt; y ~ x + x2
+```
+
+
+---
+# Specifying multiple models
+
+### When one model is not enough
+
+- Often we want to specify not one but multiple different models.
+- Such models can differ in terms of model family, modelled outcome, covariate/feature set, transformations of input variables, and data being modelled.
+
+### Generating model formulas at scale
+
+- If outcomes/features vary across models, so does the model formula.
+- Regarding formulas as character strings, it's straightforward to generate them in a programmatic fashion.
+
+--
+
+**Example:**
+
+
+```r
+R&gt; xvars &lt;- paste0("x", 1:20)
+R&gt; fmla &lt;- as.formula(paste("y ~ ", paste(xvars, collapse= "+")))
+R&gt; fmla
+```
+
+```
+   y ~ x1 + x2 + x3 + x4 + x5 + x6 + x7 + x8 + x9 + x10 + x11 + 
+       x12 + x13 + x14 + x15 + x16 + x17 + x18 + x19 + x20
+```
+
+---
+# Specifying multiple models (cont.)
+
+- Another example of multiple model specification is [extreme bounds analysis (EBA)](https://en.wikipedia.org/wiki/Extreme_bounds_analysis).
+- Here, the idea is to compute all possible estimates given a set of allowed coefficients to answer questions like:
+  - Which determinants are robustly associated with the dependent variable across a large number of possible regression models?
+  - Is a particular determinant robustly associated with the dependent variable?
+- In its basic form, EBA just estimates models with all possible combinations of variables and then looks into the distribution (or range → extreme bounds) of effects across all models.
+- There are R packages to do this for us (e.g., `ExtremeBounds` [by Marek Hlavac](https://cran.r-project.org/web/packages/ExtremeBounds/vignettes/ExtremeBounds.pdf)) but we can also run the basics on our own.
+
+--
+
+### Example
+
+**Step 1: Define dependent variable and covariate set**
+
+
+```r
+R&gt; depvar &lt;- "arr_delay"
+R&gt; covars &lt;- c("dep_delay", "carrier", "origin", "air_time", "distance", "hour")
+```
+
+---
+# Specifying multiple models (cont.)
+
+**Step 1a (just for fun): Compute the number of unique combinations of all these covariates**
+
+
+```r
+R&gt; combinations &lt;- 
++   map(1:6, function(x) {combn(1:6, x)}) %&gt;% # create all possible combinations (draw 1 to 6 out of 6)
++   map(ncol) %&gt;% # extract number of combinations
++   unlist() %&gt;% # pull out of list structure
++   sum() # compute sum
+```
+
+
+---
+# Specifying multiple models (cont.)
+
+**Step 2: Build function to run lm models across set of all possible variable combinations **
+
+
+```r
+R&gt; combn_models &lt;- function(depvar, covars, data)
++ {
++   combn_list &lt;- list()
++   # generate list of covariate combinations
++   for (i in seq_along(covars)) {
++     combn_list[[i]] &lt;- combn(covars, i, simplify = FALSE)
++   }
++   combn_list &lt;- unlist(combn_list, recursive = FALSE)
++   # function to generate formulas
++   gen_formula &lt;- function(covars, depvar) {
++     form &lt;- as.formula(paste0(depvar, " ~ ", paste0(covars, collapse = "+")))
++     form
++   }
++   # generate formulas
++   formulas_list &lt;- purrr::map(combn_list, gen_formula, depvar = depvar)
++   # run models
++   models_list &lt;- purrr::map(formulas_list, lm, data = data)
++   models_list
++ }
+```
+
+
+---
+# Specifying multiple models (cont.)
+
+**Step 3: Run models (careful, this'll generate a quite heavy list)**
+
+
+
+
+```r
+R&gt; models_list &lt;- combn_models(depvar = depvar,  covars = covars, data = flights)
+```
+
+How many models did we fit?
+
+
+```r
+R&gt; length(models_list)
+```
+
+```
+   [1] 63
+```
+
+And what did we get? A glimpse at the first list element:
+
+
+```r
+R&gt; models_list[[1]]
+```
+
+```
+   
+   Call:
+   .f(formula = .x[[i]], data = ..1)
+   
+   Coefficients:
+   (Intercept)    dep_delay  
+        -5.864        1.019
+```
+
+&lt;!--
+--
+
+**Step 4: Evaluate output**
+
+In the next step, we might want to summarize our estimates to learn about the distribution of effects across multiple specifications. But let's not get ahead of ourselves!
+--&gt;
 
 
 
@@ -230,12 +431,198 @@ name: models
 &lt;html&gt;&lt;div style='float:left'&gt;&lt;/div&gt;&lt;hr color='#EB811B' size=1px style="width:1000px; margin:auto;"/&gt;&lt;/html&gt;
 
 
+---
+background-image: url("pics/turing-bombe.jpeg")
+background-size: contain
+background-color: #000000
+
+# Running models
+
+
+---
+# Model families
+
+Today we'll mostly focus on linear models as an example. However, there is a multitude of families of statistical models that allow extend linear models. Examples are
+
+- **Generalized linear models** [`stats::glm()`], which extend linear models to include non-continuous responses (e.g., binary or categorical data, counts) 
+- **Generalized additive models** [`mgcv::gam()`], which extend generalized linear models to incorporate arbitrary smooth functions
+- **Penalized linear models** [`glmnet::glmnet()`], which introduce terms that penalize complex models to make models that generalize better to new datasets
+
+--
+
+Also there is so much more to learn in terms of [modeling/machine learning/AI](https://en.wikipedia.org/wiki/Machine_learning). There are many (MANY!) models for measurement, (un-)supervised learning, clustering, dimensionality reduction, ... R is uniquely flexible for implementing these models. To get a quick glance at the universe from afar, check out the [CRAN Task Views](https://cran.r-project.org/web/views/), a curated online directory of topics and the R packages relevant for tasks related to these.
+
+
+---
+# Running models: examples
+
+Luckily, these models work all similarly from a programming experience - once you've mastered how to run linear models, you will find it easy to implement others. Understanding and applying them wisely is a different matter though.
+
+**Logistic regression**
+
+
+```r
+R&gt; logit_out &lt;- stats::glm(am ~ cyl + hp + wt, data = mtcars, family = binomial)
+```
+
+**Generalized additive model regression**
+
+
+```r
+R&gt; gam_out &lt;- mgcv::gam(mpg ~ s(disp) + s(wt), data = mtcars)
+```
+
+**Penalized (here: lasso) regression**
+
+
+```r
+R&gt; lasso_out &lt;- glmnet(as.matrix(mtcars[-1]), mtcars[,1], standardize = TRUE, alpha  = 1)
+```
+
+**Multilevel model with random intercepts**
+
+
+```r
+R&gt; library(lme4)
+R&gt; ml_out &lt;- lmer(arr_delay ~ distance + origin + (1|carrier) + (1|tailnum), data = flights)
+```
+
+---
+# Decisions in the modeling workflow
+.pull-left[
+
+### Big data and the need for models
+
+- In the early days of the big data hype, people were overly enthusiastic about its implications for modeling (see quote on the right).
+- This is falling for the inception that we can simply "let the data speak".
+- However, the data science workflow is a sequence of subjective decisions from start to finish, with lots of researcher degrees of freedom.
+- Think of all the weakly justified decisions regarding:
+  - data collection / selection
+  - measurement
+  - model choice
+  - model specification
+  - reporting
+]
+
+.pull-right[
+
+&lt;br&gt;&lt;br&gt;
+
+&lt;div style="background-color:rgba(0, 0, 0, 0.1)"&gt;
+"Scientists are trained to recognize that correlation is not causation, that no conclusions should be drawn simply on the basis of correlation between X and Y. (...) Once you have a model, you can connect the data sets with confidence. Data without a model is just noise. (...) There is now a better way. Petabytes allow us to say: "Correlation is enough." We can stop looking for models. We can analyze the data without hypotheses about what it might show."
+&lt;/div&gt;
+
+ *Chris Anderson*, ["The End of Theory: The Data Deluge makes the Scientific Method Obsolete (2008, *Wired*)"](https://www.wired.com/2008/06/pb-theory/)
+
+]
+
+
+---
+# Decisions in the modeling workflow
+.pull-left[
+
+### Big data and the need for models
+
+- In the early days of the big data hype, people were overly enthusiastic about its implications for modeling (see quote on the right).
+- This is falling for the inception that we can simply "let the data speak".
+- However, the data science workflow is a sequence of subjective decisions from start to finish, with lots of researcher degrees of freedom.
+- Think of all the weakly justified decisions regarding:
+  - data collection / selection
+  - measurement
+  - model choice
+  - model specification
+  - reporting
+  
+**Question:** How do researchers usually deal with this?
+]
+
+.pull-right[
+
+&lt;br&gt;&lt;br&gt;
+
+&lt;div style="background-color:rgba(0, 0, 0, 0.1)"&gt;
+"Scientists are trained to recognize that correlation is not causation, that no conclusions should be drawn simply on the basis of correlation between X and Y. (...) Once you have a model, you can connect the data sets with confidence. Data without a model is just noise. (...) There is now a better way. Petabytes allow us to say: "Correlation is enough." We can stop looking for models. We can analyze the data without hypotheses about what it might show."
+&lt;/div&gt;
+
+ *Chris Anderson*, ["The End of Theory: The Data Deluge makes the Scientific Method Obsolete (2008, *Wired*)"](https://www.wired.com/2008/06/pb-theory/)
+
+]
 
 
 
 
+---
+# Nested models
+
+.pull-left-center[
+&lt;div align="center"&gt;
+&lt;img src="pics/nested-models-chen.png" width=600&gt;
+&lt;/div&gt;
+`Credit` Chen 2010, [The Effect of Electoral Geography on Pork Barreling in Bicameral Legislatures](https://www.jstor.org/stable/25652208)
+]
+
+.pull-right-center[
+&lt;div align="center"&gt;
+&lt;br&gt;&lt;br&gt;
+&lt;img src="pics/nested-models-park.png" width=600&gt;
+&lt;/div&gt;
+`Credit` Park et al. 2009, [Being immersed in social networking environment: Facebook groups, uses and gratifications, and social outcomes](https://pubmed.ncbi.nlm.nih.gov/19619037/)
+]
 
 
+---
+# Exploring the model space
+
+.pull-left[
+
+- **Another idea:** run not an arbitrary (small) set of models but as many (plausible ones) as possible to get an idea how much conclusions change depending on arbitrary data wrangling and modeling choices (the "model distribution").
+- There are various related procedures and labels used in different subfields to promote this idea, including:
+  - Multiverse analysis ([Steegen et al. 2016](https://journals.sagepub.com/doi/10.1177/1745691616658637))
+  - Specification curves ([Simonsohn et al. 2020](https://www.nature.com/articles/s41562-020-0912-z))
+  - Computational multimodel analysis ([Young and Holsteen 2015](http://fmwww.bc.edu/repec/bocode/m/Model_Uncertainty_and_Robustness.pdf))
+- Also check out critical perspective on "[Mülltiverse Analysis](http://www.the100.ci/2021/03/07/mulltiverse-analysis/)" (Julia Rohrer). The bottom line: Mindless multiversing doesn't give more robustness or insight.
+]
+
+.pull-right[
+&lt;div align="center"&gt;
+&lt;img src="pics/multiverse-analysis-1.png" width=450&gt;
+&lt;img src="pics/multimodel-analysis.png" width=230&gt;
+&lt;/div&gt;
+]
+
+---
+# Specification curves
+
+
+.pull-left[
+
+- Specification curve analysis (SCA) facilitates the visual identification of the source of variation in results across multiple specifications.
+- The key feature, the specification curve, provides all gathered estimates sorted by effect size and highlighted by significance.
+- SCA is carried out in three main steps:
+  1. Define the set of reasonable specifications to estimate; 
+  2. Estimate all specifications and report the results in a descriptive specification curve; and 
+  3. Conduct joint statistical tests using an inferential specification curve.
+- As of now there are two R packages that offer high-level functions for specification: `specr` (see [here](https://cran.r-project.org/web/packages/specr/vignettes/specr.html)) and `Multiverse` (see [here](https://mucollective.github.io/multiverse/)).
+]
+
+.pull-right[
+&lt;div align="center"&gt;
+&lt;br&gt;
+&lt;img src="pics/specification-curve-1.png" width=550&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;img src="pics/specification-curve-2.png" width=550&gt;
+&lt;/div&gt;
+]
+
+
+
+---
+# Specification curves (cont.)
+
+&lt;div align="center"&gt;
+&lt;img src="pics/specification-curve-3.png" width=850&gt;
+&lt;/div&gt;
 
 
 
@@ -252,9 +639,791 @@ name: postestimation
 &lt;html&gt;&lt;div style='float:left'&gt;&lt;/div&gt;&lt;hr color='#EB811B' size=1px style="width:1000px; margin:auto;"/&gt;&lt;/html&gt;
 
 
+---
+background-image: url("pics/computer-nerd-mod.jpg")
+background-size: contain
+background-color: #000000
+
+# Processing estimation output
+
+---
+# Why model processing?
+
+.pull-left-small2[
+When estimating a model, we usually estimate parameters (or simulate distributions thereof). There is, however, more that we can take away from the estimation, including:
+
+]
+
+.pull-right-wide2[
+
+
+```r
+summary(model_out)
+
+Call:
+lm(formula = arr_delay ~ distance + origin, data = flights)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+ -89.04  -24.00  -11.83    7.26 1281.45 
+
+Coefficients:
+              Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept) 13.4140488  0.1748144   76.73   &lt;2e-16 ***
+distance    -0.0040451  0.0001097  -36.87   &lt;2e-16 ***
+originJFK   -2.7042552  0.1887083  -14.33   &lt;2e-16 ***
+originLGA   -4.4561694  0.1935123  -23.03   &lt;2e-16 ***
+---
+Sig. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 44.51 on 327342 degrees of freedom
+(9430 observations deleted due to missingness)
+Multiple R-squared: 0.005503, Adjusted R-squared: 0.005493 
+F-statistic: 603.7 on 3 and 327342 DF,  p-value: &lt; 2.2e-16
+```
+
+]
+
+
+---
+# Why model processing?
+
+.pull-left-small2[
+When estimating a model, we usually estimate parameters (or simulate distributions thereof). There is, however, more that we can take away from the estimation, including:
+
+- **Estimated coefficients** and associated standard errors, T-statistics, p-values, confidence intervals
+]
+
+.pull-right-wide2[
+
+
+```r
+summary(model_out)
+
+Call:
+lm(formula = arr_delay ~ distance + origin, data = flights)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+ -89.04  -24.00  -11.83    7.26 1281.45 
+
+*Coefficients:
+*             Estimate Std. Error t value Pr(&gt;|t|)
+*(Intercept) 13.4140488  0.1748144   76.73   &lt;2e-16 ***
+*distance    -0.0040451  0.0001097  -36.87   &lt;2e-16 ***
+*originJFK   -2.7042552  0.1887083  -14.33   &lt;2e-16 ***
+*originLGA   -4.4561694  0.1935123  -23.03   &lt;2e-16 ***
+*---
+*Sig. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 44.51 on 327342 degrees of freedom
+(9430 observations deleted due to missingness)
+Multiple R-squared: 0.005503, Adjusted R-squared: 0.005493 
+F-statistic: 603.7 on 3 and 327342 DF,  p-value: &lt; 2.2e-16
+```
+
+]
 
 
 
+---
+# Why model processing?
+
+.pull-left-small2[
+When estimating a model, we usually estimate parameters (or simulate distributions thereof). There is, however, more that we can take away from the estimation, including:
+
+- **Estimated coefficients** and associated standard errors, T-statistics, p-values, confidence intervals
+- **Model summaries**, including goods of fit measures, information on model convergence, number of observations used
+]
+
+.pull-right-wide2[
+
+
+```r
+summary(model_out)
+
+Call:
+lm(formula = arr_delay ~ distance + origin, data = flights)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+ -89.04  -24.00  -11.83    7.26 1281.45 
+
+Coefficients:
+              Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept) 13.4140488  0.1748144   76.73   &lt;2e-16 ***
+distance    -0.0040451  0.0001097  -36.87   &lt;2e-16 ***
+originJFK   -2.7042552  0.1887083  -14.33   &lt;2e-16 ***
+originLGA   -4.4561694  0.1935123  -23.03   &lt;2e-16 ***
+---
+Sig. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+*Residual standard error: 44.51 on 327342 degrees of freedom
+*(9430 observations deleted due to missingness)
+*Multiple R-squared: 0.005503, Adjusted R-squared: 0.005493
+*F-statistic: 603.7 on 3 and 327342 DF,  p-value: &lt; 2.2e-16
+```
+
+]
+
+
+
+---
+# Why model processing?
+
+.pull-left-small2[
+When estimating a model, we usually estimate parameters (or simulate distributions thereof). There is, however, more that we can take away from the estimation, including:
+
+- **Estimated coefficients** and associated standard errors, T-statistics, p-values, confidence intervals
+- **Model summaries**, including goods of fit measures, information on model convergence, number of observations used
+- **Observation-level information** that arises from the estimated model, such as fitted/predicted values, residuals, estimates of influence
+]
+
+.pull-right-wide2[
+
+
+```r
+summary(model_out)
+
+Call:
+lm(formula = arr_delay ~ distance + origin, data = flights)
+
+*Residuals:
+*   Min      1Q  Median      3Q     Max
+*-89.04  -24.00  -11.83    7.26 1281.45
+
+Coefficients:
+              Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept) 13.4140488  0.1748144   76.73   &lt;2e-16 ***
+distance    -0.0040451  0.0001097  -36.87   &lt;2e-16 ***
+originJFK   -2.7042552  0.1887083  -14.33   &lt;2e-16 ***
+originLGA   -4.4561694  0.1935123  -23.03   &lt;2e-16 ***
+---
+Sig. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 44.51 on 327342 degrees of freedom
+(9430 observations deleted due to missingness)
+Multiple R-squared: 0.005503, Adjusted R-squared: 0.005493 
+F-statistic: 603.7 on 3 and 327342 DF,  p-value: &lt; 2.2e-16
+```
+
+]
+
+
+
+---
+# Processing estimation output in R
+
+.pull-left-small[
+
+- Fitting a model returns an object of a certain model class (here: `lm`).
+- Printing that object returns a quite minimalist set of information - just the input formula and coefficients.
+]
+
+.pull-right-wide[
+
+
+```r
+R&gt; model_out &lt;- lm(arr_delay ~ distance + origin, data = flights)
+R&gt; class(model_out)
+```
+
+```
+   [1] "lm"
+```
+
+```r
+R&gt; model_out
+```
+
+```
+   
+   Call:
+   lm(formula = arr_delay ~ distance + origin, data = flights)
+   
+   Coefficients:
+   (Intercept)     distance    originJFK    originLGA  
+     13.414049    -0.004045    -2.704255    -4.456169
+```
+]
+
+---
+# Processing estimation output in R
+
+.pull-left-small[
+- Fitting a model returns an object of a certain model class (here: `lm`).
+- Printing that object returns a quite minimalist set of information - just the input formula and coefficients.
+- The anatomy of the object is considerably more complex. It comes as a list of various components, including the coefficients, residuals, fitted values, and original model input.
+]
+
+.pull-right-wide[
+
+
+```r
+R&gt; names(model_out)
+```
+
+```
+    [1] "coefficients"  "residuals"     "effects"       "rank"         
+    [5] "fitted.values" "assign"        "qr"            "df.residual"  
+    [9] "na.action"     "contrasts"     "xlevels"       "call"         
+   [13] "terms"         "model"
+```
+]
+
+
+---
+# Processing estimation output in R
+
+.pull-left-small[
+- Fitting a model returns an object of a certain model class (here: `lm`).
+- Printing that object returns a quite minimalist set of information - just the input formula and coefficients.
+- The anatomy of the object is considerably more complex. It comes as a list of various components, including the coefficients, residuals, fitted values, and original model input.
+- There's no way to print this list the slide in full - it's just too long.
+]
+
+.pull-right-wide[
+
+
+```r
+R&gt; str(model_out)
+```
+
+```
+   List of 14
+    $ coefficients : Named num [1:4] 13.41405 -0.00405 -2.70426 -4.45617
+     ..- attr(*, "names")= chr [1:4] "(Intercept)" "distance" "originJFK" "originLGA"
+    $ residuals    : Named num [1:327346] 3.25 16.77 26.7 -22.33 -30.88 ...
+     ..- attr(*, "names")= chr [1:327346] "1" "2" "3" "4" ...
+    $ effects      : Named num [1:327346] -3945.1 1579.9 204.2 1025 -30.8 ...
+     ..- attr(*, "names")= chr [1:327346] "(Intercept)" "distance" "originJFK" "originLGA" ...
+    $ rank         : int 4
+    $ fitted.values: Named num [1:327346] 7.75 3.23 6.3 4.33 5.88 ...
+     ..- attr(*, "names")= chr [1:327346] "1" "2" "3" "4" ...
+    $ assign       : int [1:4] 0 1 2 2
+    $ qr           :List of 5
+     ..$ qr   : num [1:327346, 1:4] -5.72e+02 1.75e-03 1.75e-03 1.75e-03 1.75e-03 ...
+     .. ..- attr(*, "dimnames")=List of 2
+     .. .. ..$ : chr [1:327346] "1" "2" "3" "4" ...
+     .. .. ..$ : chr [1:4] "(Intercept)" "distance" "originJFK" "originLGA"
+     .. ..- attr(*, "assign")= int [1:4] 0 1 2 2
+     .. ..- attr(*, "contrasts")=List of 1
+     .. .. ..$ origin: chr "contr.treatment"
+     ..$ qraux: num [1:4] 1 1 1 1
+     ..$ pivot: int [1:4] 1 2 3 4
+     ..$ tol  : num 1e-07
+     ..$ rank : int 4
+     ..- attr(*, "class")= chr "qr"
+    $ df.residual  : int 327342
+    $ na.action    : 'omit' Named int [1:9430] 472 478 616 644 726 734 755 839 840 841 ...
+     ..- attr(*, "names")= chr [1:9430] "472" "478" "616" "644" ...
+    $ contrasts    :List of 1
+     ..$ origin: chr "contr.treatment"
+    $ xlevels      :List of 1
+     ..$ origin: chr [1:3] "EWR" "JFK" "LGA"
+    $ call         : language lm(formula = arr_delay ~ distance + origin, data = flights)
+    $ terms        :Classes 'terms', 'formula'  language arr_delay ~ distance + origin
+     .. ..- attr(*, "variables")= language list(arr_delay, distance, origin)
+     .. ..- attr(*, "factors")= int [1:3, 1:2] 0 1 0 0 0 1
+     .. .. ..- attr(*, "dimnames")=List of 2
+     .. .. .. ..$ : chr [1:3] "arr_delay" "distance" "origin"
+     .. .. .. ..$ : chr [1:2] "distance" "origin"
+     .. ..- attr(*, "term.labels")= chr [1:2] "distance" "origin"
+     .. ..- attr(*, "order")= int [1:2] 1 1
+     .. ..- attr(*, "intercept")= int 1
+     .. ..- attr(*, "response")= int 1
+     .. ..- attr(*, ".Environment")=&lt;environment: R_GlobalEnv&gt; 
+     .. ..- attr(*, "predvars")= language list(arr_delay, distance, origin)
+     .. ..- attr(*, "dataClasses")= Named chr [1:3] "numeric" "numeric" "character"
+     .. .. ..- attr(*, "names")= chr [1:3] "arr_delay" "distance" "origin"
+    $ model        :'data.frame':	327346 obs. of  3 variables:
+     ..$ arr_delay: num [1:327346] 11 20 33 -18 -25 12 19 -14 -8 8 ...
+     ..$ distance : num [1:327346] 1400 1416 1089 1576 762 ...
+     ..$ origin   : chr [1:327346] "EWR" "LGA" "JFK" "JFK" ...
+     ..- attr(*, "terms")=Classes 'terms', 'formula'  language arr_delay ~ distance + origin
+     .. .. ..- attr(*, "variables")= language list(arr_delay, distance, origin)
+     .. .. ..- attr(*, "factors")= int [1:3, 1:2] 0 1 0 0 0 1
+     .. .. .. ..- attr(*, "dimnames")=List of 2
+     .. .. .. .. ..$ : chr [1:3] "arr_delay" "distance" "origin"
+     .. .. .. .. ..$ : chr [1:2] "distance" "origin"
+     .. .. ..- attr(*, "term.labels")= chr [1:2] "distance" "origin"
+     .. .. ..- attr(*, "order")= int [1:2] 1 1
+     .. .. ..- attr(*, "intercept")= int 1
+     .. .. ..- attr(*, "response")= int 1
+     .. .. ..- attr(*, ".Environment")=&lt;environment: R_GlobalEnv&gt; 
+     .. .. ..- attr(*, "predvars")= language list(arr_delay, distance, origin)
+     .. .. ..- attr(*, "dataClasses")= Named chr [1:3] "numeric" "numeric" "character"
+     .. .. .. ..- attr(*, "names")= chr [1:3] "arr_delay" "distance" "origin"
+     ..- attr(*, "na.action")= 'omit' Named int [1:9430] 472 478 616 644 726 734 755 839 840 841 ...
+     .. ..- attr(*, "names")= chr [1:9430] "472" "478" "616" "644" ...
+    - attr(*, "class")= chr "lm"
+```
+]
+
+
+
+
+
+---
+# Processing estimation output in R
+
+.pull-left-small[
+
+- However, there are some high-level functions we can apply to do something useful with the model object, including:
+  - `coef()` to extract the coefficients
+]
+
+.pull-right-wide[
+
+
+```r
+R&gt; coef(model_out)
+```
+
+```
+    (Intercept)     distance    originJFK    originLGA 
+   13.414048769 -0.004045067 -2.704255237 -4.456169356
+```
+]
+
+
+---
+# Processing estimation output in R
+
+.pull-left-small[
+
+- However, there are some high-level functions we can apply to do something useful with the model object, including:
+  - `coef()` to extract the coefficients
+  - `fitted.values()` to extract the outcome values predicted by the model
+]
+
+.pull-right-wide[
+
+
+```r
+R&gt; coef(model_out)
+```
+
+```
+    (Intercept)     distance    originJFK    originLGA 
+   13.414048769 -0.004045067 -2.704255237 -4.456169356
+```
+
+```r
+R&gt; fitted.values(model_out)[1:5]
+```
+
+```
+          1        2        3        4        5 
+   7.750955 3.230064 6.304715 4.334768 5.875538
+```
+]
+
+
+---
+# Processing estimation output in R
+
+.pull-left-small[
+
+- However, there are some high-level functions we can apply to do something useful with the model object, including:
+  - `coef()` to extract the coefficients
+  - `fitted.values()` to extract the outcome values predicted by the model
+  - `residuals()` to extract the residuals
+]
+
+.pull-right-wide[
+
+
+```r
+R&gt; coef(model_out)
+```
+
+```
+    (Intercept)     distance    originJFK    originLGA 
+   13.414048769 -0.004045067 -2.704255237 -4.456169356
+```
+
+```r
+R&gt; fitted.values(model_out)[1:5]
+```
+
+```
+          1        2        3        4        5 
+   7.750955 3.230064 6.304715 4.334768 5.875538
+```
+
+```r
+R&gt; residuals(model_out)[1:5]
+```
+
+```
+            1          2          3          4          5 
+     3.249045  16.769936  26.695285 -22.334768 -30.875538
+```
+]
+
+
+---
+# Processing estimation output in R
+
+.pull-left-small[
+
+- However, there are some high-level functions we can apply to do something useful with the model object, including:
+  - `coef()` to extract the coefficients
+  - `fitted.values()` to extract the outcome values predicted by the model
+  - `residuals()` to extract the residuals
+  - `model.matrix()` to extract the matrix of original input variables (predictors)
+]
+
+.pull-right-wide[
+
+
+```r
+R&gt; coef(model_out)
+```
+
+```
+    (Intercept)     distance    originJFK    originLGA 
+   13.414048769 -0.004045067 -2.704255237 -4.456169356
+```
+
+```r
+R&gt; fitted.values(model_out)[1:5]
+```
+
+```
+          1        2        3        4        5 
+   7.750955 3.230064 6.304715 4.334768 5.875538
+```
+
+```r
+R&gt; residuals(model_out)[1:5]
+```
+
+```
+            1          2          3          4          5 
+     3.249045  16.769936  26.695285 -22.334768 -30.875538
+```
+
+```r
+R&gt; model.matrix(model_out) %&gt;% head(4)
+```
+
+```
+     (Intercept) distance originJFK originLGA
+   1           1     1400         0         0
+   2           1     1416         0         1
+   3           1     1089         1         0
+   4           1     1576         1         0
+```
+]
+
+
+
+---
+# Processing estimation output in R
+
+.pull-left-small[
+
+- To learn more about the estimated model, we can apply the `summary()` function.
+- The `summary` method is specific to the model class it is applied to (here: "`lm` "). To learn more, you'd have to call, e.g., `?summary.lm` or `?summary.glm`.
+
+]
+
+.pull-right-wide[
+
+
+```r
+R&gt; summary(model_out)
+```
+
+```
+   
+   Call:
+   lm(formula = arr_delay ~ distance + origin, data = flights)
+   
+   Residuals:
+       Min      1Q  Median      3Q     Max 
+    -89.04  -24.00  -11.83    7.26 1281.45 
+   
+   Coefficients:
+                 Estimate Std. Error t value Pr(&gt;|t|)    
+   (Intercept) 13.4140488  0.1748144   76.73   &lt;2e-16 ***
+   distance    -0.0040451  0.0001097  -36.87   &lt;2e-16 ***
+   originJFK   -2.7042552  0.1887083  -14.33   &lt;2e-16 ***
+   originLGA   -4.4561694  0.1935123  -23.03   &lt;2e-16 ***
+   ---
+   Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+   
+   Residual standard error: 44.51 on 327342 degrees of freedom
+     (9430 observations deleted due to missingness)
+   Multiple R-squared:  0.005503,	Adjusted R-squared:  0.005493 
+   F-statistic: 603.7 on 3 and 327342 DF,  p-value: &lt; 2.2e-16
+```
+]
+
+---
+# Processing estimation output in R
+
+.pull-left-small[
+
+- To learn more about the estimated model, we can apply the `summary()` function.
+- The `summary` method is specific to the model class it is applied to (here: "`lm` "). To learn more, you'd have to call, e.g., `?summary.lm` or `?summary.glm`.
+- The function creates more than a printed summary in the console. It returns an object of class `summary.lm`, which can be further dissected.
+]
+
+.pull-right-wide[
+
+
+```r
+R&gt; class(summary(model_out))
+```
+
+```
+   [1] "summary.lm"
+```
+
+]
+
+---
+# Processing estimation output in R
+
+.pull-left-small[
+
+- To learn more about the estimated model, we can apply the `summary()` function.
+- The `summary` method is specific to the model class it is applied to (here: "`lm` "). To learn more, you'd have to call, e.g., `?summary.lm` or `?summary.glm`.
+- The function creates more than a printed summary in the console. It returns an object of class `summary.lm`, which can be further dissected.
+- Again, there's no way to print this list on the slide in full - it's just too long.
+]
+
+.pull-right-wide[
+
+
+```r
+R&gt; str(summary(model_out))
+```
+
+```
+   List of 12
+    $ call         : language lm(formula = arr_delay ~ distance + origin, data = flights)
+    $ terms        :Classes 'terms', 'formula'  language arr_delay ~ distance + origin
+     .. ..- attr(*, "variables")= language list(arr_delay, distance, origin)
+     .. ..- attr(*, "factors")= int [1:3, 1:2] 0 1 0 0 0 1
+     .. .. ..- attr(*, "dimnames")=List of 2
+     .. .. .. ..$ : chr [1:3] "arr_delay" "distance" "origin"
+     .. .. .. ..$ : chr [1:2] "distance" "origin"
+     .. ..- attr(*, "term.labels")= chr [1:2] "distance" "origin"
+     .. ..- attr(*, "order")= int [1:2] 1 1
+     .. ..- attr(*, "intercept")= int 1
+     .. ..- attr(*, "response")= int 1
+     .. ..- attr(*, ".Environment")=&lt;environment: R_GlobalEnv&gt; 
+     .. ..- attr(*, "predvars")= language list(arr_delay, distance, origin)
+     .. ..- attr(*, "dataClasses")= Named chr [1:3] "numeric" "numeric" "character"
+     .. .. ..- attr(*, "names")= chr [1:3] "arr_delay" "distance" "origin"
+    $ residuals    : Named num [1:327346] 3.25 16.77 26.7 -22.33 -30.88 ...
+     ..- attr(*, "names")= chr [1:327346] "1" "2" "3" "4" ...
+    $ coefficients : num [1:4, 1:4] 13.41405 -0.00405 -2.70426 -4.45617 0.17481 ...
+     ..- attr(*, "dimnames")=List of 2
+     .. ..$ : chr [1:4] "(Intercept)" "distance" "originJFK" "originLGA"
+     .. ..$ : chr [1:4] "Estimate" "Std. Error" "t value" "Pr(&gt;|t|)"
+    $ aliased      : Named logi [1:4] FALSE FALSE FALSE FALSE
+     ..- attr(*, "names")= chr [1:4] "(Intercept)" "distance" "originJFK" "originLGA"
+    $ sigma        : num 44.5
+    $ df           : int [1:3] 4 327342 4
+    $ r.squared    : num 0.0055
+    $ adj.r.squared: num 0.00549
+    $ fstatistic   : Named num [1:3] 604 3 327342
+     ..- attr(*, "names")= chr [1:3] "value" "numdf" "dendf"
+    $ cov.unscaled : num [1:4, 1:4] 1.54e-05 -6.47e-09 -7.18e-06 -1.03e-05 -6.47e-09 ...
+     ..- attr(*, "dimnames")=List of 2
+     .. ..$ : chr [1:4] "(Intercept)" "distance" "originJFK" "originLGA"
+     .. ..$ : chr [1:4] "(Intercept)" "distance" "originJFK" "originLGA"
+    $ na.action    : 'omit' Named int [1:9430] 472 478 616 644 726 734 755 839 840 841 ...
+     ..- attr(*, "names")= chr [1:9430] "472" "478" "616" "644" ...
+    - attr(*, "class")= chr "summary.lm"
+```
+
+]
+
+
+
+
+---
+# Dissecting model objects
+
+.pull-left[
+
+### The problem
+
+"While model inputs usually require tidy inputs, such attention to detail doesn’t carry over to model outputs. Outputs such as predictions and estimated coefficients aren’t always tidy. This makes it more difficult to combine results from multiple models. For example, in R, the default representation of model coefficients is not tidy because it does not have an explicit variable that records the variable name for each estimate, they are instead recorded as row names. (...) This knocks you out of the flow of analysis and makes it harder to combine the results from multiple models. I’m not currently aware of any packages that resolve this problem."
+
+ *Hadley Wickham*, ["Tidy Data"](https://www.jstatsoft.org/article/view/v059i10)
+
+]
+
+.pull-right[
+
+### The solution?
+
+See next slide!
+
+]
+
+
+
+---
+# Processing estimation output with broom
+
+
+.pull-left-wide[
+
+`broom` is a suite of tools that summarizes key information about models. It takes the messy output of built-in functions in R, such as `lm` or `t.test`, and turns them into tidy `tibbles()` (think: dataframes). The output is not ready for publication but an important intermediary step that makes post-processing of estimation results more convenient. It is part of the [tidyverse](https://www.tidyverse.org/) and [tidymodels](https://www.tidymodels.org/).
+
+There are three key `broom` verbs that you need to learn.&lt;sup&gt;1&lt;/sup&gt;
+
+1. `tidy()`: Summarizes information about model components.
+
+2. `glance()`: Reports information about the entire model.
+
+3. `augment()`: Adds information about observations to a dataset.
+
+]
+
+.footnote[
+&lt;sup&gt;1&lt;/sup&gt; For a more detailed and comprehensive introduction, see the [official documentation at https://broom.tidymodels.org/](https://broom.tidymodels.org/).
+]
+
+.pull-right-small-center[
+&lt;div align="center"&gt;
+&lt;br&gt;
+&lt;img src="pics/broom.png" height=250&gt;
+&lt;/div&gt;
+]
+
+---
+# Tidy model objects with tidy()
+
+`broom`'s `tidy()` function extracts the coefficient block (the model component) together with inferential statistics:
+
+
+```r
+R&gt; broom::tidy(model_out, conf.int = TRUE, conf.level = 0.95)
+```
+
+```
+   # A tibble: 4 × 7
+     term        estimate std.error statistic   p.value conf.low conf.high
+     &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;
+   1 (Intercept) 13.4      0.175         76.7 0         13.1      13.8    
+   2 distance    -0.00405  0.000110     -36.9 5.53e-297 -0.00426  -0.00383
+   3 originJFK   -2.70     0.189        -14.3 1.46e- 46 -3.07     -2.33   
+   4 originLGA   -4.46     0.194        -23.0 3.04e-117 -4.84     -4.08
+```
+
+--
+
+Here, we also extract the upper and lower bounds on the 95% confidence intervals for the estimates. What makes the function so convenient is the fact that the output comes as a tidy `tibble` with useful variable names.
+
+What exactly is extracted depends on the model type. You can learn more about the tidying function by typing `?tidy.[model class]`, e.g.: `?tidy.lm`.
+
+---
+# Summarize model statistics with glance()
+
+`broom`'s `glance()` function extracts summary statistics of the model and provides them in a single-row `tibble`: 
+
+
+```r
+R&gt; broom::glance(model_out)
+```
+
+```
+   # A tibble: 1 × 12
+     r.squared adj.r.squared sigma statistic p.value    df   logLik     AIC     BIC
+         &lt;dbl&gt;         &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;
+   1   0.00550       0.00549  44.5      604.       0     3  -1.71e6  3.41e6  3.41e6
+   # … with 3 more variables: deviance &lt;dbl&gt;, df.residual &lt;int&gt;, nobs &lt;int&gt;
+```
+
+
+---
+# Augment data with model information with augment()
+
+`broom`'s `augment()` function adds model information about each observation in a dataset, including, e.g.:
+  - predicted values (in the `.fitted` column)
+  - residuals (`.resid`)
+  - standard errors of fitted values (`.se.fit`; optional)
+
+
+```r
+R&gt; broom::augment(model_out, se_fit = TRUE) %&gt;% head(3)
+```
+
+```
+   # A tibble: 3 × 11
+     .rownames arr_delay distance origin .fitted .se.fit .resid       .hat .sigma
+     &lt;chr&gt;         &lt;dbl&gt;    &lt;dbl&gt; &lt;chr&gt;    &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;      &lt;dbl&gt;  &lt;dbl&gt;
+   1 1                11     1400 EWR       7.75   0.135   3.25 0.00000922   44.5
+   2 2                20     1416 LGA       3.23   0.156  16.8  0.0000123    44.5
+   3 3                33     1089 JFK       6.30   0.136  26.7  0.00000938   44.5
+   # … with 2 more variables: .cooksd &lt;dbl&gt;, .std.resid &lt;dbl&gt;
+```
+
+--
+
+It is also possible to pass on data that was not used during model fitting using the `newdata` argument. This requires that at least all predictor variable columns used to fit the model are present. Providing new data can be useful if one is interested to generate predictions for a test set.
+
+
+---
+# Unlocking the power of broom with multiple models
+
+The true power of broom unfolds in settings where you want to combine results from multiple analyses (using subgroups of data, different models, bootstrap replicates of the original data frame, permutations, imputations, ...). 
+
+--
+
+**Does this ring a bell?** Well, let's go back to our covariate selection sensitivity analysis. Recall that in **Steps 1 to 3**, we had specified and run 63 models. Let's evaluate the results now. First, extract the results in a tidy fashion:
+
+--
+
+**Step 4 (continuing the analysis from above): Extract results from all models**
+
+
+```r
+R&gt; models_broom &lt;- map(models_list, broom::tidy)
+R&gt; models_broom[[1]] # inspect one list entry
+```
+
+```
+   # A tibble: 2 × 5
+     term        estimate std.error statistic   p.value
+     &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;
+   1 (Intercept)    -5.86   0.187       -31.3 1.50e-205
+   2 dep_delay       1.02   0.00462     221.  0
+```
+
+Next, let's merge them all into one data frame:
+
+
+```r
+R&gt; models_broom_df &lt;- map_dfr(models_broom, rbind)
+```
+
+---
+# Unlocking the power of broom with multiple models
+
+**Step 5: Summarize the estimates for subset of key predictors**
+
+
+```r
+R&gt; models_broom_df %&gt;% 
++   filter(!str_detect(term, "Intercept|carrier")) %&gt;%
++   ggplot(aes(estimate)) + 
++   geom_histogram(binwidth = .1, color = "red") + 
++   geom_vline(xintercept = 0, linetype="dashed") + 
++   facet_grid(cols = vars(term), scales = "free_y") + 
++   theme_minimal()
+```
+
+&lt;img src="06-modeling_files/figure-html/unnamed-chunk-47-1.png" style="display: block; margin: auto;" /&gt;
 
 
 
@@ -269,24 +1438,503 @@ name: reporting
 &lt;html&gt;&lt;div style='float:left'&gt;&lt;/div&gt;&lt;hr color='#EB811B' size=1px style="width:1000px; margin:auto;"/&gt;&lt;/html&gt;
 
 
-
-
-
-
-&lt;!-- ############################################ --&gt;
 ---
-class: inverse, center, middle
-name: simulation
+background-image: url("pics/bobross-rplot.png")
+background-size: contain
+background-color: #000000
 
-# Simulating fake data
-
-&lt;html&gt;&lt;div style='float:left'&gt;&lt;/div&gt;&lt;hr color='#EB811B' size=1px style="width:1000px; margin:auto;"/&gt;&lt;/html&gt;
-
+# Reporting modeling results
 
 
 
+---
+# Reporting modeling results
 
-&lt;!-- ############################################ --&gt;
+
+
+.pull-left[
+### Why good reporting is as important as good modeling
+
+- Hardly anybody will read your code. Most stakeholders will not even be able to understand what you've done.
+- Not all components of your model are equally relevant.
+- Good communication of your model can save a lot of time a space.
+]
+
+.pull-right[
+### Making reporting part of the workflow
+
+- Our vision of the data science workflow is to **automate as much as possible** in order to have time for the really important decisions.
+- Since reporting results is usually at the end of the workflow, this step is affected by any change in the previous steps. Any manual work here hurts twice.
+- Reporting and publishing results should be seen as part of the workflow. Even if we don't work with RMarkdown to write our reports, we want avoid copy-and-paste work into other software.
+]
+
+&lt;div align="center"&gt;
+&lt;img src="pics/data-science-communicate.png" width=450&gt;
+&lt;/div&gt;
+
+
+
+
+---
+# Summarizing models (and data) with modelsummary
+
+.pull-left-wide[
+
+`modelsummary` is a suite of tools to create table and plot summaries of models and data. It supports hundreds of model types out-of-the-box and the output can be saved to a wide variety of formats, including HTML, PDF, Text/Markdown, LaTeX, MS Word, JPG, and PNG. 
+
+There are three key `modelsummary` verbs that you need to learn.&lt;sup&gt;1&lt;/sup&gt;
+
+1. `modelsummary()`: Create regression tables with side-by-side models.
+
+2. `modelplot()`: Create coefficient plots of model results.
+
+3. `datasummary_*()`: Create data summaries such as cross-tabs or balance tables.
+
+]
+
+.footnote[
+&lt;sup&gt;1&lt;/sup&gt; There is more in `modelsummary` than what we can cover today. Have a glimpse at Vincent Arel-Bundock's [page](https://vincentarelbundock.github.io/modelsummary/).
+]
+
+.pull-right-small-center[
+&lt;div align="center"&gt;
+&lt;br&gt;
+&lt;img src="pics/modelsummary.png" height=250&gt;
+&lt;/div&gt;
+]
+
+
+---
+# Creating regression tables with modelsummary()
+
+.pull-left-small[
+
+- `modelsummary()` takes one or several models as input. Multiple models are provided as (optionally named) list.
+- The extraction of information (estimates, standard errors, model summaries etc.) is taken care of by the function.
+- On this slide you see how `modelsummary()` generates content ready to be rendered as HTML table. With the `output` argument, we can also ask the function to creat `.tex`, `.rmd`, `.txt`, `.png`, and `.jpg`.
+- Although the defaults are good, be sure to refine the table before publishing it.
+
+]
+
+.pull-right-wide[
+
+
+
+
+
+```r
+R&gt; modelsummary(list(model1_out, model2_out, model3_out))
+```
+
+&lt;table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;"&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt;   &lt;/th&gt;
+   &lt;th style="text-align:center;"&gt; Model 1 &lt;/th&gt;
+   &lt;th style="text-align:center;"&gt; Model 2 &lt;/th&gt;
+   &lt;th style="text-align:center;"&gt; Model 3 &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; (Intercept) &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; −5.899 &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 10.829 &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; −3.213 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt;  &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; (0.033) &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; (0.136) &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; (0.056) &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; dep_delay &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 1.019 &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt;  &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 1.018 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt;  &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; (0.001) &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt;  &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; (0.001) &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; distance &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt;  &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; −0.004 &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; −0.003 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;box-shadow: 0px 1px"&gt;  &lt;/td&gt;
+   &lt;td style="text-align:center;box-shadow: 0px 1px"&gt;  &lt;/td&gt;
+   &lt;td style="text-align:center;box-shadow: 0px 1px"&gt; (0.000) &lt;/td&gt;
+   &lt;td style="text-align:center;box-shadow: 0px 1px"&gt; (0.000) &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Num.Obs. &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 327346 &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 327346 &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 327346 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; R2 &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 0.837 &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 0.004 &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 0.839 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; R2 Adj. &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 0.837 &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 0.004 &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 0.839 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; AIC &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 2822272.7 &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 3414551.8 &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 2818708.3 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; BIC &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 2822304.8 &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 3414583.9 &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 2818751.1 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Log.Lik. &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; −1411133.361 &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; −1707272.917 &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; −1409350.174 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; F &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 1679228.282 &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 1257.762 &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 850601.918 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+]
+
+---
+# Modifying regression tables
+
+.pull-left-vsmall[
+
+- Here's one example for that.
+- With `estimate` we define a [`glue`](https://glue.tidyverse.org/reference/glue.html) string to display estimates alongside confidence intervals.
+- We suppress uncertainty statistics with `statistic`.
+- We omit any goodness-of-fit stats with `gof_omit` and a regular expression.
+- We provide a `title`.
+]
+
+.pull-right-vwide[
+
+
+```r
+R&gt; # estimate three toy models
+R&gt; model1_out &lt;- lm(arr_delay ~ dep_delay, data = flights)
+R&gt; model2_out &lt;- lm(arr_delay ~ distance, data = flights)
+R&gt; model3_out &lt;- lm(arr_delay ~ dep_delay + distance, data = flights)
+R&gt; models &lt;- list(model1_out, model2_out, model3_out)
+R&gt; 
+R&gt; # create table
+R&gt; modelsummary(models, 
++              estimate = "{estimate} [{conf.low}, {conf.high}]",
++              statistic = NULL,
++              gof_omit = ".+",
++              title = "Linear regression of flight delay at arrival (in mins)") 
+```
+
+&lt;table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;"&gt;
+&lt;caption&gt;Linear regression of flight delay at arrival (in mins)&lt;/caption&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt;   &lt;/th&gt;
+   &lt;th style="text-align:center;"&gt; Model 1 &lt;/th&gt;
+   &lt;th style="text-align:center;"&gt; Model 2 &lt;/th&gt;
+   &lt;th style="text-align:center;"&gt; Model 3 &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; (Intercept) &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; −5.899 [−5.964, −5.835] &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 10.829 [10.564, 11.095] &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; −3.213 [−3.322, −3.104] &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; dep_delay &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 1.019 [1.018, 1.021] &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt;  &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 1.018 [1.017, 1.020] &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; distance &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt;  &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; −0.004 [−0.004, −0.004] &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; −0.003 [−0.003, −0.002] &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+]
+
+---
+# Modifying regression tables (cont.)
+
+.pull-left-wide[
+The `modelsummary()` function is extremely versatile. The defaults are good, but it will pay off to invest some time to learn the details, which are documented [here](https://vincentarelbundock.github.io/modelsummary/articles/modelsummary.html).
+
+In addition, it supports other table-making packages to further customize the appearance of tables. The details are documented [here](https://vincentarelbundock.github.io/modelsummary/articles/appearance.html).
+
+But I don't want to force anything on you. As always in R, there are several other excellent packages that help to create tables, including:
+
+- `gtsummary` by [Daniel Sjoberg](http://www.danieldsjoberg.com/gtsummary/)
+- `textreg` by [Philip Leifeld](https://cran.r-project.org/web/packages/texreg/index.html)
+- `stargazer` by [Marek Hlavac](https://cran.r-project.org/web/packages/stargazer/index.html)
+- `sjPlot` by [Daniel Lüdecke](https://strengejacke.github.io/sjPlot/)
+
+In any case, do invest some time in learning the function's options and in actually producing readable and informative tables before publishing them. (1-3 hours per table are fine!)
+]
+
+.pull-right-small[
+
+```r
+R&gt; modelsummary(
++   models,
++   output = "default",
++   fmt = 3,
++   estimate = "estimate",
++   statistic = "std.error",
++   vcov = NULL,
++   conf_level = 0.95,
++   stars = FALSE,
++   coef_map = NULL,
++   coef_omit = NULL,
++   coef_rename = NULL,
++   gof_map = NULL,
++   gof_omit = NULL,
++   group = term ~ model,
++   group_map = NULL,
++   add_rows = NULL,
++   align = NULL,
++   notes = NULL,
++   title = NULL,
++   escape = TRUE,
++   ...
++ )
+```
+]
+
+
+---
+# modelsummary() tables: more examples
+
+.pull-left-center[
+&lt;div align="center"&gt;
+&lt;img src="pics/modelsummary-table-1.png" width=600&gt;
+&lt;/div&gt;
+]
+
+.pull-right-center[
+&lt;div align="center"&gt;
+&lt;br&gt;&lt;br&gt;
+&lt;img src="pics/modelsummary-table-2.png" width=600&gt;
+&lt;/div&gt;
+]
+
+
+---
+# Tables vs. plots to communicate model results
+
+.pull-left[
+### The limits of tables
+
+- Tables of coefficients work ok when models are linear and additive.
+- They are good to communicate "precise" information.&lt;sup&gt;1&lt;/1&gt;
+- The are, however, less informative for
+  - non-linear relationships between `\(x\)` and `\(y\)` ( `\(x^2\)`, `\(log(x)\)`, etc.),
+  - interaction effects,
+  - models for categorical data.
+  ]
+  
+.pull-right[
+### The promise of plots 
+
+- *Coefficient plots* can make it more straightforward to focus on two key features of estimated parameters: effect size and uncertainty. 
+- What's more, they make comparisons across effects and models much easier. We humans are visual animals.
+- Other plots can go a long way to display other implications of models that are not visible from a tabular output, e.g., *predicted probability plots*, *marginal effects plots*, ...
+]
+
+.footnote[&lt;sup&gt;1&lt;/sup&gt; But sometimes give more precision than warranted. As a rule of thumb, never report more than three decimal points. In most cases, 0-2 is enough. Your estimates are less precise than that anyway.]
+
+
+---
+# Coefficient plots in the wild
+
+.pull-left-center[
+&lt;br&gt;
+&lt;div align="center"&gt;
+&lt;img src="pics/coefplot-nhb.png" width=600&gt;
+&lt;/div&gt;
+`Credit` [Munzert et al. 2020](https://www.nature.com/articles/s41562-020-01044-x)
+]
+
+.pull-right-center[
+&lt;div align="center"&gt;
+&lt;br&gt;&lt;br&gt;&lt;br&gt;
+&lt;img src="pics/coefplot-helbling.png" width=600&gt;
+&lt;/div&gt;
+`Credit` [Helbling and Traunmüller 2016](https://journals.sagepub.com/doi/10.1177/0010414015612388)
+
+]
+
+
+---
+# Creating coefficient plots with modelplot()
+
+.pull-left-small[
+- `modelplot()` takes one or several models as input. Multiple models are provided as (optionally named) list.
+- Again, the extraction of information (estimates, standard errors, model summaries etc.) is taken care of by the function.
+- The graphs produced by `modelplot()` are simple `ggplot2` objects. They can be post-processed (and exported) accordingly.
+- Although the defaults are good, be sure to refine the plot before publishing it.
+]
+
+.pull-right-wide[
+
+```r
+R&gt; modelplot(model_out)
+```
+
+&lt;img src="06-modeling_files/figure-html/unnamed-chunk-52-1.png" width="450px" style="display: block; margin: auto;" /&gt;
+]
+
+---
+# Modifying coefficient plots
+
+
+.pull-left-vsmall[
+
+- Here's one example for that.
+- We provide intuitive variable names with `coef_map`.
+- We drop the intercept with `coef_omit`.
+- We make more layout adaptations with `ggplot2` functions that make the plot better readable.
+]
+
+.pull-right-vwide[
+
+
+```r
+R&gt; cm &lt;- c("distance" = "Distance", 
++         "originLGA" = "Origin: LGA", 
++         "originJFK" = "Origin: JFK")
+R&gt; modelplot(model_out, 
++           coef_omit = "Interc", 
++           coef_map = cm) + 
++   xlim(-5, .25) + 
++   geom_vline(xintercept = 0, linetype="dashed") + 
++   labs(title = "Linear regression of flight delay at arrival (in mins)",
++        caption = "Data source: nycflights13 package") + 
++   theme_minimal()
+```
+
+&lt;img src="06-modeling_files/figure-html/unnamed-chunk-53-1.png" width="550px" style="display: block; margin: auto;" /&gt;
+]
+
+---
+# Working with interpretable effect sizes
+
+.pull-left[
+### Take care when plotting effect sizes
+
+- One of the major perks of coefficient plots is the comparability of effects across coefficients.
+- This can be, however, also one of the major problems of these kinds of plots
+- In order for them to make visual sense, the underlying covariates have to be inherently comparable. By showing slopes, the plot shows the effect of a unit change in each covariate on the outcome, but unit changes may not be comparable across variables.
+- Also check out the documentation of the [`effectsize` package](https://easystats.github.io/effectsize/) for a more thorough discussion of the problem (and how to tackle it).
+]
+
+.pull-right[
+### Addressing the issue
+
+- There are several ways to address the problem, including:
+  - Rescale variables to show intuitive unit changes in X (e.g., 1km instead of 1m)
+  - Rescale to full scale (minimum to maximum) changes in X
+  - Standardize variables to show standard deviation changes in X
+- Note that any rescaling operation also affects how you interpret the coefficients (and we're only talking about the linear case!). Sometimes it also makes sense to standardize the response variable. In that case, the coefficients can be interpreted as the change in the response in standard deviations for a 1 unit change in the predictor (whatever that is).
+]
+
+---
+# Working with interpretable effect sizes (cont.)
+
+.pull-left[
+
+**Rescaling (1 unit = 1000 miles)** 
+
+
+```r
+R&gt; # rescale continuous variable
+R&gt; flights$distance1kmiles &lt;- flights$distance/1000
+R&gt; model_out_kmiles &lt;- lm(arr_delay ~ 
++        distance1kmiles + origin, data = flights)
+R&gt; 
+R&gt; # plot model (detailed fine-tuning not shown)
+R&gt; modelplot(model_out_kmiles)
+```
+
+
+
+&lt;div align="center"&gt;
+&lt;img src="pics/coefplot-1k.png" width=550&gt;
+&lt;/div&gt;
+
+]
+
+.pull-right[
+**Standardization (1 unit = 1 s.d. on the covariate)** 
+
+
+```r
+R&gt; # rescale continuous variable
+R&gt; flights$distance_std &lt;- standardize(flights$distance)
+R&gt; model_out_std &lt;- lm(arr_delay ~ 
++        distance_std + origin, data = flights)
+R&gt; 
+R&gt; # plot model (detailed fine-tuning not shown)
+R&gt; modelplot(model_out_std)
+```
+
+
+
+&lt;div align="center"&gt;
+&lt;img src="pics/coefplot-std.png" width=550&gt;
+&lt;/div&gt;
+]
+
+
+---
+# More reporting with plots
+
+.pull-left[
+- There is much, much more that can be done with plots and model reporting (stay tuned for the session on visualization!).
+- Always be aware about what a model gives you and which relationships you want to explore or highlight.
+- As another example, see the fitted vs. true plots on the right. The upper scatter plot compares fitted (x-axis) vs. true (y-axis) values from our standard model. It illustrates a really poor fit.
+- The lower scatter plot compares fitted-vs-true for a slight modification of our standard model in which we also take `dep_delay` into account as predictor. Apparently, its a very powerful one.
+]
+
+.pull-right[
+&lt;div align="center"&gt;
+&lt;br&gt;
+&lt;img src="pics/fitted-vs-true-1.png" width=450&gt;
+&lt;br&gt;
+&lt;img src="pics/fitted-vs-true-2.png" width=450&gt;
+&lt;/div&gt;
+]
+
+
+
 ---
 class: inverse, center, middle
 name: summary
@@ -295,8 +1943,24 @@ name: summary
 
 &lt;html&gt;&lt;div style='float:left'&gt;&lt;/div&gt;&lt;hr color='#EB811B' size=1px style="width:1000px; margin:auto;"/&gt;&lt;/html&gt;
 
----
 
+---
+# Summary
+
+Some final bits of advice that didn't fit on the main slides:
+
+1. Before you actually run models, **describe the data**. That's not only for you. Every report should begin with a visualization of the phenomena of interest, plotting the rawest data available that is also legible in a graph.
+
+2. **Plot early, and plot often**! Visualization is not only a great tool for communication, but also for exploration and statistical analysis (more on that later).
+
+3. **Fit many models**. At least if you don't commit to one particular subset (→ preregistration). Think in terms of series of models, starting with the utterly simple and continuing through to the hopelessly complex.
+
+4. **Table results with care**. Please don’t just report which effects were significant and which were non-significant. Please don’t report just p-values. Please don’t just report the estimated effects of the significant effects. Report all estimates that you also discuss.
+
+5. **Invest more time in refining plots** than you planned to. Good figures aren't only plots. Think of informative headers and notes. Ideally, your figures are self-contained.
+
+
+---
 # Coming up
 
 &lt;br&gt;&lt;br&gt; 
