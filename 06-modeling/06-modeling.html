@@ -182,7 +182,7 @@ background-color: #000000
 `$$Y = f(x) + \epsilon$$`
 
 - In doing so, we decompose a model (or data-generating process) into a random or stochastic part (here: `\(\epsilon\)`) and a systematic/structural/deterministic part (here: `\(f(x)\)`).
-- (We might go on to impose further assumptions about the stochastic component, e.g., `\(\epsilon \sim N(0, 1)\)`.)
+- (We might go on to impose further assumptions about the stochastic component, e.g., `\(\epsilon \sim N(0, \sigma^2)\)`.)
 
 - In many cases, we want to learn how certain variables systematically relate to each other. To that end, we specify the systematic component of a model and then "let the data speak" to estimate parameters associate with elements of the systematic component.
 - As an example, we might specify
@@ -462,7 +462,7 @@ R&gt; models_list[[1]]
    
    Coefficients:
    (Intercept)    dep_delay  
-        -6.062        1.012
+        -5.830        1.014
 ```
 
 
@@ -1442,8 +1442,8 @@ R&gt; models_broom[[1]] # inspect one list entry
    # A tibble: 2 × 5
      term        estimate std.error statistic   p.value
      &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;
-   1 (Intercept)    -6.06   0.192       -31.6 1.30e-208
-   2 dep_delay       1.01   0.00467     217.  0
+   1 (Intercept)    -5.83   0.190       -30.7 3.95e-197
+   2 dep_delay       1.01   0.00438     231.  0
 ```
 
 Next, let's merge them all into one data frame:

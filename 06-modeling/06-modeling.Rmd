@@ -200,7 +200,7 @@ background-color: #000000
 $$Y = f(x) + \epsilon$$
 
 - In doing so, we decompose a model (or data-generating process) into a random or stochastic part (here: $\epsilon$) and a systematic/structural/deterministic part (here: $f(x)$).
-- (We might go on to impose further assumptions about the stochastic component, e.g., $\epsilon \sim N(0, 1)$.)
+- (We might go on to impose further assumptions about the stochastic component, e.g., $\epsilon \sim N(0, \sigma^2)$.)
 
 - In many cases, we want to learn how certain variables systematically relate to each other. To that end, we specify the systematic component of a model and then "let the data speak" to estimate parameters associate with elements of the systematic component.
 - As an example, we might specify
