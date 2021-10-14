@@ -71,6 +71,61 @@ library(kableExtra)
 6. [Summary](#summary)
 
 
+
+---
+# Workshop information
+
+### More rules
+- We have a preliminary schedule online. Check the [Google Spreadsheet](https://docs.google.com/spreadsheets/d/12djhhUG8USmEUm-wPby5VAjsEj_S4ZO8kWsayUOlHPg/edit?usp=sharing) (link on Moodle) and save the date/time slot. Use the comment feature if the slot does not work for you.
+- Please upload your presentation video on Moodle (new assignment at the bottom; see description for more details). Deadline is November 1, 11.59pm CET (NO extension possible).
+- The labs on Oct 27 will provide you with more details about screen recording, preparation of materials etc.
+- Please note that the deadline for assignment 4 (model fitting) has been extended to Nov 10.
+
+--
+
+### How the workshop will be run
+- The videos will be hosted on Hertie's Vimeo account and embedded on a dedicated workshop webpage.
+- The workshop will run on MS Teams in a dedicated Team. You'll be invited soon.
+  - We will have three parallel sessions. 
+  - Session presenters will also moderate their session. 
+  - The session starts with video, then comes the live tutorial.
+  - You can attend as many other sessions as you want, but I expect you to attend AT LEAST two other sessions. 
+
+
+---
+# Workshop information (cont.)
+
+### Goals for the presentation
+
+- The topics vary in breadth and potential depth. I don't expect you to go very deep.
+- You should not assume any prior knowledge among your fellow students (other than the topics and tools that have been covered in class). 
+- Try to offer a quick yet engaging overview: What is this tool/technique/package good for? How can we use it? What are the key features? Where should students go to learn more?
+
+--
+
+### Goals for the live tutorial
+- The tutorial should be structured around the practice material that you provide for the session.
+- You don't have to cover everything in the material though. It could make sense to focus on one aspect and let students engage with it / work on it.
+- All students will have access to (and hopefully have downloaded) all materials in advance. You can encourage them to follow along on their machines if that makes sense. Be sure to include code that installs the necessary packages though.
+
+
+---
+# Workshop information (cont.)
+
+### How to split topics between groups and team members
+- Groups that have been assigned the same topic prepare separate sessions You can exchange ideas but the sessions should work as standalone units.
+- It is up to you to split the work in your team. For the live session it would be ideal if both of you attend. It is absolutely mandatory that at least one of you attends and moderates the session.
+
+--
+
+### Grading
+
+- Both the recorded talk and the prepared exercise materials will be graded.
+- For the prepared exercise materials we will pull the repositories that you created on the workshop GitHub page. You'll be provided with a README.md template that you will use to summarize the content of your session and to document who contributed to which parts of the unit.
+
+
+
+
 ---
 background-image: url("pics/data-model-jesus.jpeg")
 background-size: contain
