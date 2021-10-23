@@ -1984,6 +1984,7 @@ permutation()
 - Also, try avoiding function names that already exist, in particular those that come with a loaded package.
 - This often implies a trade-off between shortness and uniqueness. In any case, you would try to avoid situations that force you disambiguate functions with the same name (as in `dplyr::select`; see ["R packages"](https://r-pkgs.org/namespace.html)).
 - Check out this [Wikipedia page](https://en.wikipedia.org/wiki/Naming_convention_(programming) or this [Stackoverflow post](https://stackoverflow.com/questions/17326185/what-are-the-different-kinds-of-cases) for more background on naming conventions in programming!
+- For more good advice on how to name stuff, see [this legendary presentation](http://www2.stat.duke.edu/~rcs46/lectures_2015/01-markdown-git/slides/naming-slides/naming-slides.pdf) by Jenny Bryan.
 
 ---
 # Commenting on things
