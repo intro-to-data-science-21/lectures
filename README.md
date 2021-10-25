@@ -1,6 +1,6 @@
 # Introduction to Data Science
 [`Lectures`](#lectures) | [`Summary`](#summary) |
-[`About`](#about) | [`License`](#license)
+[`About`](#about) | [`Credits`](#credits)
 
 ## Lectures
 
@@ -17,6 +17,8 @@
 
 6. Modeling \[[**.html**](https://raw.githack.com/intro-to-data-science-21/lectures/main/06-modeling/06-modeling.html) | [**.pdf**](https://raw.githack.com/intro-to-data-science-21/lectures/main/06-modeling/06-modeling.pdf) | [**.Rmd**](https://raw.githack.com/intro-to-data-science-21/lectures/main/06-modeling/06-modeling.Rmd)\]
 
+7. Visualization \[[**.html**](https://raw.githack.com/intro-to-data-science-21/lectures/main/07-visualization/07-visualization.html) | [**.pdf**](https://raw.githack.com/intro-to-data-science-21/lectures/main/07-visualization/07-visualization.pdf) | [**.Rmd**](https://raw.githack.com/intro-to-data-science-21/lectures/main/07-visualization/07-visualization.Rmd)\]
+
 
 
 ## Summary
@@ -32,8 +34,6 @@ This course will introduce you to the modern data science workflow with R. In re
 The goals are to (1) equip you with conceptual knowledge about the data science pipeline and coding workflow, data structures, and data wrangling, (2) enable you to apply this knowledge with statistical software, and (3) prepare you for our other methods electives and the master’s thesis.
 
 
-## License
-
-The material in this repository is made available under the [MIT license](http://opensource.org/licenses/mit-license.php). 
+## Credits
 
 Many of the materials build on [Grant McDermott](http://grantmcdermott.com)'s excellent course [Data Science for Economists](https://github.com/uo-ec607).

@@ -170,3 +170,6 @@ hr, .title-slide h2::after, .mline h1::after {
   font-size: 750%;
 }
 
+.smalltext {
+  font-size: 100%;
+}

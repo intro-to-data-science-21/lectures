@@ -42,7 +42,7 @@ class: center, middle, inverse, title-slide
 
 2. [Data visualization as a method](#method)
 
-3. [Types of data visualization](#plottypes)
+3. [Types of data visualization](#plottypes)&lt;sup&gt;1&lt;/sup&gt;
 
 4. [Ingredients of data visualization](#ingredients)&lt;sup&gt;1&lt;/sup&gt;
 
@@ -50,9 +50,9 @@ class: center, middle, inverse, title-slide
 
 6. [Visualization with R](#vizr)
 
-7. [Summary](#summary)
+7. [The best statistical graph of all times](#bestgraph)
 
-.footnote[&lt;sup&gt;1&lt;/sup&gt; Much of this section draws on materials from Claus Wilke's excellent book [*Fundamentals of Data Visualization*](https://clauswilke.com/dataviz/).]
+.footnote[&lt;sup&gt;1&lt;/sup&gt; Much of these sections draw on materials from Claus Wilke's excellent book [*Fundamentals of Data Visualization*](https://clauswilke.com/dataviz/).]
 
 &lt;!-- ############################################ --&gt;
 ---
@@ -96,6 +96,19 @@ name: whyviz
 ---
 # ... but you'll be getting this
 
+.pull-left[
+&lt;br&gt;
+&lt;div align="center"&gt;
+&lt;img src="pics/movie-rankings-1.png" width=500&gt;
+&lt;/div&gt;
+]
+
+.pull-right[
+&lt;br&gt;
+&lt;div align="center"&gt;
+&lt;img src="pics/simpsons-imdb.png" width=500&gt;
+&lt;/div&gt;
+]
 
 
 
@@ -198,9 +211,35 @@ name: whyviz
 ]
 
 
+---
+# Graphs vs. tables I: model estimates
+
+.pull-left[
+&lt;div align="center"&gt;
+&lt;br&gt;
+&lt;img src="pics/legislator-views-table.png" width=450&gt;
+&lt;/div&gt;
+]
+
+.pull-right[
+&lt;div align="center"&gt;
+&lt;br&gt;
+&lt;img src="pics/legislator-views-coefplot.png" width=450&gt;
+&lt;/div&gt;
+]
+
 
 ---
-# The case for visualization
+# Graphs vs. tables II: amounts
+
+&lt;div align="center"&gt;
+&lt;br&gt;
+&lt;img src="pics/epstein-martin.png" width=700&gt;
+&lt;/div&gt;
+
+
+---
+# Graphs vs. tables III: relationships
 
 .pull-left[
 - The table on the right comprises data sets I through IV, each consisting of eleven `\((x,y)\)` points.
@@ -215,7 +254,7 @@ name: whyviz
 ]
 
 ---
-# The case for visualization (cont.)
+# Graphs vs. tables III: relationships (cont.)
 
 .pull-left[
 - The table on the right comprises data sets I through IV, each consisting of eleven `\((x,y)\)` points.
@@ -231,15 +270,15 @@ name: whyviz
 ]
 
 ---
-# The case for visualization (cont.)
+# Graphs vs. tables III: relationships (cont.)
 
 .pull-left[
 - The table on the right comprises data sets I through IV, each consisting of eleven `\((x,y)\)` points.
 - Carefully study the table. How do `\(x\)` and `\(y\)` as well as their relationship compare across datasets?
 - It shows that all the data sets have nearly identical simple descriptive statistics in terms of mean, standard deviation, correlation, and linear fit!
 - Plotting the data reveals wildly different distributions, countering the impression that "numerical calculations are exact, but graphs are rough" ([Anscombe 1973](https://www.tandfonline.com/doi/abs/10.1080/00031305.1973.10478966)).
-- The dataset was constructed by [Francis Anscombe](https://en.wikipedia.org/wiki/Frank_Anscombe) and is known as "[Anscombe's quartet](https://en.wikipedia.org/wiki/Anscombe%27s_quartet)"
-- Case closed.
+- The dataset was constructed by [Francis Anscombe](https://en.wikipedia.org/wiki/Frank_Anscombe) and is known as "[Anscombe's quartet](https://en.wikipedia.org/wiki/Anscombe%27s_quartet)".
+- Graphs 3, Tables 0. Case closed.
 ]
 
 .pull-right[
@@ -264,7 +303,7 @@ name: method
 
 
 ---
-# Different goals, different looks (cont.)
+# Different goals, different looks
 
 
 .pull-left[
@@ -281,6 +320,8 @@ name: method
 - Explore and interact.
 - "Forces us to notice what we never expected to see" (Tukey 1977)
 ]
+
+--
 
 .pull-right[
 ### Explanatory visualization
@@ -305,7 +346,7 @@ name: method
 
 &lt;div align="center"&gt;
 &lt;br&gt;
-&lt;img src="pics/scatterplot-example.png" height=280&gt;
+&lt;img src="pics/scatterplot-example.png" height=400&gt;
 &lt;/div&gt;
 ]
 
@@ -314,72 +355,273 @@ name: method
 
 &lt;div align="center"&gt;
 &lt;br&gt;
-&lt;img src="pics/polarization-graph-2.png" height=280&gt;
+&lt;img src="pics/polarization-graph-2.png" height=400&gt;
+&lt;/div&gt;
+]
+
+
+
+---
+# The handcraft of visualization
+
+.pull-left[
+### Visualization as an iterative process
+
+- The choice of the right graphical format ultimately depends on the task or problem it is trying to solve.
+- Always try different graphical formats on the same data – they may reveal different aspects.
+- Constructing visualizations is almost always an iterative process – the first graph is rarely also the final one.
+
+&lt;div align="center"&gt;
+&lt;img src="pics/fuckingowl.png" height=250&gt;
+&lt;/div&gt;
+]
+
+--
+
+.pull-right[
+### A tool for comparison
+
+- "The fundamental analytical act in statistical reasoning is to answer the question 'compared to what?'
+- Whether we are evaluating changes over space or time, searching big data bases, adjusting and controlling for variables, designing experiments, specifying multiple regressions, or doing just about any kind of evidence-based reasoning, the essential point is to make intelligent and appropriate comparisons.
+- Thus visual displays, if they are to assist thinking, should show comparisons."
+
+&lt;div align="right"&gt;
+Edward Tufte, &lt;a href="http://atc.berkeley.edu/201/readings/Tufte_BE_2006.pdf"&gt;Beautiful Evidence&lt;/a&gt;, p.127.
 &lt;/div&gt;
 ]
 
 
 ---
-# Fundamental principles of analytic design
+# Visualization in the data science workflow
 
 .pull-left[
-1. **Comparisons.** Show comparisons, contrasts, differences.
-2. **Causality, mechanism, structure, explanation.** Show causality, mechanism, explanation, systematic structure.
-3. **Multivariate analysis.** Show multivariate data; that is show more than 1 or 2 variables.
-4. **Integration of evidence.** Completely integrate words, numbers, images, diagrams.
-5. **Documentation.** Thoroughly describe the evidence. Provide a detailed title, indicate the authors and sponsors, document the data sources, show complete measurement scales, point out relevant issues.
-6. **Content counts most of all.** Analytical presentations ultimately stand or fall depending on the quality, relevance and integrity of their content ("What is the problem you want to solve?")
-
-Edward Tufte, "[Beautiful Evidence](http://atc.berkeley.edu/201/readings/Tufte_BE_2006.pdf)", Chapter 5.
+Data visualization is a key skill for data scientists. It is relevant in every step of the workflow.
 ]
 
 .pull-right[
-edward-tufte.jpeg
+
+&lt;div align="center"&gt;
+&lt;br&gt;
+&lt;img src="pics/data-science-flow.png" width=450&gt;
+&lt;/div&gt;
 ]
 
 ---
-# Minard's map of Napoleon's March
-
-&lt;div align="center"&gt;
-&lt;br&gt;
-&lt;img src="pics/minards-map.png" width=950&gt;
-&lt;/div&gt;
-
-Can you spot those principles in Minard’s Map?
-More information on the map [here](https://en.wikipedia.org/wiki/Charles_Joseph_Minard).
-
-
-
----
-# Visualizing statistical models
-
-Visualization can be useful at several steps in the modeling workflow. Potential usecases include:
-
-- The presentation of results (regression tables vs. coefficient plots)
-- Sensitivity and robustness testing
-- Model checking and diagnostics
-- Informal precursor to more complex models
-
-For effective visualization, comparison is key.
-
----
-# Visualizing statistical models
+# Visualization in the data science workflow
 
 .pull-left[
-&lt;div align="center"&gt;
-&lt;br&gt;
-&lt;img src="pics/legislator-views-table.png" width=450&gt;
-&lt;/div&gt;
+Data visualization is a key skill for data scientists. It is relevant in every step of the workflow.
+
+**Wrangle**
+- Sanity checks
+- Identification of outliers
+- Guidance of recoding operations
 ]
 
 .pull-right[
+
 &lt;div align="center"&gt;
 &lt;br&gt;
-&lt;img src="pics/legislator-views-coefplot.png" width=450&gt;
+&lt;img src="pics/data-science-wrangle.png" width=450&gt;
+&lt;/div&gt;
+]
+
+---
+# Visualization in the data science workflow
+
+.pull-left[
+Data visualization is a key skill for data scientists. It is relevant in every step of the workflow.
+
+**Wrangle**
+- Sanity checks
+- Identification of outliers
+- Guidance of recoding operations
+]
+
+.pull-right[
+
+&lt;div align="center"&gt;
+&lt;br&gt;
+&lt;img src="pics/data-science-wrangle.png" width=450&gt;
+&lt;/div&gt;
+
+&lt;div align="center"&gt;
+&lt;br&gt;
+&lt;img src="pics/anscombe-plot-outliers.png" width=450&gt;
+&lt;/div&gt;
+&lt;div align="center" style="font-size:16px;"&gt;
+Scatter plots to identify outliers in bivariate relationships.
 &lt;/div&gt;
 ]
 
 
+---
+# Visualization in the data science workflow
+
+.pull-left[
+Data visualization is a key skill for data scientists. It is relevant in every step of the workflow.
+
+**Wrangle**
+- Sanity checks
+- Identification of outliers
+- Guidance of recoding operations
+
+**Explore**
+- Summarize distributions
+- Discover patterns, relationships
+]
+
+.pull-right[
+
+&lt;div align="center"&gt;
+&lt;br&gt;
+&lt;img src="pics/data-science-explore.png" width=450&gt;
+&lt;/div&gt;
+
+]
+
+
+---
+# Visualization in the data science workflow
+
+.pull-left[
+Data visualization is a key skill for data scientists. It is relevant in every step of the workflow.
+
+**Wrangle**
+- Sanity checks
+- Identification of outliers
+- Guidance of recoding operations
+
+**Explore**
+- Summarize distributions
+- Discover patterns, relationships
+]
+
+.pull-right[
+
+&lt;div align="center"&gt;
+&lt;br&gt;
+&lt;img src="pics/data-science-explore.png" width=450&gt;
+&lt;/div&gt;
+
+&lt;div align="center"&gt;
+&lt;br&gt;
+&lt;img src="pics/forensic-correlations2-1.png" width=250&gt;
+&lt;/div&gt;
+&lt;div align="center" style="font-size:16px;"&gt;
+Correlogram to visualize amount of association &lt;br&gt; between pairs of variables.
+&lt;/div&gt;
+]
+
+
+---
+# Visualization in the data science workflow (cont.)
+
+.pull-left[
+Data visualization is a key skill for data scientists. It is relevant in every step of the workflow.
+
+**Model**
+- Test hypotheses
+- Summarize (multiple) model estimates
+- Visualize uncertainty
+- Report robustness/sensitivity analyses
+]
+
+.pull-right[
+
+&lt;div align="center"&gt;
+&lt;br&gt;
+&lt;img src="pics/data-science-model.png" width=450&gt;
+&lt;/div&gt;
+
+]
+
+---
+# Visualization in the data science workflow (cont.)
+
+.pull-left[
+Data visualization is a key skill for data scientists. It is relevant in every step of the workflow.
+
+**Model**
+- Test hypotheses
+- Summarize (multiple) model estimates
+- Visualize uncertainty
+- Report robustness/sensitivity analyses
+]
+
+.pull-right[
+
+&lt;div align="center"&gt;
+&lt;br&gt;
+&lt;img src="pics/data-science-model.png" width=450&gt;
+&lt;/div&gt;
+
+&lt;div align="center"&gt;
+&lt;br&gt;
+&lt;img src="pics/blue-jays-male-graded-conf-band-1.png" width=350&gt;
+&lt;/div&gt;
+&lt;div align="center" style="font-size:16px;"&gt;
+Raw data and trend line with confidence bands&lt;br&gt;to visualize uncertainty of fit&lt;/div&gt;
+]
+
+---
+# Visualization in the data science workflow (cont.)
+
+.pull-left[
+Data visualization is a key skill for data scientists. It is relevant in every step of the workflow.
+
+**Model**
+- Test hypotheses
+- Summarize (multiple) model estimates
+- Visualize uncertainty
+- Report robustness/sensitivity analyses
+
+**Communicate**
+- Present raw/cooked data
+- Present implications of model results
+]
+
+.pull-right[
+
+&lt;div align="center"&gt;
+&lt;br&gt;
+&lt;img src="pics/data-science-communicate.png" width=450&gt;
+&lt;/div&gt;
+
+]
+
+
+---
+# Visualization in the data science workflow (cont.)
+
+.pull-left[
+Data visualization is a key skill for data scientists. It is relevant in every step of the workflow.
+
+**Model**
+- Test hypotheses
+- Summarize (multiple) model estimates
+- Visualize uncertainty
+- Report robustness/sensitivity analyses
+
+**Communicate**
+- Present raw/cooked data
+- Present implications of model results
+]
+
+.pull-right[
+
+&lt;div align="center"&gt;
+&lt;br&gt;
+&lt;img src="pics/data-science-communicate.png" width=450&gt;
+&lt;/div&gt;
+
+&lt;div align="center"&gt;
+&lt;br&gt;
+&lt;img src="pics/map-airfields.png" width=350&gt;
+&lt;/div&gt;
+&lt;div align="center" style="font-size:16px;"&gt;
+Choropleth map illustrating the location of civilian airfields in the German Empire, 1932. Administrative counties are shaded according to their centroid's distance to the closest airfield&lt;/div&gt;
+]
 
 
 ---
@@ -440,7 +682,7 @@ This method is called "after the 'police lineup' of criminal investigations [...
 
 The visual hypothesis test involves the following steps:
 
-  1. Simulate data to create `\(m-1\)` null plots 
+  1. Simulate data to create `\(m-1\)` null plots.
   2. Randomly place the plot of the real data among them, resulting in a total of `\(m\)` plots.
   3. Ask a human viewer to choose the plot that looks the most different from the rest.
   4. If the test person succeeds and picks the plot showing the actual data, then this visual discovery can be assigned a p-value of `\(1/m\)`. In other words, the probability of picking the true plot just by chance is `\(1/m\)`.
@@ -449,7 +691,7 @@ The visual hypothesis test involves the following steps:
 # Visual inference: which plot stands out from the rest?
 
 &lt;div align="center"&gt;
-&lt;img src="pics/scatterplot-1.png" width=900&gt;
+&lt;img src="pics/scatterplot-1.png" width=850&gt;
 &lt;/div&gt;
 
 
@@ -457,7 +699,7 @@ The visual hypothesis test involves the following steps:
 # Visual inference: which plot stands out from the rest?
 
 &lt;div align="center"&gt;
-&lt;img src="pics/scatterplot-2.png" width=900&gt;
+&lt;img src="pics/scatterplot-2.png" width=850&gt;
 &lt;/div&gt;
 
 
@@ -465,41 +707,17 @@ The visual hypothesis test involves the following steps:
 # Visual inference: which plot stands out from the rest?
 
 &lt;div align="center"&gt;
-&lt;img src="pics/histograms.png" width=800&gt;
+&lt;img src="pics/histograms.png" width=780&gt;
 &lt;/div&gt;
 
 ---
 # None! All just show runif(500, 0, 1).
 
 &lt;div align="center"&gt;
-&lt;img src="pics/histograms.png" width=800&gt;
+&lt;img src="pics/histograms.png" width=780&gt;
 &lt;/div&gt;
 
 
-
-
----
-# Summary
-
-.pull-left[
-### Visualization as an iterative process
-
-- The choice of the right graphical format ultimately depends on the task or problem it is trying to solve.
-- Always try different graphical formats on the same data – they may reveal different aspects.
-- Constructing visualizations is almost always an iterative process – the first graph is rarely also the final one.
-]
-
-.pull-right[
-### Comparison is key
-
-- "The fundamental analytical act in statistical reasoning is to answer the question 'compared to what?'
-- Whether we are evaluating changes over space or time, searching big data bases, adjusting and controlling for variables, designing experiments, specifying multiple regressions, or doing just about any kind of evidence-based reasoning, the essential point is to make intelligent and appropriate comparisons.
-- Thus visual displays, if they are to assist thinking, should show comparisons."
-
-&lt;div align="right"&gt;
-Edward Tufte, &lt;a href="http://atc.berkeley.edu/201/readings/Tufte_BE_2006.pdf"&gt;Beautiful Evidence&lt;/a&gt;, p.127.
-&lt;/div&gt;
-]
 
 
 
@@ -517,12 +735,150 @@ name: plottypes
 ---
 # Different plot types for different purposes
 
-- **Histogram**: "Is the **distribution** normal (or uniform or...)?"
-- **Scatterplot**: "Is there a **correlation** between x and y?"
-- **Scatterplot with color**: "Are the points **clustered** by color?"
-- **Barplot**: "Is there a **difference** between groups/values?"
-- **Line chart**: "Is there **change** over time?"
-- **Choropleth**: "Is there a **spatial pattern**?"
+A common mistake in visualization is that plot types are used for purposes they are not meant for. You'll gain more intuition and experience in picking the right types over time. 
+
+Before you start plotting, ask yourself:
+
+--
+
+.pull-left-vsmall[
+#### 1. Which quantity do I want to visualize?
+
+- Amounts
+- Distributions
+- Proportions
+- Associations
+- Structures
+- Trends
+- Estimates
+- Predictions
+- Uncertainty
+]
+
+--
+
+.pull-right-vwide[
+#### 2. Which question do I want to answer?
+
+- "Is the *distribution* normal (or uniform or...)?" → **Histogram, density plot, Q-Q plot**
+- "Are univariate *distributions* across subgroups different?" → **Boxplots, ridgelines**
+- "How do *differences in amounts* between groups compare?" → **Barplot, dotplot** 
+- "What is the *relationship* between x and y?" → **Scatterplot, contour plot, hex bins** 
+- "What are the *correlations* in a set of variables?" → **Correlogram, small multiples** 
+- "How did a *trend* develop over time?" → **Line graph, slopegraph** 
+- "Are the data *clustered* by subgroup?" → **Scatterplot with color**
+- "Is there a *spatial pattern*?" → **Choropleth, cartogram heatmap**
+- "What are the relative and absolute *effect sizes*? → **Coefficient plot**
+- "How uncertain are *estimates*? → **Error bars, confidence bands**
+
+]
+
+
+
+---
+# A directory of visualizations
+
+.pull-left[
+### Visualizing amounts
+
+&lt;div align="center"&gt;
+&lt;br&gt;
+&lt;img src="pics/amounts-1.png" width=500&gt;
+&lt;/div&gt;
+
+&lt;div align="center"&gt;
+&lt;img src="pics/amounts_multi-1.png" width=500&gt;
+&lt;/div&gt;
+]
+
+--
+
+.pull-right[
+
+### Visualizing distributions
+&lt;div align="center"&gt;
+&lt;br&gt;
+&lt;img src="pics/single-distributions-1.png" width=500&gt;
+&lt;/div&gt;
+
+&lt;div align="center"&gt;
+&lt;img src="pics/multiple-distributions-1.png" width=500&gt;
+&lt;/div&gt;
+]
+
+
+---
+# A directory of visualizations (cont.)
+
+.pull-left[
+### Visualizing proportions
+
+&lt;div align="center"&gt;
+&lt;br&gt;
+&lt;img src="pics/proportions-1.png" width=500&gt;
+&lt;/div&gt;
+
+&lt;div align="center"&gt;
+&lt;img src="pics/proportions-comp-1.png" width=500&gt;
+&lt;/div&gt;
+
+&lt;div align="center"&gt;
+&lt;img src="pics/proportions-multi-1.png" width=500&gt;
+&lt;/div&gt;
+]
+
+
+--
+
+.pull-right[
+
+### Visualizing x-y relationships
+&lt;div align="center"&gt;
+&lt;br&gt;
+&lt;img src="pics/basic-scatter-1.png" width=500&gt;
+&lt;/div&gt;
+
+&lt;div align="center"&gt;
+&lt;img src="pics/xy-binning-1.png" width=500&gt;
+&lt;/div&gt;
+
+&lt;div align="center"&gt;
+&lt;img src="pics/xy-lines-1.png" width=500&gt;
+&lt;/div&gt;
+]
+
+
+---
+# A directory of visualizations (cont.)
+
+.pull-left[
+### Visualizing uncertainty
+
+&lt;div align="center"&gt;
+&lt;br&gt;
+&lt;img src="pics/errorbars-1.png" width=500&gt;
+&lt;/div&gt;
+
+&lt;div align="center"&gt;
+&lt;img src="pics/confidence-dists-1.png" width=500&gt;
+&lt;/div&gt;
+
+&lt;div align="center"&gt;
+&lt;img src="pics/confidence-bands-1.png" width=500&gt;
+&lt;/div&gt;
+]
+
+
+--
+
+.pull-right[
+
+### Visualizing geospatial data
+&lt;div align="center"&gt;
+&lt;br&gt;
+&lt;img src="pics/geospatial-1.png" width=500&gt;
+&lt;/div&gt;
+]
 
 
 
@@ -950,17 +1306,6 @@ name: plotingredients
 
 
 
-
-
-
-
-
-
----
-# Backgrounds: Grids and shades
-
-
-
 &lt;!-- ############################################ --&gt;
 ---
 class: inverse, center, middle
@@ -972,40 +1317,274 @@ name: rules
 
 
 ---
-# Basic rules
-
-"Visualization is surprisingly difficult. Even the most simple matters can easily go wrong." William Cleveland
-
-"Graphical excellence is [...] a matter of substance, of statistics, and of design." Edward Tufte
-
-
-
-
----
-# Basic rules
-
-1. Drop all the unimportant stuff.
-2. Bar chart axes should include zero.
-3. Line chart axes need not include zero.
-4. Avoid multiple y axes at all cost.
-
-
-https://twitter.com/bengoldacre/status/1448222429973827584?s=11
-
-
-epstein-martin.png
-https://books.google.de/books?id=1BCSBAAAQBAJ&amp;pg=PA245
-
----
-# Basic rules
+# On the shoulder of giants...
 
 .pull-left[
-1. Drop all the unimportant stuff
+
+"Visualization is surprisingly difficult. Even the most simple matters can easily go wrong."
+
+"No matter how clever the choice of the information, and no matter how technologically impressive the encoding, a visualization fails if the decoding fails."
+
+&lt;br&gt;
+
+&lt;div align="right"&gt;&lt;i&gt;William Cleveland&lt;/i&gt;&lt;/div&gt;
+
+&lt;div align="center"&gt;
+&lt;br&gt;
+&lt;img src="pics/william-cleveland.jpeg" height=210&gt;
+&lt;/div&gt;
+]
+
+--
+
+.pull-right[
+"Although nothing can replace a good graphical idea applied to an interesting set of numbers, editing and revision are as essential to sound graphical work as they are to writing."
+
+"Design cannot rescue failed content."
+
+"Above all else show the data."
+
+&lt;div align="right"&gt;&lt;i&gt;Edward Tufte&lt;/i&gt;&lt;/div&gt;
+
+&lt;div align="center"&gt;
+&lt;br&gt;
+&lt;img src="pics/edward-tufte.jpeg" height=210&gt;
+&lt;/div&gt;
+]
+
+
+
+---
+# Fundamental principles of analytic design
+
+In Chapter 5 of his book "[Beautiful Evidence](http://atc.berkeley.edu/201/readings/Tufte_BE_2006.pdf)", Edward Tufte outlines six fundamental principles of analytic design:
+
+1. **Comparisons.** Show comparisons, contrasts, differences.
+
+2. **Causality, mechanism, structure, explanation.** Show causality, mechanism, explanation, systematic structure.
+
+3. **Multivariate analysis.** Show multivariate data; that is show more than 1 or 2 variables.
+
+4. **Integration of evidence.** Completely integrate words, numbers, images, diagrams.
+
+5. **Documentation.** Thoroughly describe the evidence. Provide a detailed title, indicate the authors and sponsors, document the data sources, show complete measurement scales, point out relevant issues.
+
+6. **Content counts most of all.** Analytical presentations ultimately stand or fall depending on the quality, relevance and integrity of their content ("What is the problem you want to solve?")
+
+--
+
+On the following slide you'll see Minard's famous map of Napoleon's March, praised by Tufte as "one of the best statistical graphs ever". Can you spot how those principles were implemented in Minard’s Map? More information on the map [here](https://en.wikipedia.org/wiki/Charles_Joseph_Minard).
+
+
+
+---
+# Minard's map of Napoleon's March
+
+&lt;div align="center"&gt;
+&lt;br&gt;
+&lt;img src="pics/minards-map-translated.png" width=1000&gt;
+&lt;/div&gt;
+
+
+
+---
+class: smalltext
+
+# Dos and Don'ts
+
+1. [Follow the principle of proportional ink.](https://clauswilke.com/dataviz/proportional-ink.html)&lt;sup&gt;1&lt;/sup&gt;
+2. [Maximize the data–ink ratio, within reason.](https://clauswilke.com/dataviz/balance-data-context.html)
+3. [Avoid invisible overplotting.](https://clauswilke.com/dataviz/overlapping-points.html)
+4. [Drop all the unimportant stuff.](https://clauswilke.com/dataviz/balance-data-context.html)
+5. [Don't overload graphs. Instead, use several.](https://clauswilke.com/dataviz/multi-panel-figures.html)
+6. [Use color scales that match the logic of the data scale.](https://clauswilke.com/dataviz/color-pitfalls.html)
+7. [Use color-vision deficient-friendly colors.](https://clauswilke.com/dataviz/color-pitfalls.html#not-designing-for-color-vision-deficiency)
+8. [Only use a legend when you need one.](https://clauswilke.com/dataviz/redundant-coding.html#designing-figures-without-legends)
+9. [Pay attention to legend order.](https://clauswilke.com/dataviz/figure-titles-captions.html#axis-and-legend-titles)
+10. [Label axes properly (but avoid trivial information).](https://clauswilke.com/dataviz/figure-titles-captions.html#figure-titles-and-captions)
+11. [Use grids and helper lines, within reason.](https://clauswilke.com/dataviz/balance-data-context.html#background-grids)
+12. [Don't order alphabetically ("Alabama first"). Use natural orders instead.](https://datajournalism.com/read/longreads/the-unspoken-rules-of-visualisation)
+13. [Bar chart axes should include zero.](https://datajournalism.com/read/longreads/the-unspoken-rules-of-visualisation)
+14. [Put the explanatory variable on the x axis, the outcome on the y axis.](https://datajournalism.com/read/longreads/the-unspoken-rules-of-visualisation)
+15. [Axes have canonical directions. Larger values are placed above/right of smaller values.](https://datajournalism.com/read/longreads/the-unspoken-rules-of-visualisation)
+16. [Avoid multiple y axes at all cost.](https://blog.datawrapper.de/dualaxis/)
+17. [Don't do pie charts. (Or maybe do?)](https://clauswilke.com/dataviz/visualizing-proportions.html)
+18. [Don't go 3D.](https://clauswilke.com/dataviz/no-3d.html)
+19. [Use readable fonts and font sizes.](https://clauswilke.com/dataviz/small-axis-labels.html)
+20. [Sometimes a table is just enough.](https://clauswilke.com/dataviz/figure-titles-captions.html#figure-titles-and-captions)
+
+.footnote[&lt;sup&gt;1&lt;/sup&gt;Follow the links for more information.]
+
+---
+# Small multiples
+
+.pull-left[
+- A powerful yet underestimated visualization strategy is to use [multi-panel figures](https://clauswilke.com/dataviz/multi-panel-figures.html).
+- Often we want to compare relationships or trends between groups. With many groups, that's too much information for a single figure panel.
+- There are various terms for multi-panel figures, including "small multiples" (Tufte 1990), "trellis plot" (Cleveland 1993) and "faceting" (Wickham 2016)
+- In R we can implement this fairly easily with `ggplot`'s `facet_grid()` (or `facet_wrap()`).
+- If you do small multiples, make sure to use:
+  - common graph size
+  - common axis scales
+  - helpful alignment and order of panels
+]
+
+
+.pull-right[
+&lt;div align="center"&gt;
+&lt;br&gt;
+&lt;img src="pics/movie-rankings-1.png" width=500&gt;
+&lt;/div&gt;
+]
+
+
+---
+# Small multiples (cont.)
+
+.pull-left[
+- Check out the example on the right, which was also discussed [here](https://statmodeling.stat.columbia.edu/2014/04/10/small-multiples-lineplots-maps-ok-always-yes-case/) and [there](https://junkcharts.typepad.com/junk_charts/2014/02/small-multiples-with-simple-axes.html).
+- What they did right (by Kaiser Fung):
+  - Did not put the data on a map
+  - Ordered the countries by the most recent data point rather than alphabetically
+  - Scale labels are found only on outer edge of the chart area, rather than one set per panel
+  - Only used three labels for the 11 years
+  - Did not overdo the vertical scale either
+  - The nicest feature was the XL scale applied only to South Korea. This destroys the small-multiples principle but draws attention to the top left corner, where the designer wants our eyes to go.
 ]
 
 .pull-right[
-
+&lt;div align="center"&gt;
+&lt;br&gt;
+&lt;img src="pics/liquor-small-multiples.png" width=500&gt;
+&lt;/div&gt;
 ]
+
+
+---
+# Small multiples (cont.)
+
+.pull-left[
+- Check out the example on the right, which was also discussed [here](https://statmodeling.stat.columbia.edu/2014/04/10/small-multiples-lineplots-maps-ok-always-yes-case/) and [there](https://junkcharts.typepad.com/junk_charts/2014/02/small-multiples-with-simple-axes.html).
+- What they did right (by Kaiser Fung):
+  - Did not put the data on a map
+  - Ordered the countries by the most recent data point rather than alphabetically
+  - Scale labels are found only on outer edge of the chart area, rather than one set per panel
+  - Only used three labels for the 11 years
+  - Did not overdo the vertical scale either
+  - The nicest feature was the XL scale applied only to South Korea. This destroys the small-multiples principle but draws attention to the top left corner, where the designer wants our eyes to go.
+- Sometimes maps are not a good alternative.
+]
+
+.pull-right[
+&lt;div align="center"&gt;
+&lt;br&gt;
+&lt;img src="pics/liquor-map.gif" width=400&gt;
+&lt;img src="pics/liquor-skewed-map.png" width=400&gt;
+&lt;/div&gt;
+]
+
+
+---
+# Small multiples (cont.)
+
+.pull-left[
+- Check out the example on the right, which was also discussed [here](https://statmodeling.stat.columbia.edu/2014/04/10/small-multiples-lineplots-maps-ok-always-yes-case/) and [there](https://junkcharts.typepad.com/junk_charts/2014/02/small-multiples-with-simple-axes.html).
+- What they did right (by Kaiser Fung):
+  - Did not put the data on a map
+  - Ordered the countries by the most recent data point rather than alphabetically
+  - Scale labels are found only on outer edge of the chart area, rather than one set per panel
+  - Only used three labels for the 11 years
+  - Did not overdo the vertical scale either
+  - The nicest feature was the XL scale applied only to South Korea. This destroys the small-multiples principle but draws attention to the top left corner, where the designer wants our eyes to go.
+- Sometimes maps are not a good alternative.
+- But you can do small multiples of maps!
+]
+
+.pull-right[
+&lt;div align="center"&gt;
+&lt;br&gt;
+&lt;img src="pics/vouchermapsBAYES2000.png" width=450&gt;
+&lt;/div&gt;
+]
+
+
+
+---
+# Visualizing many distributions at once
+
+.pull-left[
+- An increasingly popular, compact variant of small multiples for distributions is the **ridgeline plot** (they look like mountain ridgelines).
+- The idea is to staggering distributions plots in the vertical direction (i.e., along the horizontal axis).
+- Ridgeline plots tend to work particularly well if want to show trends in distributions over time.
+]
+
+
+.pull-right[
+&lt;div align="center"&gt;
+&lt;br&gt;
+&lt;img src="pics/temp-ridgeline-1.png" width=500&gt;
+&lt;img src="pics/mountain-ridges.jpeg" width=500&gt;
+
+&lt;/div&gt;
+]
+
+---
+# Visualizing many distributions at once (cont.)
+
+.pull-left[
+- An increasingly popular, compact variant of small multiples for distributions is the **ridgeline plot** (they look like mountain ridgelines).
+- The idea is to staggering distributions plots in the vertical direction (i.e., along the horizontal axis).
+- Ridgeline plots tend to work particularly well if want to show trends in distributions over time.
+- Ridgelines scale to large numbers of distributions.
+]
+
+
+.pull-right[
+&lt;div align="center"&gt;
+&lt;br&gt;
+&lt;img src="pics/movies-ridgeline-1.png" width=500&gt;
+&lt;/div&gt;
+]
+
+---
+# Visualizing many distributions at once (cont.)
+
+.pull-left[
+- An increasingly popular, compact variant of small multiples for distributions is the **ridgeline plot** (they look like mountain ridgelines).
+- The idea is to staggering distributions plots in the vertical direction (i.e., along the horizontal axis).
+- Ridgeline plots tend to work particularly well if want to show trends in distributions over time.
+- Ridgelines scale to large numbers of distributions.
+- Ridgelines can be grouped.
+]
+
+
+.pull-right[
+&lt;div align="center"&gt;
+&lt;br&gt;
+&lt;img src="pics/dw-nominate-ridgeline-1.png" width=500&gt;
+&lt;/div&gt;
+]
+
+
+---
+# Visualizing many distributions at once (cont.)
+
+.pull-left[
+- An increasingly popular, compact variant of small multiples for distributions is the **ridgeline plot** (they look like mountain ridgelines).
+- The idea is to staggering distributions plots in the vertical direction (i.e., along the horizontal axis).
+- Ridgeline plots tend to work particularly well if want to show trends in distributions over time.
+- Ridgelines scale to large numbers of distributions.
+- Ridgelines can be grouped.
+- They are implemented in R with the [`ggridges` package](https://cran.r-project.org/web/packages/ggridges/vignettes/introduction.html).
+]
+
+.pull-right[
+&lt;div align="center"&gt;
+&lt;br&gt;
+&lt;img src="pics/dw-nominate-ridgeline-1.png" width=500&gt;
+&lt;/div&gt;
+]
+
 
 
 
@@ -1019,65 +1598,408 @@ name: vizinference
 
 &lt;html&gt;&lt;div style='float:left'&gt;&lt;/div&gt;&lt;hr color='#EB811B' size=1px style="width:1000px; margin:auto;"/&gt;&lt;/html&gt;
 
----
-# How to plot things in R
-
-- This is R, so you already know that there are multiple ways to do it...
-- ... and all suck.
-- The two most popular approaches are R base graphics (the stuff that comes with R by default) and ggplot2 (the tidyverse way to do graphs)
-- Your instructor happily uses both
-- Check out the scripts to learn some ggplot2 basics
 
 ---
 # R base graphics vs. ggplot2
 
 &lt;div align="center"&gt;
-&lt;img src="pics/ggplot-vs-base.png" width=900&gt;
+&lt;img src="pics/ggplot-vs-base.png" width=880&gt;
 &lt;/div&gt;
 
 
-
-
 ---
-# R base graphics vs. ggplot2 (cont:)
+# R base graphics vs. ggplot2 (cont.)
 
 &lt;div align="center"&gt;
 &lt;img src="pics/google-plot-r.png" width=900&gt;
 &lt;/div&gt;
 
----
-# ggplot2: an overview
-
-
 
 
 ---
-# A note on image file formats
+# Plotting things in R with ggplot2
 
-https://clauswilke.com/dataviz/image-file-formats.html
+.pull-left-wide[
+
+`ggplot2` is a system for declaratively creating graphics, based on *The Grammar of Graphics* (Leland Wilkinson). You provide the data, tell `ggplot2` how to map variables to aesthetics, what graphical primitives to use, and it takes care of the details. It is part of the [tidyverse](https://www.tidyverse.org/).&lt;sup&gt;1&lt;/sup&gt;
+
+There are **many** key `ggplot2` verbs that you need to learn, including:
+
+1. `ggplot()`: Begins a plot that you finish by adding layers to.
+
+2. `aes()`: Specify aesthetic mappings that describe how variables are mapped to visuals (e.g., x and y).
+
+3. `geom_*()`: Specify geoms to represent data points in a layer, e.g., as points or lines.
+]
+
+.footnote[
+&lt;sup&gt;1&lt;/sup&gt; This is R, so you already know that there are multiple ways to do it, and all suck.&lt;br&gt;We will stay in the tidyverse and ignore R base graphics (`plot()`, `barplot()`, &lt;br&gt; `boxplot()`, `hist()`, etc.) for now.
+]
+
+.pull-right-small-center[
+&lt;div align="center"&gt;
+&lt;br&gt;
+&lt;img src="pics/ggplot2.png" height=250&gt;
+&lt;br&gt;
+&lt;img src="pics/grammar-of-graphics.jpg" height=250&gt;
+&lt;/div&gt;
+]
 
 
-&lt;!-- ############################################ --&gt;
 ---
-class: inverse, center, middle
-name: summary
+# The grammar of graphics
 
-# Summary
+.pull-left-vwide[
+### The easy logic of graphical grammar
 
-&lt;html&gt;&lt;div style='float:left'&gt;&lt;/div&gt;&lt;hr color='#EB811B' size=1px style="width:1000px; margin:auto;"/&gt;&lt;/html&gt;
+- Coding a graphic requires us to describe each element of it very precisely.
+- To do so, `ggplot` and its creator [Hadley Wickham](https://www.jstor.org/stable/pdf/25651297.pdf) build on and extend a particular grammar - the "Grammar of Graphics" by [Wilkinson, Anand, and Grossmann](https://ieeexplore.ieee.org/document/1532142).
+- Building plots with `ggplot2` emphasizes the **concept of layers**, which are specified function by function and assembled with `+`.
+- With this particular grammar, we talk less about chart *types* and more about specific chart *elements*.
+- For instance, we don't say: 
+&lt;div style="margin-left: 1em;"&gt;
+  &lt;i&gt;"R, give me a small multiple scatter plot."&lt;/i&gt;
+  &lt;/div&gt;
+- Instead, we say: 
+&lt;div style="margin-left: 1em;"&gt;
+  &lt;i&gt;"Using this dataset, map wealth to the x-axis, health to the y-axis, add points, color by continent, size by population, scale the y-axis with a log, and facet by year."&lt;/i&gt;
+  &lt;/div&gt;
+]
+
+.pull-right-vsmall[
+&lt;div align="center"&gt;
+&lt;br&gt;&lt;br&gt;&lt;br&gt;
+&lt;img src="pics/ggplot-layers.png" width=400&gt;
+&lt;/div&gt;
+&lt;div align="center"&gt;
+Grammar components as layers in ggplot2
+&lt;/div&gt;
+]
+
 
 ---
-# How to produce good data visualizations
+# The grammar of graphics (cont.)
 
-- Always conceptualize first.
-- Prioritize programmatic solutions (i.e., R over Excel).
-- For conceptual charts (not: data viz!), other tools might be just fine (e.g., Powerpoint).
-- Don't be distracted by interactives (as offered by, e.g., highcharts.com, Tableau, and others).
-- Designing good graphs is a learnable skill. Study how others do it!
-- But a good visualization takes time, even if you’re experienced. Working a full day on the key plot of your analysis? No problem!
+.pull-left-wide[
+### The hard practice of applying graphical grammar
+
+- Building basic plots is fairly straightforward with `ggplot2`.
+- There are two aspects that make things complicated:
+  1. `ggplot` expects tidy (long) data. That's not always the data structure you have.
+  2. It's a comprehensive grammar. All the `ggplot` verbs, arguments and defaults are difficult to learn.
+- Things become more complicated (but also exciting) with a multiverse of additional packages that bring additional geometrics, themes, aesthetics, and much more. Check out [this overview](https://github.com/erikgahner/awesome-ggplot2) to learn more.
+- We will only touch the basics here. You will learn how to do the first steps in the lab. The rest is learning by doing.
+]
+
+.pull-right-small[
+&lt;div align="center"&gt;
+&lt;br&gt;&lt;br&gt;&lt;br&gt;
+&lt;img src="pics/ggplot-travolta.gif" width=400&gt;
+&lt;/div&gt;
+]
+
 
 ---
-# Outlook: going interactive
+class: smalltext 
+
+# Components of grammar of graphics
+
+| Element 	| Description 	| Essential? 	| Example 	|
+|---	|---	|---	|---	|
+| Data 	| This is the dataset being plotted containing the variables to be plotted on the graph. 	| Yes 	| `ggplot(data = mpg)` 	|
+| Aesthetics 	| Aesthetics refers to the scales on which we map our data. Some common aesthetics to consider are axis (x,y), shape, size and color.	|  Yes	| `aes(x = displ, y = hwy, color = drv)` 	|
+| Geometries 	| Geom refers to the actual visual elements used for the data in the plot, such as points, lines, and bars. 	| Yes 	| `geom_point()` 	|
+| Scales 	| Scales map data values to the visual values of an aesthetic. This can be used to change a default mapping 	| No 	| `scale_colour_manual(values = c("red", "blue", "green"))` 	|
+| Facets 	| Faceting refers to splitting the data into multiple subsets and then displaying plots for the specific subsets in a panel (small multiples). 	|  No	| `facet_grid(vars(drv), ncol = 1)` 	|
+| Statistics 	| This refers to representing statistical information about the data, such as mean and variance, to help in understanding the data.	| No 	| `stat_count(geom="bar")` 	|
+| Coordinates 	| This refers to the space on which the data is plotted (e.g., Cartesian coordinates). 	| No 	| `coord_polar()`	|
+| Labels 	| This refers to additional descriptions of your plot, such as title, subtitle, caption, x and y axis label 	| No 	| `labs(x = "Height", y = "Weight", title = "Look at my plot")`	|
+| Themes 	| Themes are used to change the appearance of non-data elements, such as fonts, color, or legends.	| No 	| `theme_bw()` 	|
+
+
+---
+# Building a plot step by step with ggplot2 
+
+.pull-left[
+### Start with data and aesthetics&lt;sup&gt;1&lt;/sup&gt;
+
+```r
+*R&gt; ggplot(data = mpg,
+*+        mapping = aes(x = displ,
+*+                      y = hwy,
+*+                      color = drv))
+```
+]
+
+.pull-right[
+![](07-visualization_files/figure-html/mpg-layers-1-1.png)
+]
+
+.footnote[&lt;sup&gt;1&lt;/sup&gt;This example is borrowed from [Andrew Heiss](https://datavizs21.classes.andrewheiss.com/content/).]
+
+
+---
+# Building a plot step by step with ggplot2 (cont.)
+
+.pull-left[
+### Add a point geom
+
+```r
+R&gt; ggplot(data = mpg,
++        mapping = aes(x = displ,
++                      y = hwy,
++                      color = drv)) +
+*+   geom_point()
+```
+]
+
+.pull-right[
+![](07-visualization_files/figure-html/mpg-layers-2-1.png)
+]
+
+
+---
+# Building a plot step by step with ggplot2 (cont.)
+
+.pull-left[
+### Add a smooth geom
+
+```r
+R&gt; ggplot(data = mpg,
++        mapping = aes(x = displ,
++                      y = hwy,
++                      color = drv)) +
++   geom_point() +
+*+   geom_smooth()
+```
+]
+
+.pull-right[
+![](07-visualization_files/figure-html/mpg-layers-3-1.png)
+]
+
+---
+# Building a plot step by step with ggplot2 (cont.)
+
+.pull-left[
+### Make it straight
+
+```r
+R&gt; ggplot(data = mpg,
++        mapping = aes(x = displ,
++                      y = hwy,
++                      color = drv)) +
++   geom_point() +
+*+   geom_smooth(method = "lm")
+```
+]
+
+.pull-right[
+![](07-visualization_files/figure-html/mpg-layers-4-1.png)
+]
+
+
+---
+# Building a plot step by step with ggplot2 (cont.)
+
+.pull-left[
+### Use a viridis color scale
+
+```r
+R&gt; ggplot(data = mpg,
++        mapping = aes(x = displ,
++                      y = hwy,
++                      color = drv)) +
++   geom_point() +
++   geom_smooth(method = "lm") +
+*+   scale_color_viridis_d()
+```
+]
+
+.pull-right[
+![](07-visualization_files/figure-html/mpg-layers-5-1.png)
+]
+
+
+---
+# Building a plot step by step with ggplot2 (cont.)
+
+.pull-left[
+### Facet by drive
+
+```r
+R&gt; ggplot(data = mpg,
++        mapping = aes(x = displ,
++                      y = hwy,
++                      color = drv)) +
++   geom_point() +
++   geom_smooth(method = "lm") +
++   scale_color_viridis_d() +
+*+   facet_wrap(vars(drv), ncol = 1)
+```
+]
+
+.pull-right[
+![](07-visualization_files/figure-html/mpg-layers-6-1.png)
+]
+
+
+---
+# Building a plot step by step with ggplot2 (cont.)
+
+.pull-left[
+### Add labels
+
+```r
+R&gt; ggplot(data = mpg,
++        mapping = aes(x = displ,
++                      y = hwy,
++                      color = drv)) +
++   geom_point() +
++   geom_smooth(method = "lm") +
++   scale_color_viridis_d() +
++   facet_wrap(vars(drv), ncol = 1) +
+*+   labs(x = "Displacement", y = "Highway MPG",
+*+        color = "Drive",
+*+        title = "Cars with bigger engines get lower mileage",
+*+        caption = "I know nothing about cars")
+```
+]
+
+.pull-right[
+![](07-visualization_files/figure-html/mpg-layers-7-1.png)
+]
+
+
+---
+# Building a plot step by step with ggplot2 (cont.)
+
+.pull-left[
+### Add a theme
+
+```r
+R&gt; ggplot(data = mpg,
++        mapping = aes(x = displ,
++                      y = hwy,
++                      color = drv)) +
++   geom_point() +
++   geom_smooth(method = "lm") +
++   scale_color_viridis_d() +
++   facet_wrap(vars(drv), ncol = 1) +
++   labs(x = "Displacement", y = "Highway MPG",
++        color = "Drive", 
++        title = "Cars with bigger engines get lower mileage",
++        caption = "I know nothing about cars") +
+*+   theme_bw()
+```
+]
+
+.pull-right[
+![](07-visualization_files/figure-html/mpg-layers-8-1.png)
+]
+
+
+
+---
+# Building a plot step by step with ggplot2 (cont.)
+
+.pull-left[
+### Modify the theme
+
+```r
+R&gt; ggplot(data = mpg, 
++        mapping = aes(x = displ,
++                      y = hwy,
++                      color = drv)) +
++   geom_point() +
++   geom_smooth(method = "lm") +
++   scale_color_viridis_d() +
++   facet_wrap(vars(drv), ncol = 1) +
++   labs(x = "Displacement", y = "Highway MPG",
++        color = "Drive", 
++        title = "Cars with bigger engines get lower mileage",
++        caption = "I know nothing about cars") +
++   theme_bw() +
+*+   theme(legend.position = "bottom",
+*+         plot.title = element_text(face = "bold"))
+```
+]
+
+.pull-right[
+![](07-visualization_files/figure-html/mpg-layers-9-1.png)
+]
+
+
+---
+# Building a plot step by step with ggplot2 (cont.)
+
+.pull-left[
+### Finished!
+
+```r
+R&gt; ggplot(data = mpg, 
++        mapping = aes(x = displ,
++                      y = hwy,
++                      color = drv)) +
++   geom_point() +
++   geom_smooth(method = "lm") + 
++   scale_color_viridis_d() +
++   facet_wrap(vars(drv), ncol = 1) +
++   labs(x = "Displacement", y = "Highway MPG",
++        color = "Drive", 
++        title = "Cars with bigger engines get lower mileage",
++        caption = "I know nothing about cars") +
++   theme_bw() +
++   theme(legend.position = "bottom",
++         plot.title = element_text(face = "bold"))
+```
+]
+
+.pull-right[
+![](07-visualization_files/figure-html/mpg-layers-finished-1.png)
+]
+
+
+---
+# Plotting as an iterative process
+
+&lt;div align="center"&gt;
+&lt;img src="pics/evol-ggplot-1.gif" width=800&gt;
+&lt;/div&gt;
+`Credit and code` [Cedric Scherer](https://www.cedricscherer.com/2019/05/17/the-evolution-of-a-ggplot-ep.-1/)
+
+
+
+---
+# Picking the right image file format
+
+.pull-left[
+### What are the formats?
+- At the end of the visualization workflow, you have to decide [how to store/export/publish the figures](https://clauswilke.com/dataviz/image-file-formats.html).
+- There are [many different file formats](https://en.wikipedia.org/wiki/Image_file_formats), but the most important difference is whether they are:
+  - **Bitmap (raster graphics)**: store information as a grid of pixels
+  - **Vector**: store information as geometric arrangement of individual graphical elements
+
+### Which format to pick?
+- Use `pdf/svg` whenever possible.
+- Use `png` for online documents/presentations.
+- Use `jpeg` as last resort (in particular if pngs are too large and loss by compression is acceptable).
+]
+
+.pull-right[
+&lt;div align="center"&gt;
+&lt;br&gt;
+&lt;img src="pics/image-file-formats.png" width=500&gt;
+&lt;br&gt;&lt;br&gt;
+&lt;img src="pics/raster-vs-vector.png" width=500&gt;
+&lt;/div&gt;
+]
+
+
+
+
+---
+# Going interactive
 
 .pull-left-wide[
 - In online presentations of your data and analyses, you might want to go interactive.
@@ -1087,15 +2009,88 @@ name: summary
 - Other JavaScript libraries for interactive graphics can be created with R, too:
   - [`leaflet`](https://rstudio.github.io/leaflet/) to connect to the [Leaflet library](https://leafletjs.com/) and create interactive maps
   - [`plotly`](https://plotly.com/r/) to connect to [Plotly](https://plotly.com/r/is-plotly-free/) and create graphs of all kinds
-- In the scripts you will find a couple of applications.
+- For the record: interactive ≠ animated. On the right you see animated charts. Please don't do this at home.
 ]
 
 .pull-right-small[
 &lt;div align="center"&gt;
 &lt;br&gt;&lt;br&gt;
 &lt;img src="pics/animated-barchart.gif" width=300&gt;
+&lt;br&gt;
+&lt;img src="pics/rotating-3d-chart.gif" width=300&gt;
 &lt;/div&gt;
 ]
+
+---
+# Some notes on the right visualization software
+
+.pull-left[
+1. Always conceptualize first.
+
+2. Prioritize programmatic solutions to stay reproducible (i.e., R over Excel).
+
+3. For conceptual charts (not: data viz!), other tools might be just fine (e.g., Powerpoint or even hand-drawn figures).
+
+4. Don't be distracted by interactives (as offered by, e.g., highcharts.com, Tableau, and others).
+
+5. Designing good graphs is a learnable skill. Study how others do it in your software of choice!
+
+6. But a good visualization takes time, even if you’re experienced. Working a full day on the key plot of your analysis? No problem! If you go the coding route, this is a good investment for Future-You.
+]
+
+.pull-right[
+&lt;div align="center"&gt;
+&lt;img src="pics/excel97-chart.png" width=280&gt;
+&lt;br&gt;&lt;br&gt;
+&lt;img src="pics/sequencing_costs.png" width=380&gt;
+&lt;/div&gt;
+]
+
+
+&lt;!-- ############################################ --&gt;
+---
+class: inverse, center, middle
+name: bestgraph
+
+# The best statistical graph of all times
+
+&lt;html&gt;&lt;div style='float:left'&gt;&lt;/div&gt;&lt;hr color='#EB811B' size=1px style="width:1000px; margin:auto;"/&gt;&lt;/html&gt;
+
+
+---
+# The best statistical graph of all times
+
+.pull-left-small[
+&lt;br&gt;
+- "Indeed, among all the forms of statistical graphics, **the humble scatterplot** may be considered the most versatile, polymorphic, and generally useful invention in the entire history of statistical graphics." ([Friendly &amp; Denis 2005](https://doi.org/10.1002/jhbs.20078))
+- There's another lesson to learn here: **Keep it simple.** Reading visualizations is a skill, and most people exposed to your work will be worse at it than you.
+]
+
+.pull-right-wide[
+&lt;div align="center"&gt;
+&lt;br&gt;
+&lt;img src="pics/child-mortality-vs-population-growth.png" width=700&gt;
+&lt;/div&gt;
+]
+
+
+---
+# The best statistical graph of all times
+
+.pull-left-small[
+&lt;br&gt;
+- "Indeed, among all the forms of statistical graphics, **the humble scatterplot** may be considered the most versatile, polymorphic, and generally useful invention in the entire history of statistical graphics." ([Friendly &amp; Denis 2005](https://doi.org/10.1002/jhbs.20078))
+- There's another lesson to learn here: **Keep it simple.** Reading visualizations is a skill, and most people exposed to your work will be worse at it than you.
+]
+
+.pull-right-wide[
+&lt;div align="center"&gt;
+&lt;br&gt;
+&lt;img src="pics/scatterplot-nzz.png" width=550&gt;
+&lt;/div&gt;
+]
+
+
 ---
 # Further reading
 
@@ -1116,13 +2111,6 @@ name: summary
 
 
 
-
-
-
-
-
-
-
 ---
 # Coming up
 
@@ -1135,6 +2123,14 @@ Assignment 5 is about to go online on GitHub Classroom. Check it out and start p
 ### Next lecture
 
 The workshop! 😱
+
+
+
+
+
+
+
+
 
 
     </textarea>
