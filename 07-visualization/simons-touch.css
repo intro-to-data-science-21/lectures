@@ -14,6 +14,13 @@ a, a > code {
   text-decoration: none; /* turns off background coloring of links */
 }
 
+.footnote {
+  position: absolute;
+  bottom: 1em;
+  padding-right: 4em;
+  font-size: 90%;
+}
+
 .title-slide {
   background-color: #1D375B;
   border-top: 80px solid #1D375B;

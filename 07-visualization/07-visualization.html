@@ -278,7 +278,10 @@ name: whyviz
 - It shows that all the data sets have nearly identical simple descriptive statistics in terms of mean, standard deviation, correlation, and linear fit!
 - Plotting the data reveals wildly different distributions, countering the impression that "numerical calculations are exact, but graphs are rough" ([Anscombe 1973](https://www.tandfonline.com/doi/abs/10.1080/00031305.1973.10478966)).
 - The dataset was constructed by [Francis Anscombe](https://en.wikipedia.org/wiki/Frank_Anscombe) and is known as "[Anscombe's quartet](https://en.wikipedia.org/wiki/Anscombe%27s_quartet)".
-- Graphs 3, Tables 0. Case closed.
+- Graphs 3, Tables 0. Case closed.&lt;sup&gt;1&lt;/sup&gt;
+
+.footnote[&lt;sup&gt;1&lt;/sup&gt; That being said, there is a case to be made for tables under certain circumstances. But even tables can (and should) be seen as another form for visualization with clear design principles. To design appealing tables with R, check out the [`gt` package](https://gt.rstudio.com/).
+]
 ]
 
 .pull-right[
@@ -287,6 +290,10 @@ name: whyviz
 &lt;img src="pics/anscombe-plot.png" width=600&gt;
 &lt;/div&gt;
 ]
+
+
+
+
 
 
 
@@ -882,6 +889,178 @@ Before you start plotting, ask yourself:
 
 
 
+---
+# Small multiples
+
+.pull-left[
+- A powerful yet underestimated visualization strategy is to use [multi-panel figures](https://clauswilke.com/dataviz/multi-panel-figures.html).
+- Often we want to compare relationships or trends between groups. With many groups, that's too much information for a single figure panel.
+- There are various terms for multi-panel figures, including "small multiples" (Tufte 1990), "trellis plot" (Cleveland 1993) and "faceting" (Wickham 2016)
+- In R we can implement this fairly easily with `ggplot`'s `facet_grid()` (or `facet_wrap()`).
+- If you do small multiples, make sure to use:
+  - common graph size
+  - common axis scales
+  - helpful alignment and order of panels
+]
+
+
+.pull-right[
+&lt;div align="center"&gt;
+&lt;br&gt;
+&lt;img src="pics/movie-rankings-1.png" width=500&gt;
+&lt;/div&gt;
+]
+
+
+---
+# Small multiples (cont.)
+
+.pull-left[
+- Check out the example on the right, which was also discussed [here](https://statmodeling.stat.columbia.edu/2014/04/10/small-multiples-lineplots-maps-ok-always-yes-case/) and [there](https://junkcharts.typepad.com/junk_charts/2014/02/small-multiples-with-simple-axes.html).
+- What they did right (by Kaiser Fung):
+  - Did not put the data on a map
+  - Ordered the countries by the most recent data point rather than alphabetically
+  - Scale labels are found only on outer edge of the chart area, rather than one set per panel
+  - Only used three labels for the 11 years
+  - Did not overdo the vertical scale either
+  - The nicest feature was the XL scale applied only to South Korea. This destroys the small-multiples principle but draws attention to the top left corner, where the designer wants our eyes to go.
+]
+
+.pull-right[
+&lt;div align="center"&gt;
+&lt;br&gt;
+&lt;img src="pics/liquor-small-multiples.png" width=500&gt;
+&lt;/div&gt;
+]
+
+
+---
+# Small multiples (cont.)
+
+.pull-left[
+- Check out the example on the right, which was also discussed [here](https://statmodeling.stat.columbia.edu/2014/04/10/small-multiples-lineplots-maps-ok-always-yes-case/) and [there](https://junkcharts.typepad.com/junk_charts/2014/02/small-multiples-with-simple-axes.html).
+- What they did right (by Kaiser Fung):
+  - Did not put the data on a map
+  - Ordered the countries by the most recent data point rather than alphabetically
+  - Scale labels are found only on outer edge of the chart area, rather than one set per panel
+  - Only used three labels for the 11 years
+  - Did not overdo the vertical scale either
+  - The nicest feature was the XL scale applied only to South Korea. This destroys the small-multiples principle but draws attention to the top left corner, where the designer wants our eyes to go.
+- Sometimes maps are not a good alternative.
+]
+
+.pull-right[
+&lt;div align="center"&gt;
+&lt;br&gt;
+&lt;img src="pics/liquor-map.gif" width=400&gt;
+&lt;img src="pics/liquor-skewed-map.png" width=400&gt;
+&lt;/div&gt;
+]
+
+
+---
+# Small multiples (cont.)
+
+.pull-left[
+- Check out the example on the right, which was also discussed [here](https://statmodeling.stat.columbia.edu/2014/04/10/small-multiples-lineplots-maps-ok-always-yes-case/) and [there](https://junkcharts.typepad.com/junk_charts/2014/02/small-multiples-with-simple-axes.html).
+- What they did right (by Kaiser Fung):
+  - Did not put the data on a map
+  - Ordered the countries by the most recent data point rather than alphabetically
+  - Scale labels are found only on outer edge of the chart area, rather than one set per panel
+  - Only used three labels for the 11 years
+  - Did not overdo the vertical scale either
+  - The nicest feature was the XL scale applied only to South Korea. This destroys the small-multiples principle but draws attention to the top left corner, where the designer wants our eyes to go.
+- Sometimes maps are not a good alternative.
+- But you can do small multiples of maps!
+]
+
+.pull-right[
+&lt;div align="center"&gt;
+&lt;br&gt;
+&lt;img src="pics/vouchermapsBAYES2000.png" width=450&gt;
+&lt;/div&gt;
+]
+
+
+
+---
+# Visualizing many distributions at once
+
+.pull-left[
+- An increasingly popular, compact variant of small multiples for distributions is the **ridgeline plot** (they look like mountain ridgelines).
+- The idea is to staggering distributions plots in the vertical direction (i.e., along the horizontal axis).
+- Ridgeline plots tend to work particularly well if want to show trends in distributions over time.
+]
+
+
+.pull-right[
+&lt;div align="center"&gt;
+&lt;br&gt;
+&lt;img src="pics/temp-ridgeline-1.png" width=500&gt;
+&lt;img src="pics/mountain-ridges.jpeg" width=500&gt;
+
+&lt;/div&gt;
+]
+
+---
+# Visualizing many distributions at once (cont.)
+
+.pull-left[
+- An increasingly popular, compact variant of small multiples for distributions is the **ridgeline plot** (they look like mountain ridgelines).
+- The idea is to staggering distributions plots in the vertical direction (i.e., along the horizontal axis).
+- Ridgeline plots tend to work particularly well if want to show trends in distributions over time.
+- Ridgelines scale to large numbers of distributions.
+]
+
+
+.pull-right[
+&lt;div align="center"&gt;
+&lt;br&gt;
+&lt;img src="pics/movies-ridgeline-1.png" width=500&gt;
+&lt;/div&gt;
+]
+
+---
+# Visualizing many distributions at once (cont.)
+
+.pull-left[
+- An increasingly popular, compact variant of small multiples for distributions is the **ridgeline plot** (they look like mountain ridgelines).
+- The idea is to staggering distributions plots in the vertical direction (i.e., along the horizontal axis).
+- Ridgeline plots tend to work particularly well if want to show trends in distributions over time.
+- Ridgelines scale to large numbers of distributions.
+- Ridgelines can be grouped.
+]
+
+
+.pull-right[
+&lt;div align="center"&gt;
+&lt;br&gt;
+&lt;img src="pics/dw-nominate-ridgeline-1.png" width=500&gt;
+&lt;/div&gt;
+]
+
+
+---
+# Visualizing many distributions at once (cont.)
+
+.pull-left[
+- An increasingly popular, compact variant of small multiples for distributions is the **ridgeline plot** (they look like mountain ridgelines).
+- The idea is to staggering distributions plots in the vertical direction (i.e., along the horizontal axis).
+- Ridgeline plots tend to work particularly well if want to show trends in distributions over time.
+- Ridgelines scale to large numbers of distributions.
+- Ridgelines can be grouped.
+- They are implemented in R with the [`ggridges` package](https://cran.r-project.org/web/packages/ggridges/vignettes/introduction.html).
+]
+
+.pull-right[
+&lt;div align="center"&gt;
+&lt;br&gt;
+&lt;img src="pics/dw-nominate-ridgeline-1.png" width=500&gt;
+&lt;/div&gt;
+]
+
+
+
 
 &lt;!-- ############################################ --&gt;
 ---
@@ -1415,179 +1594,6 @@ class: smalltext
 
 .footnote[&lt;sup&gt;1&lt;/sup&gt;Follow the links for more information.]
 
----
-# Small multiples
-
-.pull-left[
-- A powerful yet underestimated visualization strategy is to use [multi-panel figures](https://clauswilke.com/dataviz/multi-panel-figures.html).
-- Often we want to compare relationships or trends between groups. With many groups, that's too much information for a single figure panel.
-- There are various terms for multi-panel figures, including "small multiples" (Tufte 1990), "trellis plot" (Cleveland 1993) and "faceting" (Wickham 2016)
-- In R we can implement this fairly easily with `ggplot`'s `facet_grid()` (or `facet_wrap()`).
-- If you do small multiples, make sure to use:
-  - common graph size
-  - common axis scales
-  - helpful alignment and order of panels
-]
-
-
-.pull-right[
-&lt;div align="center"&gt;
-&lt;br&gt;
-&lt;img src="pics/movie-rankings-1.png" width=500&gt;
-&lt;/div&gt;
-]
-
-
----
-# Small multiples (cont.)
-
-.pull-left[
-- Check out the example on the right, which was also discussed [here](https://statmodeling.stat.columbia.edu/2014/04/10/small-multiples-lineplots-maps-ok-always-yes-case/) and [there](https://junkcharts.typepad.com/junk_charts/2014/02/small-multiples-with-simple-axes.html).
-- What they did right (by Kaiser Fung):
-  - Did not put the data on a map
-  - Ordered the countries by the most recent data point rather than alphabetically
-  - Scale labels are found only on outer edge of the chart area, rather than one set per panel
-  - Only used three labels for the 11 years
-  - Did not overdo the vertical scale either
-  - The nicest feature was the XL scale applied only to South Korea. This destroys the small-multiples principle but draws attention to the top left corner, where the designer wants our eyes to go.
-]
-
-.pull-right[
-&lt;div align="center"&gt;
-&lt;br&gt;
-&lt;img src="pics/liquor-small-multiples.png" width=500&gt;
-&lt;/div&gt;
-]
-
-
----
-# Small multiples (cont.)
-
-.pull-left[
-- Check out the example on the right, which was also discussed [here](https://statmodeling.stat.columbia.edu/2014/04/10/small-multiples-lineplots-maps-ok-always-yes-case/) and [there](https://junkcharts.typepad.com/junk_charts/2014/02/small-multiples-with-simple-axes.html).
-- What they did right (by Kaiser Fung):
-  - Did not put the data on a map
-  - Ordered the countries by the most recent data point rather than alphabetically
-  - Scale labels are found only on outer edge of the chart area, rather than one set per panel
-  - Only used three labels for the 11 years
-  - Did not overdo the vertical scale either
-  - The nicest feature was the XL scale applied only to South Korea. This destroys the small-multiples principle but draws attention to the top left corner, where the designer wants our eyes to go.
-- Sometimes maps are not a good alternative.
-]
-
-.pull-right[
-&lt;div align="center"&gt;
-&lt;br&gt;
-&lt;img src="pics/liquor-map.gif" width=400&gt;
-&lt;img src="pics/liquor-skewed-map.png" width=400&gt;
-&lt;/div&gt;
-]
-
-
----
-# Small multiples (cont.)
-
-.pull-left[
-- Check out the example on the right, which was also discussed [here](https://statmodeling.stat.columbia.edu/2014/04/10/small-multiples-lineplots-maps-ok-always-yes-case/) and [there](https://junkcharts.typepad.com/junk_charts/2014/02/small-multiples-with-simple-axes.html).
-- What they did right (by Kaiser Fung):
-  - Did not put the data on a map
-  - Ordered the countries by the most recent data point rather than alphabetically
-  - Scale labels are found only on outer edge of the chart area, rather than one set per panel
-  - Only used three labels for the 11 years
-  - Did not overdo the vertical scale either
-  - The nicest feature was the XL scale applied only to South Korea. This destroys the small-multiples principle but draws attention to the top left corner, where the designer wants our eyes to go.
-- Sometimes maps are not a good alternative.
-- But you can do small multiples of maps!
-]
-
-.pull-right[
-&lt;div align="center"&gt;
-&lt;br&gt;
-&lt;img src="pics/vouchermapsBAYES2000.png" width=450&gt;
-&lt;/div&gt;
-]
-
-
-
----
-# Visualizing many distributions at once
-
-.pull-left[
-- An increasingly popular, compact variant of small multiples for distributions is the **ridgeline plot** (they look like mountain ridgelines).
-- The idea is to staggering distributions plots in the vertical direction (i.e., along the horizontal axis).
-- Ridgeline plots tend to work particularly well if want to show trends in distributions over time.
-]
-
-
-.pull-right[
-&lt;div align="center"&gt;
-&lt;br&gt;
-&lt;img src="pics/temp-ridgeline-1.png" width=500&gt;
-&lt;img src="pics/mountain-ridges.jpeg" width=500&gt;
-
-&lt;/div&gt;
-]
-
----
-# Visualizing many distributions at once (cont.)
-
-.pull-left[
-- An increasingly popular, compact variant of small multiples for distributions is the **ridgeline plot** (they look like mountain ridgelines).
-- The idea is to staggering distributions plots in the vertical direction (i.e., along the horizontal axis).
-- Ridgeline plots tend to work particularly well if want to show trends in distributions over time.
-- Ridgelines scale to large numbers of distributions.
-]
-
-
-.pull-right[
-&lt;div align="center"&gt;
-&lt;br&gt;
-&lt;img src="pics/movies-ridgeline-1.png" width=500&gt;
-&lt;/div&gt;
-]
-
----
-# Visualizing many distributions at once (cont.)
-
-.pull-left[
-- An increasingly popular, compact variant of small multiples for distributions is the **ridgeline plot** (they look like mountain ridgelines).
-- The idea is to staggering distributions plots in the vertical direction (i.e., along the horizontal axis).
-- Ridgeline plots tend to work particularly well if want to show trends in distributions over time.
-- Ridgelines scale to large numbers of distributions.
-- Ridgelines can be grouped.
-]
-
-
-.pull-right[
-&lt;div align="center"&gt;
-&lt;br&gt;
-&lt;img src="pics/dw-nominate-ridgeline-1.png" width=500&gt;
-&lt;/div&gt;
-]
-
-
----
-# Visualizing many distributions at once (cont.)
-
-.pull-left[
-- An increasingly popular, compact variant of small multiples for distributions is the **ridgeline plot** (they look like mountain ridgelines).
-- The idea is to staggering distributions plots in the vertical direction (i.e., along the horizontal axis).
-- Ridgeline plots tend to work particularly well if want to show trends in distributions over time.
-- Ridgelines scale to large numbers of distributions.
-- Ridgelines can be grouped.
-- They are implemented in R with the [`ggridges` package](https://cran.r-project.org/web/packages/ggridges/vignettes/introduction.html).
-]
-
-.pull-right[
-&lt;div align="center"&gt;
-&lt;br&gt;
-&lt;img src="pics/dw-nominate-ridgeline-1.png" width=500&gt;
-&lt;/div&gt;
-]
-
-
-
-
 
 &lt;!-- ############################################ --&gt;
 ---
@@ -1613,7 +1619,6 @@ name: vizinference
 &lt;div align="center"&gt;
 &lt;img src="pics/google-plot-r.png" width=900&gt;
 &lt;/div&gt;
-
 
 
 ---
