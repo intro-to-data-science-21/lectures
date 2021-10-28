@@ -391,6 +391,20 @@ name: method
 # The handcraft of visualization
 
 .pull-left[
+### A tool for comparison
+
+- "The fundamental analytical act in statistical reasoning is to answer the question 'compared to what?'
+- Whether we are evaluating changes over space or time, searching big data bases, adjusting and controlling for variables, designing experiments, specifying multiple regressions, or doing just about any kind of evidence-based reasoning, the essential point is to make intelligent and appropriate comparisons.
+- Thus visual displays, if they are to assist thinking, should show comparisons."
+
+<div align="right">
+Edward Tufte, <a href="http://atc.berkeley.edu/201/readings/Tufte_BE_2006.pdf">Beautiful Evidence</a>, p.127.
+</div>
+]
+
+--
+
+.pull-right[
 ### Visualization as an iterative process
 
 - The choice of the right graphical format ultimately depends on the task or problem it is trying to solve.
@@ -402,19 +416,16 @@ name: method
 </div>
 ]
 
---
 
-.pull-right[
-### A tool for comparison
+---
+# Plotting as an iterative process
 
-- "The fundamental analytical act in statistical reasoning is to answer the question 'compared to what?'
-- Whether we are evaluating changes over space or time, searching big data bases, adjusting and controlling for variables, designing experiments, specifying multiple regressions, or doing just about any kind of evidence-based reasoning, the essential point is to make intelligent and appropriate comparisons.
-- Thus visual displays, if they are to assist thinking, should show comparisons."
-
-<div align="right">
-Edward Tufte, <a href="http://atc.berkeley.edu/201/readings/Tufte_BE_2006.pdf">Beautiful Evidence</a>, p.127.
+<div align="center">
+<img src="pics/evol-ggplot-1.gif" width=800>
 </div>
-]
+`Credit and code` [Cedric Scherer](https://www.cedricscherer.com/2019/05/17/the-evolution-of-a-ggplot-ep.-1/)
+
+
 
 
 ---
@@ -535,7 +546,7 @@ Data visualization is a key skill for data scientists. It is relevant in every s
 <img src="pics/forensic-correlations2-1.png" width=250>
 </div>
 <div align="center" style="font-size:16px;">
-Correlogram to visualize amount of association <br> between pairs of variables.
+Correlogram to visualize amount of association <br> between pairs of variables
 </div>
 ]
 
@@ -684,9 +695,9 @@ Choropleth map illustrating the location of civilian airfields in the German Emp
 ### Overcoming the exploratory vs. confirmatory visualization divide
 
 - Graphical displays are implicit or explicit comparisons to a reference distribution or baseline model.
-- If we discover an interesting pattern in data this usually means that it looks different from what we expected.
-- We usually we have implicit models in our mind to which we compare the data ("What do we expect to see?")
-- We can make these models explicit and use them to guard against "false discoveries"
+- If we discover an interesting pattern in data, this usually means that it looks different from what we expected.
+- We usually have implicit models in our mind to which we compare the data ("What do we expect to see?").
+- We can make these models explicit and use them to guard against "false discoveries".
 - Visual discoveries correspond to the implicit or explicit rejection of null hypotheses ([Buja et al. 2009](https://royalsocietypublishing.org/doi/full/10.1098/rsta.2009.0120)).
 ]
 
@@ -1109,8 +1120,7 @@ name: plotingredients
 ---
 # Coordinate systems and axes
 
-.pull-left[
-- Visualization of quantitative data requires a communication of quantities.
+.pull-left-wide[
 - Positions of data values matter. Usually, we need two position scales (x and y axis of the plot).
 - The combination of a set of position scales and their relative geometric arrangement is called a **coordinate system**.
 - Often we have two axes representing two different **units**. 
@@ -1119,7 +1129,7 @@ name: plotingredients
 - Be sure to **label axes properly**!
 ]
 
-.pull-right[
+.pull-right-small[
 <div align="center">
 <img src="pics/cartesian-system.png" width=350>
 <img src="pics/log-scales.png" width=350>
@@ -1972,15 +1982,6 @@ ggplot(data = mpg,
 .pull-right[
 ![](`r knitr::fig_chunk("mpg-layers-finished", "png")`)
 ]
-
-
----
-# Plotting as an iterative process
-
-<div align="center">
-<img src="pics/evol-ggplot-1.gif" width=800>
-</div>
-`Credit and code` [Cedric Scherer](https://www.cedricscherer.com/2019/05/17/the-evolution-of-a-ggplot-ep.-1/)
 
 
 
