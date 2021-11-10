@@ -19,6 +19,9 @@
 
 7. Visualization \[[**.html**](https://raw.githack.com/intro-to-data-science-21/lectures/main/07-visualization/07-visualization.html) | [**.pdf**](https://raw.githack.com/intro-to-data-science-21/lectures/main/07-visualization/07-visualization.pdf) | [**.Rmd**](https://raw.githack.com/intro-to-data-science-21/lectures/main/07-visualization/07-visualization.Rmd)\]
 
+8. I2DS Tools for Data Science Workshop  \[[**website**](https://intro-to-data-science-21-workshop.github.io/) | [**materials**](https://github.com/intro-to-data-science-21-workshop)\]
+
+9. Working at the command line \[[**.html**](https://raw.githack.com/intro-to-data-science-21/lectures/main/09-command-line/09-command-line.html) | [**.pdf**](https://raw.githack.com/intro-to-data-science-21/lectures/main/09-command-line/09-command-line.pdf) | [**.Rmd**](https://raw.githack.com/intro-to-data-science-21/lectures/main/09-command-line/09-command-line.Rmd)\]
 
 
 ## Summary
