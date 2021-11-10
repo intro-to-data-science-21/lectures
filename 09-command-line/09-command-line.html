@@ -1198,10 +1198,10 @@ $ ls -lh examples
 
 ```
    total 280
-   drwxrwxr-x@  3 simonmunzert  staff    96B Nov 10 15:43 ABC
+   drwxrwxr-x@  3 simonmunzert  staff    96B Nov 10 19:50 ABC
    -rw-rw-r--@  1 simonmunzert  staff   149B Jul  1 19:58 hello.R
-   -rwxr-xr-x@  1 simonmunzert  staff    37B Jul  1 19:58 hello.sh
-   drwxrwxr-x@ 10 simonmunzert  staff   320B Nov 10 15:43 meals
+   -rwxr-xr-x@  1 simonmunzert  staff    34B Nov 10 20:06 hello.sh
+   drwxrwxr-x@ 10 simonmunzert  staff   320B Nov 10 19:50 meals
    -rw-rw-r--@  1 simonmunzert  staff    32B Jul  1 19:58 nursery.txt
    -rw-rw-r--@  1 simonmunzert  staff    38B Nov 10 14:52 nursery2.txt
    -rwxr-xr-x@  1 simonmunzert  staff   153B Jul  1 19:58 reps.txt
@@ -1233,7 +1233,6 @@ What does this all mean? Let's focus on the top line.
   - `d` (directory or folder), `l` (link), or `-` (file)
 
 ---
-
 count:false
 
 # Listing files and their properties (cont.)
@@ -5297,18 +5296,18 @@ name: scripting
 # Scripting
 &lt;html&gt;&lt;div style='float:left'&gt;&lt;/div&gt;&lt;hr color='#EB811B' size=1px style="width:1000px; margin:auto;"/&gt;&lt;/html&gt;
 
+
 ---
+# Scripting
 
-# Hello World!
+.pull-left[
+Writing code **interactively** in the shell makes a lot of sense when you are exploring data, file structures, etc.
 
-Writing code and commands interactively in the shell makes a lot of sense when you are exploring data, file structures, etc.
+However, it's also possible (and often desirable) to **write reproducible shell scripts** that combine a sequence of commands.
 
-However, it's also possible (and often desirable) to write reproducible shell scripts that combine a sequence of commands.
-- These scripts are demarcated by their `.sh` file extension.
+These scripts are demarcated by their `.sh` file extension.
 
---
-
-Let's look at the contents of a short shell script that I've included in the examples folder.
+Let's look at the contents of a short shell script, `hello.sh`, that is included in the examples folder:
 
 
 ```bash
@@ -5317,24 +5316,32 @@ $ cat examples/hello.sh
 
 ```
    #!/bin/sh
-   echo -e "\nHello World!\n"
+   echo "\nHello World!\n"
 ```
 
---
+&lt;br&gt;
+What does this script do?
+]
 
-I'm sure that you already have a good idea of what this script is meant to do, but it will prove useful to quickly go through some things together.
+.pull-right[
+&lt;br&gt;
+&lt;div align="center"&gt;
+&lt;img src="pics/goldberg-machine-giphy.gif" height=450/&gt;
+&lt;/div&gt;
+]
+
 
 ---
 
-# Hello World! (cont.)
+# Hello World!
 
 ```bash
 *#!/bin/sh
-echo -e "\nHello World!\n"
+echo "\nHello World!\n"
 
 ```
 
-- `#!/bin/sh` is a [shebang](https://en.wikipedia.org/wiki/Shebang_(Unix), indicating which program to run the command with (here: any Bash-compatible shell). However, it is typically ignored (note that it begins with the hash comment character.)
+- `#!/bin/sh` is a [shebang](https://en.wikipedia.org/wiki/Shebang_(Unix)), indicating which program to run the command with (here: any Bash-compatible shell). However, it is typically ignored (note that it begins with the hash comment character.)
 
 ---
 count: false
@@ -5343,12 +5350,12 @@ count: false
 
 ```bash
 #!/bin/sh
-*echo -e "\nHello World!\n"
+*echo "\nHello World!\n"
 
 ```
 
 - `#!/bin/sh` is a [shebang](https://en.wikipedia.org/wiki/Shebang_(Unix), indicating which program to run the command with (here: any Bash-compatible shell). However, it is typically ignored (note that it begins with the hash comment character.)
-- `echo -e "\nHello World!\n"` is the actual command that we want to run.
+- `echo "\nHello World!\n"` is the actual command that we want to run.
 
 ---
 count: false
@@ -5362,7 +5369,7 @@ echo -e "\nHello World!\n"
 ```
 
 - `#!/bin/sh` is a [shebang](https://en.wikipedia.org/wiki/Shebang_(Unix), indicating which program to run the command with (here: any Bash-compatible shell). However, it is typically ignored (note that it begins with the hash comment character.)
-- `echo -e "\nHello World!\n"` is the actual command that we want to run. The `-e` flag tells bash that we want to evaluate an expression rather than a file.
+- `echo "\nHello World!\n"` is the actual command that we want to run.
 
 To run this simple script, you can just type in the file name and press enter.
 
@@ -5373,7 +5380,7 @@ $ # bash examples/hello.sh ## Also works
 ```
 
 ```
-   -e 
+   
    Hello World!
 ```
 

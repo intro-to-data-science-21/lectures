@@ -1,2 +1,2 @@
 #!/bin/sh
-echo -e "\nHello World!\n"
+echo "\nHello World!\n"
