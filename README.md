@@ -23,6 +23,9 @@
 
 9. Working at the command line \[[**.html**](https://raw.githack.com/intro-to-data-science-21/lectures/main/09-command-line/09-command-line.html) | [**.pdf**](https://raw.githack.com/intro-to-data-science-21/lectures/main/09-command-line/09-command-line.pdf) | [**.Rmd**](https://raw.githack.com/intro-to-data-science-21/lectures/main/09-command-line/09-command-line.Rmd)\]
 
+10. Debugging, automation and packaging \[[**.html**](https://raw.githack.com/intro-to-data-science-21/lectures/main/10-debugging-automation/10-debugging-automation.html) | [**.pdf**](https://raw.githack.com/intro-to-data-science-21/lectures/main/10-debugging-automation/10-debugging-automation.pdf) | [**.Rmd**](https://raw.githack.com/intro-to-data-science-21/lectures/main/10-debugging-automation/10-debugging-automation.Rmd)\]
+
+
 
 ## Summary
 

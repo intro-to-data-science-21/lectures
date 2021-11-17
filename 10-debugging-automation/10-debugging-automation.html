@@ -1,0 +1,1937 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Introduction to Data Science</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Simon Munzert" />
+    <script src="libs/header-attrs/header-attrs.js"></script>
+    <link href="libs/remark-css/default.css" rel="stylesheet" />
+    <link href="libs/remark-css/metropolis.css" rel="stylesheet" />
+    <link href="libs/remark-css/metropolis-fonts.css" rel="stylesheet" />
+    <link rel="stylesheet" href="simons-touch.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Introduction to Data Science
+## Session 10: Debugging, automation, and packaging
+### Simon Munzert
+### Hertie School | <a href="https://github.com/intro-to-data-science-21">GRAD-C11/E1339</a>
+
+---
+
+
+
+&lt;style type="text/css"&gt;
+@media print { # print out incremental slides; see https://stackoverflow.com/questions/56373198/get-xaringan-incremental-animations-to-print-to-pdf/56374619#56374619
+  .has-continuation {
+    display: block !important;
+  }
+}
+&lt;/style&gt;
+
+
+
+
+# Table of contents
+
+&lt;br&gt;
+
+1. [Strategies for debugging](#debugging)
+
+2. [Debugging R](#debuggingr)
+
+3. [Automation and scripting](#automation)
+
+4. [Scheduling](#scheduling)
+
+5. [R packages](#rpackages)
+
+
+
+
+&lt;!-- ############################################ --&gt;
+---
+class: inverse, center, middle
+name: debugging
+
+# Strategies for debugging
+&lt;html&gt;&lt;div style='float:left'&gt;&lt;/div&gt;&lt;hr color='#EB811B' size=1px style="width:1000px; margin:auto;"/&gt;&lt;/html&gt;
+
+
+---
+# What's debugging?
+
+.pull-left[
+**Straight from the [Wikipedia](https://en.wikipedia.org/wiki/Debugging):** "Debugging is the process of finding and resolving bugs (defects or problems that prevent correct operation) within computer programs, software, or systems."
+
+**A famous (yet not the first) bug:** The term "bug" was used in an account by computer pioneer [Grace Hopper](https://en.wikipedia.org/wiki/Grace_Hopper) (see on the right). While she was working on a [Mark II](https://en.wikipedia.org/wiki/Harvard_Mark_II) computer at Harvard University, her associates discovered a moth stuck in a relay and thereby impeding operation, whereupon she remarked that they were "debugging" the system. This bug was carefully removed and taped to the log book (see on the right).
+]
+
+.pull-right-center[
+&lt;div align="center"&gt;
+&lt;br&gt;
+&lt;img src="pics/grace-hopper.jpg" width="200"/&gt;
+&lt;br&gt;
+&lt;i&gt;Above:&lt;/i&gt; Grace Hopper, &lt;i&gt;Below:&lt;/i&gt; The bug
+&lt;br&gt;
+&lt;img src="pics/computer-bug-hopper.jpeg" width="300"/&gt; 
+&lt;/div&gt;
+]
+
+
+---
+# Why debugging matters
+
+.pull-left-wide[
+The Wikipedia [list of software bugs](https://en.wikipedia.org/wiki/List_of_software_bugs) with significant consequences is growing and you don't want to be on it. 
+
+NASA software engineers are [famous for producing bug-free code](https://www.bugsplat.com/blog/less-serious/why-nasa-code-doesnt-crash/). This was learned the hard and costly way though. Some highlights from space:
+
+- 1962: A booster went off course during launch, resulting in the [destruction of NASA Mariner 1](https://www.youtube.com/watch?v=CkOOazEJcUc) . This was the result of the failure of a transcriber to notice an overbar in a handwritten specification for the guidance program, resulting in an incorrect formula the FORTRAN code.
+- 1999: [NASA's Mars Climate Orbiter was destroyed](https://www.youtube.com/watch?v=lcYkOh4nweE), due to software on the ground generating commands based on parameters in pound-force (lbf) rather than newtons (N)
+- 2004: [NASA's Spirit rover became unresponsive](https://www.youtube.com/watch?v=7V54LRRJaGk) on January 21, 2004, a few weeks after landing on Mars. Engineers found that too many files had accumulated in the rover's flash memory (the problem could be fixed though by deleting unnecessary files, and the Rover lived happily ever after. Until it [froze to death in 2011](https://en.wikipedia.org/wiki/Spirit_(rover)).
+]
+
+.pull-right-small[
+&lt;div align="center"&gt;
+&lt;br&gt;&lt;br&gt;
+&lt;img src="pics/nasa-coding-error.png" width="400"/&gt;
+&lt;img src="pics/nasa-coding-error-2.png" width="400"/&gt;
+&lt;/div&gt;
+]
+
+
+---
+# Why debugging matters (cont.)
+
+&lt;div align="center"&gt;
+&lt;br&gt;
+&lt;img src="pics/excel-error-paper-2.jpeg" height="500"/&gt;
+&lt;img src="pics/excel-error-paper.png" height="500"/&gt;
+&lt;/div&gt;
+
+
+
+---
+# A general strategy for debugging
+
+.pull-left-vsmall[]
+
+.pull-right-wide[
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+
+## 1. Google
+
+## 2. Reset
+
+## 3. Debug
+
+## 4. Deter
+]
+
+
+---
+# Google
+
+.footnote[&lt;sup&gt;1&lt;/sup&gt;Do you get an error message you don't understand? That's good news actually, because the really nasty bugs come without errors. ]
+
+.pull-left-wide2[
+According to [this analysis](https://github.com/noamross/zero-dependency-problems/blob/master/misc/stack-overflow-common-r-errors.md), the most common error types in R are:&lt;sup&gt;1&lt;/sup&gt;
+
+1. `Could not find function` errors, usually caused by typos or not loading a required package.
+2. `Error in if` errors, caused by non-logical data or missing values passed to R's `if` conditional statement.
+3. `Error in eval` errors, caused by references to objects that don't exist.
+4. `Cannot open` errors, caused by attempts to read a file that doesn't exist or can't be accessed.
+5. `no applicable method` errors, caused by using an object-oriented function on a data type it doesn't support.
+6. `subscript out of bounds` errors, caused by trying to access an element or dimension that doesn't exist
+7. Package errors caused by being unable to install, compile or load a package.
+]
+
+--
+
+.pull-right-small2[
+Whenever you see an error message, start by [googling](https://lmgtfy.app/?q=Error+in+interpretative_method+%3A+%20+%20could+not+find+function+%22interpretative_method%22&amp;iie=1) it. Improve your chances of a good match by removing any variable names or values that are specific to your problem. Also, look for [Stack Overflow](https://stackoverflow.com/questions/tagged/r) posts and list of answers.
+
+&lt;div align="center"&gt;
+&lt;img src="pics/google-programming.jpeg" height="250"/&gt;
+&lt;/div&gt;
+
+]
+
+
+---
+# Reset
+
+.pull-left[
+- If at first you don't succeed, try exactly the same thing again.
+- Have you tried turning it off and on again?
+- Do you use `rm(list = ls())`? Don't. Packages remain loaded, options and environment variables set, ... all possible sources of error!
+- A fresh start clears the workspace, resets options, environment variables, and the path.
+]
+
+.pull-right[
+&lt;div align="center"&gt;
+&lt;img src="pics/restart-r-1.png" width="350"/&gt;&lt;br&gt;
+&lt;img src="pics/restart-r-2.png" width="350"/&gt;
+&lt;/div&gt;
+]
+
+
+---
+# Debug
+
+### Make the error repeatable. 
+
+- Execute the code many times as you consider and reject hypotheses. To make that iteration as quick possible, it’s worth some upfront investment to make the problem both easy and fast to reproduce.
+- Work with reproducible and minimal examples by removing innocuous code and simplifying data.
+- Consider automated testing. Add some nearby tests to ensure that existing good behaviour is preserved. 
+
+### Track the error down.
+
+- Execute code step by step and inspect intermediate outputs. 
+- Adopt the scientific method: Generate hypotheses, design experiments to test them, and record your results. 
+
+### Once found, fix the error and test it.
+
+- Ensure you haven’t introduced any new bugs in the process. 
+- Make sure to carefully record the correct output, and check against the inputs that previously failed.
+- Reset and run again to make sure everything still works. 
+
+
+---
+# Deter
+
+.pull-left[
+
+### Defensive programming
+
+- The best errors are those that are avoided.
+  - Avoid functions that return different types of output depending on their input, e.g., `[]` and `sapply()`.
+  - Be strict about what you accept (e.g., only scalars). 
+  - Avoid functions that use non-standard evaluation (e.g., `with()`)
+- "Fail fast".
+  - As soon as something wrong is discovered, signal an error. 
+  - Add tests (e.g., with the `testthat` package).
+  - Practice good condition/exception handling, e.g., with `try()` and `tryCatch()`. 
+  - Write error messages for humans.
+
+]
+
+.pull-right[
+### Transparency
+
+- Collaborate! [Pair programming](https://en.wikipedia.org/wiki/Pair_programming) is an established software development technique that increases code robustness. It also works [from remote](https://ivelasq.rbind.io/blog/vscode-live-share/).
+- Be transparent! Let others access your code and comment on it.
+
+&lt;div align="center"&gt;
+&lt;img src="pics/pair-programming-its-not-for-everyone.jpeg" width="350"/&gt;
+&lt;/div&gt;
+]
+
+
+
+&lt;!-- ############################################ --&gt;
+---
+class: inverse, center, middle
+name: debuggingr
+
+# Debugging R
+&lt;html&gt;&lt;div style='float:left'&gt;&lt;/div&gt;&lt;hr color='#EB811B' size=1px style="width:1000px; margin:auto;"/&gt;&lt;/html&gt;
+
+
+---
+# What you get
+
+&lt;br&gt;
+&lt;br&gt;
+&lt;tt&gt;
+Error : .onLoad failed in loadNamespace() for 'rJava', details: &lt;br&gt;
+call: dyn.load(file, DLLpath = DLLpath, ...) &lt;br&gt;
+error: unable to load shared object '/Users/janedoe/Library/R/3.6/library/rJava/libs/rJava.so':  &lt;br&gt;
+libjvm.so: cannot open shared object file: No such file or directory  &lt;br&gt;
+Error: loading failed  &lt;br&gt;
+Execution halted  &lt;br&gt;
+ERROR: loading failed  &lt;br&gt;
+* removing '/Users/janedoe/Library/R/3.6/library/rJava/' &lt;br&gt;
+Warning in install.packages : &lt;br&gt;
+installation of package 'rJava' had non-zero exit status
+&lt;/tt&gt;
+
+&lt;br&gt;
+`Credit` [Jenny Bryan](https://github.com/jennybc/debugging)
+
+
+---
+# What you see
+
+
+&lt;br&gt;
+&lt;br&gt;
+&lt;tt&gt;
+&lt;span style = "color:red"&gt;Error&lt;/span&gt; : blah &lt;span style = "color:red"&gt;failed&lt;/span&gt; blah blah() blah 'blah', blah: &lt;br&gt;
+call: blah.blah(blah, blah = blah, ...) &lt;br&gt;
+&lt;span style = "color:red"&gt;error&lt;/span&gt;: &lt;span style = "color:red"&gt;unable&lt;/span&gt; to blah blah blah '/blah/blah/blah/blah/blah/blah/blah/blah/blah.so':  &lt;br&gt;
+blah.so: &lt;span style = "color:red"&gt;cannot&lt;/span&gt; open blah blah blah: &lt;span style = "color:red"&gt;No&lt;/span&gt; blah blah blah blah  &lt;br&gt;
+&lt;span style = "color:red"&gt;Error&lt;/span&gt;: blah &lt;span style = "color:red"&gt;failed&lt;/span&gt;  &lt;br&gt;
+blah blah  &lt;br&gt;
+&lt;span style = "color:red"&gt;ERROR&lt;/span&gt;: blah &lt;span style = "color:red"&gt;failed&lt;/span&gt;  &lt;br&gt;
+* removing '/blah/blah/blah/blah/blah/blah/blah/' &lt;br&gt;
+&lt;span style = "color:red"&gt;Warning&lt;/span&gt; in blah.blah : &lt;br&gt;
+blah of blah 'blah' blah blah-blah blah blah
+&lt;/tt&gt;
+
+&lt;br&gt;
+`Credit` [Jenny Bryan](https://github.com/jennybc/debugging)
+
+
+
+
+---
+# Strategies to debug your R code
+
+Sometimes the mistake in your code is hard to diagnose, and googling doesn't help. Here are a couple of strategies to debug your code:
+
+- Use `traceback()` to determine where a given error is occurring.
+
+- Output diagnostic information in code with `print()`, `cat()` or `message()` statements.
+
+- Use `browser()` to open an interactive debugger before the error
+
+- Use `debug()` to automatically open a debugger at the start of a function call.
+
+- Use `trace()` to start a debugger at a location inside a function.
+
+
+---
+# Locating errors with traceback()
+
+.pull-left[
+
+### Motivation and usage
+- When an error occurs with an unidentifiable error message or an error message that you are in principle familiar with but cannot locate its sources, the `traceback()` function comes in handy.
+- The `traceback()` function prints the sequence of calls that led to an uncaught error error.
+- Note that the traceback() output from bottom to top.
+- Note that errors caught via `try()` or `tryCatch()` do not generate a traceback!
+-  If you’re calling code that you `source()`d into R, the traceback will also display the location of the function, in the form `filename.r#linenumber`. 
+]
+
+--
+
+.pull-right[
+### Example
+
+In the call sequence below the execution of `g()` triggers an error:
+
+
+```r
+R&gt; f &lt;- function(x) x + 1
+R&gt; g &lt;- function(x) f(x)
+R&gt; g("a")
+```
+
+```r 
+#&gt; Error in x + 1 : non-numeric argument to binary operator
+```
+
+Doing the traceback reveals that the function call f(x) is what lead to the error:
+
+
+```r
+R&gt; traceback()
+```
+
+```r 
+#&gt; 2: f(x) at #1
+#&gt; 1: g("a")
+```
+]
+
+---
+# Interactive debugging with browser()
+
+.pull-left[
+### Motivation and usage
+- Sometimes, you need more information than the precise location of an error in a function to fix it. 
+- The interactive debugger allows you to pause the execution of a function and interactively explore its state.
+- Two options to enter the interactive debugger: 
+  1. Through RStudio's "Rerun with Debug" tool, shown to the right of an error message.
+  2. You can insert a call to `browser()` into the function at the stage where you want to pause, and re-run the function.
+- In either case, you’ll end up in an interactive environment inside the function where you can run arbitrary R code to explore the current state. You’ll know when you’re in the interactive debugger because you get a special prompt, `Browse[1]&gt;`. 
+
+
+- The `traceback()` function prints the sequence of calls that led to an uncaught error error.
+- Note that the traceback() output from bottom to top.
+- Note that errors caught via `try()` or `tryCatch()` do not generate a traceback!
+-  If you’re calling code that you `source()`d into R, the traceback will also display the location of the function, in the form `filename.r#linenumber`. 
+]
+
+--
+
+.pull-right[
+### Example
+
+
+```r
+R&gt; h &lt;- function(x) x + 3
+R&gt; g &lt;- function(b) {
+*+   browser()
++   h(b)
++ }
+R&gt; g(10)
+```
+
+Some useful things to do are:
+
+1. Use `ls()` to determine what objects are available in the current
+   environment.
+2. Use `str()`, `print()` etc. to examine the objects.
+3. Use `n` to evaluate the next statement.
+4. Use `s`: like `n` but also step into function calls.
+5. Use `where` to print a stack trace (→ traceback).
+6. Use `c` to exit debugger and continue execution.
+7. Use `Q` to exit debugger and return to the R prompt.
+]
+
+
+
+---
+# Debugging other peoples' code
+
+
+.pull-left[
+### Motivation
+- Sometimes the error is outside your code in a package you're using, you might still want to be able to debug.
+- Two options:
+  1. Download the package code locally and debug it is if it were your own.
+  2. Use functions which which allow you to start a browser in existing functions, including `recover()` and `debug()`.
+]
+
+.pull-right[
+]
+
+
+
+---
+# Debugging other peoples' code (cont.)
+
+.pull-left-small[
+### Motivation
+- `recover()` serves as an alternative error handler which you activate by calling `options(error = recover)`.
+- You can then select from a list of current calls to browse.
+- `options(error = NULL)` turns off this debugging mode again.
+- A simpler alternative is `options(error = browser)`, but this only allows you to browse the call where the error occurred.
+]
+
+--
+
+.pull-right-wide[
+### Example
+
+- Activate debugging mode; then execute (flawed) function:
+
+
+```r
+*R&gt; options(error = recover)
+R&gt; lm(mpg ~ wt, data = "mtcars")
+```
+
+```r 
+Error in model.frame.default(formula = mpg ~ wt, data = "mtcars", drop.unused.levels = TRUE) 
+ 'data' must be a data.frame, environment, or list
+ 
+Enter a frame number, or 0 to exit   
+
+1: lm(mpg ~ wt, data = "mtcars")
+2: eval(mf, parent.frame())
+3: eval(mf, parent.frame())
+
+Selection: 
+```
+
+- Deactivate debugging mode: 
+
+
+```r
+*R&gt; options(error = NULL)
+```
+]
+
+---
+# Debugging other peoples' code (cont.)
+
+.pull-left[
+### Motivation
+- `debug()` activates the debugger on any function, including those in packages (see on the right). `undebug()` deactivates the debugger again.
+- Some functions in another package are easier to find than others. There are
+  - *exported* functions which are available outside of a package and
+  - *internal* functions which are only available within a package.
+- To find (and debug) exported functions, use the `::` syntax, as in `ggplot2::ggplot`.
+- To find un-exported functions, use the `:::` syntax, as in `ggplot2:::check_required_aesthetics`.
+]
+
+--
+
+.pull-right[
+### Example
+
+- Activate debugging mode for `lm()` function; then execute function:
+
+
+```r
+*R&gt; debug(stats::lm)
+R&gt; lm(mpg ~ weight, data = "mtcars")
+```
+
+- Interactive debugging mode for `lm()` is entered; use the common `browser()` functionality to navigate:
+
+```r 
+debugging in: lm(mpg ~ weight, data = mtcars)
+debug: {
+    ret.x &lt;- x
+    ...
+Browse[2]&gt; 
+```
+
+- Deactivate debugging mode: 
+
+
+```r
+*R&gt; undebug(stats::lm)
+```
+]
+
+
+---
+# Debugging in RStudio
+
+&lt;div align="center"&gt;
+&lt;img src="pics/rstudio-debug-mode.png" width="1100"/&gt;
+&lt;/div&gt;
+
+
+
+---
+# More on debugging R
+
+.pull-left[
+&lt;br&gt;&lt;br&gt;&lt;br&gt;
+
+### Further reading
+
+- [12-minute video](https://vimeo.com/99375765) on debugging in R
+- Jenny Bryan's [talk on debugging](https://github.com/jennybc/debugging) at  rstudio::conf 2020
+- Jenny Bryan and Jim Hester's "What They Forgot to Teach You About R", Chapter 11: [Debugging R code](https://rstats.wtf/debugging-r-code.html)
+- Jonathan McPherson's [Debugging with RStudio](https://support.rstudio.com/hc/en-us/articles/205612627-Debugging-with-RStudio)
+]
+
+.pull-right[
+&lt;br&gt;
+&lt;div align="center"&gt;
+&lt;img src="pics/classy-bear-debugging.jpeg" width="450"/&gt;
+&lt;/div&gt;
+]
+
+
+&lt;!-- ############################################ --&gt;
+---
+class: inverse, center, middle
+name: automation
+
+# Automation and scripting
+&lt;html&gt;&lt;div style='float:left'&gt;&lt;/div&gt;&lt;hr color='#EB811B' size=1px style="width:1000px; margin:auto;"/&gt;&lt;/html&gt;
+
+
+
+---
+# Automation
+
+&lt;div align="center"&gt;
+&lt;img src="pics/xkcd-automation.png" width="500"/&gt;
+&lt;br&gt;
+&lt;tt&gt;Credit&lt;/tt&gt; &lt;a href="https://xkcd.com/1319/"&gt;Randall Munroe/xkcd 1319&lt;/a&gt;
+&lt;/div&gt;
+
+---
+# Automation
+
+.pull-left-wide2[
+### Motivation
+
+- We spend [too much time](https://itchronicles.com/technology/repetitive-tasks-cost-5-trillion-annually/) on repetitive tasks.
+- We're already automating using scripts that bundle multiple commands! Next step: The pipeline as a series of scripts and commands.
+- Good pipelines are modular. But you don't want to trigger 10 scripts sequentially by hand.
+- Some tasks are to be repeated on a regular basis (schedule).
+- Automation makes particular sense when...
+
+  - The input is variable but the process of turning input into output is highly standardized.
+  - You use a diverse set of software to produce the output.
+  - Others (humans, machines) are supposed to run the analyses.
+  - Time saved by automation &gt;&gt; Time needed to automate.
+]
+
+.pull-right-small3[
+### Different ways of doing it
+
+We will consider automation
+
+- using **R**,
+- using the **Shell** and **RScript**,
+- using **make**, and
+- using dedicated **scheduling tools**.
+
+&lt;div align="center"&gt;
+&lt;img src="pics/automation-giphy.gif" width="400"/&gt;
+&lt;/div&gt;
+]
+
+
+
+---
+# Thinking in pipelines
+
+.pull-left[
+### Key characteristics
+- Pipelines make complex projects easier to handle because they break up a monolithic script into **discrete, manageable chunks**.
+- If properly done, each stage of the pipeline defines its input and its outputs.
+- Pipeline modules **do not modify their inputs** (*idempotence*). Rerunning one module produces the same results as the previous run.
+
+### Key advantages
+- When you modify one stage of the pipeline, you only have to rerun the downstream, dependent stages.
+- Division of labor is straightforward.
+- Modules tend to be a lot easier to debug.
+]
+
+.pull-right[
+&lt;br&gt;
+&lt;div align="center"&gt;
+&lt;img src="pics/berlin-pink-pipes.jpeg" width="450"/&gt;
+&lt;/div&gt;
+]
+
+
+
+
+---
+# A data science pipeline is a graph
+
+.pull-left-small2[
+### Wait what
+- Scripts and data files are vertices of the graph.
+- Dependencies between stages are edges of the graph.
+- Pipelines are not necessarily DAGS. Recursive routines are imaginable (but to be avoided?).
+- Also, scripts are not necessarily hierarchical (e.g., multiple different modeling approaches of the same data in different scripts.)
+- An automation script gives *one* order in which you can successfully run the pipeline.
+]
+
+.pull-right-wide2[
+&lt;br&gt;
+&lt;div align="center"&gt;
+&lt;img src="pics/lotr-pipeline.png" width="600"/&gt;
+&lt;/div&gt;
+]
+
+
+---
+# An example pipeline
+
+.pull-left-small[
+In the following, we will work with the following toy pipeline:&lt;sup&gt;1&lt;/sup&gt;
+
+.footnote[&lt;sup&gt;1&lt;/sup&gt;Courtesy of [Jenny Bryan](https://github.com/STAT545-UBC/STAT545-UBC-original-website).]
+]
+
+
+
+.pull-right-wide[
+]
+
+
+
+---
+# An example pipeline
+
+.pull-left-small[
+In the following, we will work with the following toy pipeline:
+
+- `00-packages.R` loads the packages necessary for analysis,
+]
+
+.pull-right-wide[
+`00-packages.R`: 
+
+
+```r
+R&gt; # install packages from CRAN
+R&gt; p_needed &lt;- c("tidyverse" # tidyverse packages
++ )
+R&gt; packages &lt;- rownames(installed.packages())
+R&gt; p_to_install &lt;- p_needed[!(p_needed %in% packages)]
+R&gt; if (length(p_to_install) &gt; 0) {
++   install.packages(p_to_install)
++ }
+R&gt; lapply(p_needed, require, character.only = TRUE)
+```
+]
+
+---
+# An example pipeline
+
+.pull-left-small[
+In the following, we will work with the following toy pipeline:
+
+- `00-packages.R` loads the packages necessary for analysis,
+- `01-download-data.R` downloads a spreadsheet, which is stored as `lotr_raw.tsv`,
+]
+
+.pull-right-wide[
+`01-download-data.R`: 
+
+
+```r
+R&gt; ## download raw data
+R&gt; download.file(url = "http://bit.ly/lotr_raw-tsv", 
++                destfile = "lotr_raw.tsv")
+```
+]
+
+
+---
+# An example pipeline
+
+.pull-left-small[
+In the following, we will work with the following toy pipeline:
+
+- `00-packages.R` loads the packages necessary for analysis,
+- `01-download-data.R` downloads a spreadsheet, which is stored as `lotr_raw.tsv`,
+- `02-process-data.R` imports and processes the data and exports a clean spreadsheet as `lotr_clean.tsv`, and
+]
+
+.pull-right-wide[
+`02-process-data.R`: 
+
+
+```r
+R&gt; ## import raw data
+R&gt; lotr_dat &lt;- read_tsv("lotr_raw.tsv")
+R&gt; 
+R&gt; ## reorder Film factor levels based on story
+R&gt; old_levels &lt;- levels(as.factor(lotr_dat$Film))
+R&gt; j_order &lt;- sapply(c("Fellowship", "Towers", "Return"),
++ 					function(x) grep(x, old_levels))
+R&gt; new_levels &lt;- old_levels[j_order]
+R&gt; 
+R&gt; ## process data set 
+R&gt; lotr_dat &lt;- lotr_dat %&gt;%
++   # apply new factor levels to Film
++ 	mutate(Film = factor(as.character(Film), new_levels),
++ 	# revalue Race
++ 	Race = recode(Race, `Ainur` = "Wizard", `Men` = "Man")) %&gt;%
++ ## &lt;skipping some steps here to avoid slide overflow&gt;
++ 
++ ## write data to file
++ write_tsv(lotr_dat, "lotr_clean.tsv")
+```
+]
+
+
+---
+# An example pipeline
+
+.pull-left-small[
+In the following, we will work with the following toy pipeline:
+
+- `00-packages.R` loads the packages necessary for analysis,
+- `01-download-data.R` downloads a spreadsheet, which is stored as `lotr_raw.tsv`,
+- `02-process-data.R` imports and processes the data and exports a clean spreadsheet as `lotr_clean.tsv`, and
+- `03-plot.R` imports the clean dataset, produces a figure and exports it as `barchart-words-by-race.png`.
+]
+
+.pull-right-wide[
+`03-plot.R`: 
+
+
+```r
+R&gt; ## import clean data
+R&gt; lotr_dat &lt;- read_tsv("lotr_clean.tsv") %&gt;% 
++ # reorder Race based on words spoken
++ mutate(Race = reorder(Race, Words, sum))
+R&gt; 
+R&gt; ## make a plot
+R&gt; p &lt;- ggplot(lotr_dat, aes(x = Race, weight = Words)) + geom_bar()
+R&gt; ggsave("barchart-words-by-race.png", p)
+```
+]
+
+
+---
+# An example pipeline
+
+
+
+
+
+```r
+R&gt; slice_sample(lotr_dat, n = 10)
+```
+
+```
+   # A tibble: 10 × 5
+      Film                       Chapter                   Character    Race  Words
+      &lt;chr&gt;                      &lt;chr&gt;                     &lt;chr&gt;        &lt;chr&gt; &lt;dbl&gt;
+    1 The Return Of The King     64: The Mouth Of Sauron   Aragorn      Man      23
+    2 The Fellowship Of The Ring 36: The Bridge Of Khazad… Frodo        Hobb…     4
+    3 The Two Towers             36: Isengard Unleashed    Saruman      Wiza…    50
+    4 The Fellowship Of The Ring 42: The Great River       Sam          Hobb…    37
+    5 The Return Of The King     42: Breaking The Gate Of… Gandalf      Wiza…    21
+    6 The Two Towers             45: The Glittering Caves  Legolas      Elf      36
+    7 The Two Towers             35: Helm's Deep           Rohan Warri… Man      22
+    8 The Fellowship Of The Ring 33: Moria                 Aragorn      Man      31
+    9 The Fellowship Of The Ring 43: Parth Galen           Aragorn      Man      79
+   10 The Return Of The King     24: Courage Is The Best … Gothmog      Orc       4
+```
+
+
+
+---
+# An example pipeline
+
+
+```r
+R&gt; p &lt;- ggplot(lotr_dat, aes(x = Race, weight = Words)) + 
++   geom_bar() + theme_minimal()
+```
+
+&lt;div align="center"&gt;
+&lt;br&gt;
+&lt;img src="examples/01-automation-just-r/barchart-words-by-race.png" width="700"/&gt;
+&lt;/div&gt;
+
+
+---
+# Automation using pipelines in R
+
+.pull-left[
+### Motivation and usage
+- The `source()` function reads and parses R code from a file or connection. 
+- We can build a pipeline by sourcing scripts sequentially.
+- This pipeline is usually stored in a "master" script.
+- The removal of previous work is optional and maybe redundant. Often the data is overwritten by default.
+- It is recommended that the individual scripts are (partial) standalones, i.e. that they import all data they need by default (loading the packages could be considered an exception). 
+- Note that as long as the environment is not reset, it remains intact across scripts, which is a potential source of error and confusion.
+]
+
+--
+
+.pull-right[
+### Example
+
+The master script `master.R`:
+
+
+```r
+R&gt; ## clean out any previous work
+R&gt; outputs &lt;- c("lotr_raw.tsv",
++ 	          "lotr_clean.tsv",
++               list.files(pattern = "*.png$"))
+R&gt; file.remove(outputs)
+R&gt; 
+R&gt; ## run scripts
+R&gt; source("00-packages.R")
+R&gt; source("01-download-data.R")
+R&gt; source("02-process-data.R")
+R&gt; source("03-plot.R")
+```
+]
+
+
+---
+# Automation using the Shell and Rscript
+
+.pull-left[
+### Motivation and usage
+- Alternatively to using an R master script, we can also run the pipeline from the command line.
+- Note that here, the environments don't carry over across `Rscript` calls. The scripts definitely have to run in a standalone fashion (i.e., load packages, import all necessary data, etc.).
+- The working directory should be set either in the script(s) or in the shell with `cd`.
+]
+
+--
+
+.pull-right[
+### Example
+
+The master script `master.sh`:
+
+```bash
+#!/bin/sh
+cd /Users/simonmunzert/github/examples/02-automation-shell-rscript
+set -eux
+Rscript 01-download-data.R
+Rscript 02-process-data.R
+Rscript 03-plot.R
+```
+
+The `set` command allows to adjust some base shell parameters:
+- `-e`: Stop at first error
+- `-u`: Undefined variables are an error
+- `-x`: Print each command as it is run
+
+For more information on `set`, see [here](http://linuxcommand.org/lc3_man_pages/seth.html).
+]
+
+
+
+---
+# Automation using the Shell and Rscript
+
+.pull-left[
+### Motivation and usage
+- Alternatively to using an R master script, we can also run the pipeline from the command line.
+- Note that here, the environments don't carry over across `Rscript` calls. The scripts definitely have to run in a standalone fashion (i.e., load packages, import all necessary data, etc.).
+- The working directory should be set either in the script(s) or in the shell with `cd`.
+- One advantage of this approach is that it can be easily coupled with other command line tools, building a **polyglot pipeline**.
+]
+
+
+.pull-right[
+### Example
+
+The master script `master.sh`:
+
+```bash
+#!/bin/sh
+cd /Users/simonmunzert/github/examples/02-automation-shell-rscript
+set -eux
+*curl -L http://bit.ly/lotr_raw-tsv &gt; lotr_raw.tsv
+Rscript 02-process-data.R
+Rscript 03-plot.R
+```
+
+The `set` command allows to adjust some base shell parameters:
+- `-e`: Stop at first error
+- `-u`: Undefined variables are an error
+- `-x`: Print each command as it is run
+
+For more information on `set`, see [here](http://linuxcommand.org/lc3_man_pages/seth.html).
+]
+
+
+
+---
+# Automation using Make
+
+.pull-left-vwide[
+### Motivation and usage
+- [Make](https://en.wikipedia.org/wiki/Make_%28software%29) is an automation tool that allows us to specify and manage build processes.
+- It is commonly run via the shell.
+- At the heart of a make operation is the `makefile` (or `Makefile`, `GNUmakefile`), a script which serves as a recipe for the building process.
+- A `makefile` is written following a particular syntax and in a declarative fashion.
+- Conceptually, the recipe describes which files are built how and using what input.
+
+### Advantages of Make
+- It looks at which files you have and automatically figures out how to create the files that you have. For complex pipelines this "automation of the automation process" can be very helpful.
+- While shell scripts give *one* order in which you can successfully run the pipeline, Make will figure out the parts of the pipeline (and their order) that are needed to build a desired target.
+]
+
+.pull-right-vsmall[
+&lt;div align="center"&gt;
+&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;
+&lt;img src="pics/gnu-make.png" width="250"/&gt;
+&lt;/div&gt;
+]
+
+
+---
+# Automation using Make (cont.)
+
+.pull-left-small[
+### Basic syntax
+
+Each batch of lines indicates 
+- a file to be created (the target),
+- the files it depends on (the prerequisites), and 
+- set of commands needed to construct the target from the dependent files.
+
+Dependencies propagate. To create any of the `png` figures, we need `lotr_clean.tsv`. If this file changes, the `png`s change as well when they're built.
+]
+
+.pull-right-wide[
+
+### Example `makefile`
+
+```bash
+all: lotr_clean.tsv barchart-words-by-race.png words-histogram.png
+
+lotr_raw.tsv:
+	curl -L http://bit.ly/lotr_raw-tsv &gt; lotr_raw.tsv
+
+lotr_clean.tsv: lotr_raw.tsv 02-process-data.R
+	Rscript 02-process-data.R
+
+barchart-words-by-race.png: lotr_clean.tsv 03-plot.R
+	Rscript 03-plot.R
+
+words-histogram.png: lotr_clean.tsv
+	Rscript -e 'library(ggplot2); 
+	qplot(Words, data = read.delim("$&lt;"), geom = "histogram"); 
+	ggsave("$@")'
+	rm Rplots.pdf
+
+clean:
+	rm -f lotr_raw.tsv lotr_clean.tsv *.png
+
+```
+]
+
+
+
+---
+# Automation using Make (cont.)
+
+.pull-left-small[
+
+.footnote[&lt;sup&gt;1&lt;/sup&gt;While the basic syntax is simple (see right), the devil's in the detail. Check out resources listed on the next slide if you want to learn more.]
+
+### Getting Make to run
+
+- Using the command line, go into the directory for your project.
+- Create the `Makefile` file.&lt;sup&gt;1&lt;/sup&gt;
+- The most basic Make commands are `make all` and `make clean` which builds (or deletes) all output as specified in the script.
+]
+
+.pull-right-wide[
+
+### Example `makefile`
+
+```bash
+*all: lotr_clean.tsv barchart-words-by-race.png words-histogram.png
+
+lotr_raw.tsv:
+	curl -L http://bit.ly/lotr_raw-tsv &gt; lotr_raw.tsv
+
+lotr_clean.tsv: lotr_raw.tsv 02-process-data.R
+	Rscript 02-process-data.R
+
+barchart-words-by-race.png: lotr_clean.tsv 03-plot.R
+	Rscript 03-plot.R
+
+words-histogram.png: lotr_clean.tsv
+	Rscript -e 'library(ggplot2); 
+	qplot(Words, data = read.delim("$&lt;"), geom = "histogram"); 
+	ggsave("$@")'
+	rm Rplots.pdf
+
+*clean:
+*   rm -f lotr_raw.tsv lotr_clean.tsv *.png
+```
+]
+
+
+---
+# Automation using Make - FAQ
+
+### Does it work on Windows?
+
+To install an run `make` on Windows, check out [these instructions](https://stat545.com/make-windows.html).
+
+### Where can I learn more?
+
+If you consider working with Make, check out the [official manual](https://www.gnu.org/software/make/manual/make.html), [this helpful tutorial](https://makefiletutorial.com/), Karl Broman's [excellent minimal make introduction](https://kbroman.org/minimal_make/), or [this Stat545 piece](https://stat545.com/automation-overview.html). 
+
+.pull-left-vwide[
+### This is dusty technology. Are there alternatives?
+
+In the context of data science with R, the `targets` package is an interesting option. It provides R functionality to define a Make-stype pipeline. Check out the [overview](https://docs.ropensci.org/targets/) and [manual](https://books.ropensci.org/targets/).
+]
+
+.pull-right-vsmall[
+&lt;div align="center"&gt;
+&lt;br&gt;
+&lt;img src="pics/targets-hex.png" width="150"/&gt;
+&lt;/div&gt;
+]
+
+
+
+&lt;!-- ############################################ --&gt;
+---
+class: inverse, center, middle
+name: scheduling
+
+# Scheduling
+&lt;html&gt;&lt;div style='float:left'&gt;&lt;/div&gt;&lt;hr color='#EB811B' size=1px style="width:1000px; margin:auto;"/&gt;&lt;/html&gt;
+
+
+---
+# Scheduling
+
+&lt;div align="center"&gt;
+&lt;img src="pics/xkcd-time.png" width="600"/&gt;
+&lt;br&gt;
+&lt;tt&gt;Credit&lt;/tt&gt; &lt;a href="https://xkcd.com/1205/"&gt;Randall Munroe/xkcd 1205&lt;/a&gt;
+&lt;/div&gt;
+
+
+---
+# Scheduling scripts and processes
+
+.pull-left-wide[
+### Motivation
+- So far, we have automated data science pipelines.
+- But the execution of these pipelines still needs to be triggered.
+- In some cases, it is desirable to also **automate the initialization** of R scripts (or any processes for that matter) **on a regular basis**, e.g. weekly, daily, on logon, etc.
+- This makes particular sense when you have moving parts in your pipeline (most likely: data).
+
+### Common scenarios for scheduling
+
+1. You fetch data from the web on a regular basis (e.g., via scraping scripts or APIs).
+2. You generate daily/weekly/monthly reports/tweets based on changing data.
+3. You build an alert control system informing you about anomalies in a database.
+
+]
+
+.pull-right-small[
+&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;
+&lt;div align="center"&gt;
+&lt;img src="pics/robot-clock-giphy.gif" width="400"/&gt;
+&lt;/div&gt;
+`Credit` [Simone Giertz](https://www.youtube.com/watch?v=Lh2-iJj3dI0)
+]
+
+
+
+---
+# Scheduling scripts and processes on Windows
+
+.pull-left-small3[
+### Scheduling options
+- Processes on Windows can be scheduled with the [Windows Task Scheduler](https://en.wikipedia.org/wiki/Windows_Task_Scheduler).
+- Manage them via a GUI (→ Control Panel) or the command line using `schtasks.exe`.
+- The R package [`taskscheduleR`](https://cran.r-project.org/web/packages/taskscheduleR/vignettes/taskscheduleR.html) provides a programmable R interface to the WTS.
+
+&lt;div align="center"&gt;
+&lt;img src="pics/windows-task-scheduler.png" width="400"/&gt;
+&lt;/div&gt;
+]
+
+.pull-right-wide3[
+### `taskscheduleR` example
+
+
+```r
+R&gt; library(taskscheduleR)
+R&gt; myscript &lt;- "examples/scrape-wiki.R"
+R&gt; ## Run every 5 minutes, starting from 10:40
+R&gt; taskscheduler_create(
++   taskname = "WikiScraperR_5min", rscript = myscript,
++   schedule = "MINUTE", starttime = "10:40", modifier = 5)
+R&gt; 
+R&gt; ## Run every week on Saturday and Sunday at 09:10
+R&gt; taskscheduler_create(
++   taskname = "WikiScraperR_SatSun", rscript = myscript, 
++   schedule = "WEEKLY", starttime = "09:10", 
++   days = c('SAT', 'SUN'))
+R&gt; 
+R&gt; ## Delete task
+R&gt; taskscheduler_delete("WikiScraperR_SatSun")
+R&gt; 
+R&gt; ## Get a data.frame of all tasks
+R&gt; tasks &lt;- taskscheduler_ls()
+R&gt; str(tasks)
+```
+]
+
+
+---
+# Scheduling scripts and processes on a Mac
+
+.footnote[&lt;sup&gt;1&lt;/sup&gt;For more resources on scheduling with `launchd`, check out [this](https://babichmorrowc.github.io/post/launchd-jobs/) and [this](https://towardsdatascience.com/a-step-by-step-guide-to-scheduling-tasks-for-your-data-science-project-d7df4531fc41) and [this](https://zerolaunched.herokuapp.com/).]
+
+.pull-left-small3[
+### Scheduling options
+- On macOS you can schedule background jobs using [`cron`](https://en.wikipedia.org/wiki/Cron) and [`launchd`](https://en.wikipedia.org/wiki/Launchd).
+- `launchd`&lt;sup&gt;1&lt;/sup&gt; was created by Apple as a replacement for the popular Linux utility `cron` ([deprecated](https://developer.apple.com/library/archive/documentation/MacOSX/Conceptual/BPSystemStartup/Chapters/ScheduledJobs.html) but still usable). 
+- The R package [`cronR`](https://cran.r-project.org/web/packages/cronR/index.html) provides a programmable R interface.
+- `cron` syntax for more complex scheduling:
+
+&lt;div align="center"&gt;
+&lt;img src="pics/cron-syntax.png" width="380"/&gt;
+&lt;/div&gt;
+]
+
+.pull-right-wide3[
+### `cronR` example
+
+
+```r
+R&gt; library(cronR)
+R&gt; myscript &lt;- "examples/scrape-wiki.R"
+R&gt; # Create bash code for crontab to execute R script
+R&gt; cmd &lt;- cron_rscript(myscript)
+R&gt; 
+R&gt; ## Run every minute
+R&gt; cron_add(command = cmd, frequency = 'minutely',
++           id = 'ScraperR_1min', description = 'Every 1min')
+R&gt; 
+R&gt; ## Run every 15 minutes (using cron syntax)
+R&gt; cron_add(cmd, frequency = '*/15 * * * *', 
++           id = 'ScraperR_15min', description = 'Every 15 mins') 
+R&gt; 
+R&gt; ## Check number of running cronR jobs
+R&gt; cron_njobs()
+R&gt; 
+R&gt; ## Delete task
+R&gt; cron_rm("WikiScraperR_1min", ask = TRUE)
+```
+]
+
+
+&lt;!-- ############################################ --&gt;
+---
+class: inverse, center, middle
+name: rpackages
+
+# R packages
+&lt;html&gt;&lt;div style='float:left'&gt;&lt;/div&gt;&lt;hr color='#EB811B' size=1px style="width:1000px; margin:auto;"/&gt;&lt;/html&gt;
+
+
+---
+# Writing an R package
+
+.pull-left[
+### The state of the R package ecosystem
+
+- As of November 2021, the CRAN package repository features more than 18,000 packages.
+- Many, many more are available on GitHub and other code sharing platforms.
+- R has a vivid community that continuous to create and build extensions and maintain the existing environment. Many of them have much more training and time to invest in software development.
+- So, why should we (and with that I mean YOU) write yet another R package?
+]
+
+.pull-right-center[
+&lt;br&gt;
+&lt;div align="center"&gt;
+&lt;img src="pics/number-of-submitted-packages-to-CRAN.png" width="550"/&gt;
+&lt;/div&gt;
+`Credit` [daroczig](https://gist.github.com/daroczig/3cf06d6db4be2bbe3368)
+]
+
+
+---
+# Why create another R package?
+
+.pull-left-wide[
+1. **Thinking in functions.** R is a functional programming language, and packages bundle functions. Thinking of projects as packages is consistent with a functional mindset.
+
+2. **Automation and transportability.** By turning tasks into functions you save repetitive typing, keep frequently-used code together, and let code travel across projects.
+
+3. **Collaboration and transparency.** Packages are ideal to make functionality available to others, but also to let others contribute. As a side effect, it nudges you to document your functions properly and gives you the opportunity to let others review and improve your code easily. 
+
+4. **Visibility and productization.** Publishing code in packages is potentially giving you project a big boost in visibility. Also, it is more likely to be perceived as a product than an insular project.
+]
+
+.pull-right-small[
+&lt;br&gt;
+&lt;div align="center"&gt;
+&lt;img src="pics/rpackage-logo.png" width="350"/&gt;
+&lt;br&gt;
+&lt;img src="pics/github-logo.png" height="150"/&gt; 
+&lt;img src="pics/cran-logo.png" height="150"/&gt;
+&lt;/div&gt;
+]
+
+
+
+---
+# Creating a package from start to finish
+
+.pull-left[
+
+1. Choose a package name
+2. Set up your package with RStudio (and GitHub)
+3. Fill your package with life
+  - Add functions
+  - Write help files
+  - Write a `DESCRIPTION`
+  - Add internal data
+4. Check your package
+  - Write tests
+  - Check on various operating systems
+  - Check for good coding practice
+5. Submit to CRAN (or GitHub early in the process)
+6. Promotion
+  - Write a vignette
+  - Build a package website
+]
+
+
+.pull-right-center[
+&lt;div align="center"&gt;
+&lt;br&gt;
+&lt;img src="pics/r-package-workflow.png" width="470"/&gt;
+&lt;/div&gt;
+`Credit` [Simo Goshev, Steve Worthington](https://iqss.github.io/dss-rbuild/)
+]
+
+
+---
+# Tools to get you started
+
+
+.pull-left[
+.pull-left-wide[
+### devtools
+- The workhorse of package development in R
+- Provides functions that simplify common tasks, such as package setup, simulating installs, compiling from source
+]
+.pull-right-small[
+&lt;br&gt;
+&lt;div align="center"&gt;
+&lt;img src="pics/devtools.png" height="150"/&gt;
+&lt;/div&gt;
+]
+]
+
+.pull-right[
+.pull-left-wide[
+### usethis
+- Provides workflow utilities for project development (loaded by `devtools`)
+- Many `use_*()` functions to help create package tests, data, description, etc.
+]
+.pull-right-small[
+&lt;br&gt;
+&lt;div align="center"&gt;
+&lt;img src="pics/usethis.png" height="150"/&gt;
+&lt;/div&gt;
+]
+]
+
+.pull-left[
+.pull-left-wide[
+&lt;br&gt;
+### testthat
+- Provides functions that make it easy to describe what you expect a function to do, including catching errors, warnings, and messages.
+]
+.pull-right-small[
+&lt;br&gt;&lt;br&gt;
+&lt;div align="center"&gt;
+&lt;img src="pics/testthat.png" height="150"/&gt;
+&lt;/div&gt;
+]
+]
+
+.pull-right[
+.pull-left-wide[
+&lt;br&gt;
+### roxygen2
+- Provides functions to streamline/automate the documentation of your packages and functions
+]
+.pull-right-small[
+&lt;br&gt;&lt;br&gt;
+&lt;div align="center"&gt;
+&lt;img src="pics/roxygen2.png" height="150"/&gt;
+&lt;/div&gt;
+]
+]
+
+
+---
+# An example walkthrough
+
+&lt;br&gt;
+
+In the following we will briefly study the process of creating a package. 
+
+The [example](https://www.mzes.uni-mannheim.de/socialsciencedatalab/article/r-package/#section1) is taken from [Methods Bites](https://www.mzes.uni-mannheim.de/socialsciencedatalab/), the Blog of the MZES Social Science Data Lab, and developed by [Cosima Meyer](https://cosimameyer.rbind.io/) and [Dennis Hammerschmidt](http://dennis-hammerschmidt.rbind.io/). 
+
+
+.pull-left-vwide[
+The idea is to create a package `overviewR` that helps you to get an overview – hence, the name – of your data with particular emphasis on the extent that your distinct units of observation are covered for the entire time frame of your data set.
+
+The package is [real](https://cosimameyer.github.io/overviewR/) and lives on both [CRAN](https://cran.r-project.org/web/packages/overviewR/index.html) and [GitHub](https://github.com/cosimameyer/overviewR). Check out the [vignette](https://cran.r-project.org/web/packages/overviewR/vignettes/overviewR_vignette.html).
+]
+
+.pull-right-vsmall[
+&lt;div align="center"&gt;
+&lt;br&gt;
+&lt;img src="pics/overviewR-logo.png" height="150"/&gt;
+&lt;/div&gt;
+]
+
+---
+# Step 1: Idea and name
+
+.pull-left-small3[
+### Idea
+
+- I'll leave you alone with that one.
+- ... but you might want to check out the [over 18k existing ones that live on CRAN](https://cran.r-project.org/web/packages/available_packages_by_name.html).
+
+### Name
+
+- Package names can only be letters and numbers and must start with a letter.
+- The package `available` helps you — both with getting inspiration for a name and with checking whether your name is available.
+]
+
+.pull-right-wide3[
+### Example
+
+
+```r
+R&gt; library(available)
+R&gt; # Check for potential names
+R&gt; available::suggest("Easily extract information about sample")
+```
+
+```
+   easilyr
+```
+
+```r
+R&gt; # Check whether it's available
+R&gt; available::available("overviewR", browse = FALSE)
+```
+
+```
+   ── overviewR ───────────────────────────────────────────────────────────────────
+   Name valid: ✔
+   Available on CRAN: ✖ 
+   Available on Bioconductor: ✔
+   Available on GitHub:  ✖ 
+   Abbreviations: http://www.abbreviations.com/overview
+   Wikipedia: https://en.wikipedia.org/wiki/overview
+   Wiktionary: https://en.wiktionary.org/wiki/overview
+   Urban Dictionary:
+     a general [summary] of a subject "the [treasurer] gave [a brief]  overview of the financial consequences"
+     http://overview.urbanup.com/3904264
+   Sentiment:???
+```
+]
+
+
+
+---
+# Step 2: Set up your package
+
+.pull-left-small3[
+### Option 1: via RStudio and GitHub
+
+- Use RStudio's Project Wizard and click on `File` &gt; `New Project...` &gt; `New Directory` &gt; `R Package`.
+- Check the box `Create a git` to set up a local git.
+
+### Option 2: `usethis`
+
+- Use `usethis::create_package()`, which will set up a template package directory in the specified folder.
+- You have to take care of version control yourself (recommendation: initiate project on GitHub first).
+]
+
+.pull-right-wide3[
+### Example
+
+
+```r
+R&gt; create_package("overviewR", open = FALSE)
+```
+
+```r
+✓ Creating 'overviewR/'
+✓ Setting active project to '/Users/simonmunzert/github/intro-to-data-science-21/lectures/10-debugging-automation/overviewR'
+✓ Creating 'R/'
+✓ Writing 'DESCRIPTION'
+Package: overviewR
+Title: What the Package Does (One Line, Title Case)
+Version: 0.0.0.9000
+Authors@R (parsed):
+    * First Last &lt;first.last@example.com&gt; [aut, cre] (YOUR-ORCID-ID)
+Description: What the package does (one paragraph).
+License: `use_mit_license()`, `use_gpl3_license()` or friends to
+    pick a license
+Encoding: UTF-8
+LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.1.2
+✓ Writing 'NAMESPACE'
+✓ Writing 'overviewR.Rproj'
+✓ Adding '^overviewR\\.Rproj$' to '.Rbuildignore'
+✓ Adding '.Rproj.user' to '.gitignore'
+✓ Adding '^\\.Rproj\\.user$' to '.Rbuildignore'
+✓ Setting active project to '&lt;no active project&gt;'
+```
+]
+
+
+---
+# Step 2: Set up your package (cont.)
+
+.pull-left-small3[
+### Basic components
+
+1. The `DESCRIPTION` file 
+  - stores metadata about the package
+  - lists dependencies if any
+  - is pre-generated by `roxygen2`
+]
+
+.pull-right-wide3[
+### Example
+
+```txt
+Package: overviewR
+Title: What the Package Does (One Line, Title Case)
+Version: 0.0.0.9000
+Authors@R: 
+    person(given = "First",
+           family = "Last",
+           role = c("aut", "cre"),
+           email = "first.last@example.com",
+           comment = c(ORCID = "YOUR-ORCID-ID"))
+Description: What the package does (one paragraph).
+License: `use_mit_license()`, `use_gpl3_license()` or friends to pick a
+    license
+Encoding: UTF-8
+LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.1.2
+```
+]
+
+
+---
+# Step 2: Set up your package (cont.)
+
+.pull-left-small3[
+### Basic components
+
+1. The `DESCRIPTION` file 
+  - stores metadata about the package
+  - lists dependencies if any
+  - is pre-generated by `roxygen2`
+  - it will later look like this
+]
+
+.pull-right-wide3[
+### Example
+
+```txt
+Type: Package
+Package: overviewR
+Title: Easily Extracting Information About Your Data
+Version: 0.0.2
+Authors@R: c(
+    person("Cosima", "Meyer", email = "XX@XX.com", role = c("cre","aut")),
+    person("Dennis", "Hammerschmidt", email = "XX@XX.com", role = "aut"))
+Description: Makes it easy to display descriptive information on
+    a data set.  Getting an easy overview of a data set by displaying and
+    visualizing sample information in different tables (e.g., time and
+    scope conditions).  The package also provides publishable TeX code to
+    present the sample information.
+License: GPL-3
+URL: https://github.com/cosimameyer/overviewR
+BugReports: https://github.com/cosimameyer/overviewR/issues
+Depends:
+    R (&gt;= 3.5.0)
+Imports:
+    dplyr (&gt;= 1.0.0)
+Suggests:
+    covr,
+    knitr,
+    rmarkdown,
+    spelling,
+    testthat
+VignetteBuilder:
+    knitr
+Encoding: UTF-8
+Language: en-US
+LazyData: true
+RoxygenNote: 7.1.0
+```
+]
+
+
+---
+# Step 2: Set up your package (cont.)
+
+.pull-left-small3[
+### Basic components
+
+1. The `DESCRIPTION` file 
+  - stores metadata about the package
+  - lists dependencies if any
+  - is pre-generated by `roxygen2`
+  - it will later look like this
+  - and displayed online like this
+]
+
+.pull-right-wide3[
+### Example
+
+&lt;div align="center"&gt;
+&lt;br&gt;
+&lt;img src="pics/overviewR-description.png" width="600"/&gt;
+&lt;/div&gt;
+]
+
+---
+# Step 2: Set up your package (cont.)
+
+.pull-left-small3[
+### Basic components
+
+1. The `DESCRIPTION` file 
+  - stores metadata about the package
+  - lists dependencies if any
+  - is pre-generated by `roxygen2`
+   - it will later look like this
+  - and displayed online like this
+2. The `NAMESPACE` file
+  - will later contain information on exported and imported functions. 
+  - helps you manage (and avoid) function clashes
+  - will be populated automatically using `devtools::document()`
+]
+
+.pull-right-wide3[
+### Example
+
+```txt
+# Generated by roxygen2: do not edit by hand
+
+export(overview_crossplot)
+export(overview_crosstab)
+export(overview_heat)
+export(overview_na)
+export(overview_overlap)
+export(overview_plot)
+export(overview_print)
+export(overview_tab)
+importFrom(dplyr,"%&gt;%")
+importFrom(ggplot2,ggplot)
+importFrom(ggrepel,geom_text_repel)
+importFrom(ggvenn,ggvenn)
+importFrom(stats,reorder)
+importFrom(tibble,"rownames_to_column")
+```
+]
+
+
+---
+# Step 2: Set up your package (cont.)
+
+.pull-left-small3[
+### Basic components
+
+1. The `DESCRIPTION` file 
+  - stores metadata about the package
+  - lists dependencies if any
+  - is pre-generated by `roxygen2`
+  - it will later look like this
+  - and displayed online like this
+2. The `NAMESPACE` file
+  - will later contain information on exported and imported functions. 
+  - helps you manage (and avoid) function clashes
+  - will be populated automatically using `devtools::document()`
+3. The **R** folder
+  - this is where all the functions you will create go
+]
+
+.pull-right-wide3[
+]
+
+
+
+---
+# Step 3: Fill your package with life
+
+.pull-left-small3[
+
+### Adding functions
+The folder **R** contains all your functions and each function is saved in a new R file where the function name and the file name are the same. 
+
+In the preamble of this file, we can add information on the function. This information will be used to render the help files.
+
+]
+
+.pull-right-wide3[
+### Example
+
+```txt
+#' @title overview_tab
+#'
+#' @description Provides an overview table for the time and scope conditions of
+#'     a data set
+#'
+#' @param dat A data set object
+#' @param id Scope (e.g., country codes or individual IDs)
+#' @param time Time (e.g., time periods are given by years, months, ...)
+#'
+#' @return A data frame object that contains a summary of a sample that
+#'     can later be converted to a TeX output using \code{overview_print}
+#' @examples
+#' data(toydata)
+#' output_table &lt;- overview_tab(dat = toydata, id = ccode, time = year)
+#' @export
+#' @importFrom dplyr "%&gt;%"
+```
+]
+
+
+
+---
+# Step 3: Fill your package with life (cont.)
+
+.pull-left-small3[
+
+### Adding functions
+The folder **R** contains all your functions and each function is saved in a new R file where the function name and the file name are the same. 
+
+In the preamble of this file, we can add information on the function. This information will be used to render the help files.
+
+When you execute `devtools::document()`, R automatically generates the respective help file in man as well as the new `NAMESPACE` file.
+]
+
+.pull-right-wide3[
+### Example
+
+&lt;div align="center"&gt;
+&lt;br&gt;
+&lt;img src="pics/overviewR-help.png" width="600"/&gt;
+&lt;/div&gt;
+]
+
+
+---
+# Step 6: Install your package!
+
+.pull-left-small3[
+
+### Installing a local package
+We are now ready to load a developmental version of the package. This works with `devtools::install()`, which will also try to install dependencies of the package from CRAN, if they're not already installed.
+
+You need to run this from the parent working directory that contains the package folder.
+
+We're now ready to call functions from the package.
+]
+
+.pull-right-wide3[
+### Example
+
+
+```r
+R&gt; install("overviewR")
+```
+
+```r
+✓  checking for file ‘/Users/simonmunzert/github/intro-to-data-science-21/lectures/10-debugging-automation/examples/overviewR/DESCRIPTION’ ...
+─  preparing ‘overviewR’:
+✓  checking DESCRIPTION meta-information ...
+─  checking for LF line-endings in source and make files and shell scripts
+─  checking for empty or unneeded directories
+   Omitted ‘LazyData’ from DESCRIPTION
+─  building ‘overviewR_0.0.0.9000.tar.gz’
+   
+Running /Library/Frameworks/R.framework/Resources/bin/R CMD INSTALL \
+  /var/folders/38/fqbc3hzd0rl23h350bh27_540000gp/T//RtmpAuLJL4/overviewR_0.0.0.9000.tar.gz \
+  --install-tests 
+ installing to library ‘/Library/Frameworks/R.framework/Versions/4.1-arm64/Resources/library’
+ installing *source* package ‘overviewR’ ...
+ testing if installed package can be loaded from temporary location
+ testing if installed package can be loaded from final location
+ testing if installed package keeps a record of temporary installation path
+ DONE (overviewR)
+```
+]
+
+
+
+---
+# Steps 3-6
+
+&lt;br&gt;
+We skipped a couple of important (and some optional) steps now, including: 
+
+- Build and check a package, clean up → `devtools::check()`
+- Iterative loading and testing → `devtools::load_all()`
+- Adding unit tests → `usethis::use_testthat()`
+- Import functions from other packages (CRAN package dependency) → `usethis::use_package()`
+- Git version control and collaboration → `usethis::use_github()`
+- Add a proper public description → `usethis::use_readme_rmd()`
+- Build PDF manual → `devtools::build_manual()`
+- Add vignettes → `usethis::use_vignette()`
+- Add a licence → `usethis::use_gpl_license()`, `usethis::use_mit_license()`, ...
+- Convert into a single bundled file (binary or zipped) → `devtools::build()`
+- Submit to CRAN → `devtools::release()`
+- Build website for your package → `pkgdown::build_site()`
+
+Be sure to check out the [motivating example](https://www.mzes.uni-mannheim.de/socialsciencedatalab/article/r-package/#subsection4-3) and more resources (next slide).
+
+
+---
+# Writing R packages - FAQ
+
+.pull-left[
+### Is learning this worth the time?
+
+Yes.
+
+### Where can I learn more?
+
+Glad that you're asking! There's tons of materials out there. Apart from the used [tutorial](https://www.mzes.uni-mannheim.de/socialsciencedatalab/article/r-package/) and the [R packages book](https://r-pkgs.org/), have a look at the [devtools cheatsheet](https://rawgit.com/rstudio/cheatsheets/master/package-development.pdf) and another overview over at [RStudio](https://support.rstudio.com/hc/en-us/articles/200486488-Developing-Packages-with-the-RStudio-IDE). Knowing how to [turn a package into a website](https://pkgdown.r-lib.org/dev/) within minutes is fascinating, too. 
+
+### When do we need a package, and when is a GitHub repo simply enough?
+
+Do you think of your work as a project or a product? If it's the latter, maybe a package is right for you. (But... a research paper is also a product, right? 🤯)
+]
+
+.pull-right[
+&lt;div align="center"&gt;
+&lt;br&gt;
+&lt;img src="pics/devtools-cheatsheet-1.png" width="350"/&gt;
+&lt;img src="pics/devtools-cheatsheet-2.png" width="350"/&gt;
+&lt;/div&gt;
+]
+
+
+
+
+---
+# Next steps
+
+&lt;br&gt;
+
+### Assignment
+
+No further assignment! Be sure to hand in assignment 5 until the updated deadlines.
+
+### Next lecture
+
+We turn to the next (and sometimes final) step in the data science workflow, **Monitoring and communication.**
+
+
+
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false,
+"ratio": "16:9",
+"hash": true
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
