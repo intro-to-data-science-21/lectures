@@ -26,7 +26,6 @@
 10. Debugging, automation and packaging \[[**.html**](https://raw.githack.com/intro-to-data-science-21/lectures/main/10-debugging-automation/10-debugging-automation.html) | [**.pdf**](https://raw.githack.com/intro-to-data-science-21/lectures/main/10-debugging-automation/10-debugging-automation.pdf) | [**.Rmd**](https://raw.githack.com/intro-to-data-science-21/lectures/main/10-debugging-automation/10-debugging-automation.Rmd)\]
 
 
-
 ## Summary
 
 This is a course taught by [Simon Munzert](https://simonmunzert.github.io/) at the [Hertie School, Berlin](https://www.hertie-school.org/en/).

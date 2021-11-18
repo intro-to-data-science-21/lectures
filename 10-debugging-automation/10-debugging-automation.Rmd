@@ -83,9 +83,13 @@ name: debugging
 # What's debugging?
 
 .pull-left[
-**Straight from the [Wikipedia](https://en.wikipedia.org/wiki/Debugging):** "Debugging is the process of finding and resolving bugs (defects or problems that prevent correct operation) within computer programs, software, or systems."
+### Straight from the [Wikipedia](https://en.wikipedia.org/wiki/Debugging)
 
-**A famous (yet not the first) bug:** The term "bug" was used in an account by computer pioneer [Grace Hopper](https://en.wikipedia.org/wiki/Grace_Hopper) (see on the right). While she was working on a [Mark II](https://en.wikipedia.org/wiki/Harvard_Mark_II) computer at Harvard University, her associates discovered a moth stuck in a relay and thereby impeding operation, whereupon she remarked that they were "debugging" the system. This bug was carefully removed and taped to the log book (see on the right).
+"Debugging is the process of finding and resolving bugs (defects or problems that prevent correct operation) within computer programs, software, or systems."
+
+### A famous (yet not the first) bug:
+
+The term "bug" was used in an account by computer pioneer [Grace Hopper](https://en.wikipedia.org/wiki/Grace_Hopper) (see on the right). While she was working on a [Mark II](https://en.wikipedia.org/wiki/Harvard_Mark_II) computer at Harvard University, her associates discovered a moth stuck in a relay and thereby impeding operation, whereupon she remarked that they were "debugging" the system. This bug was carefully removed and taped to the log book (see on the right).
 ]
 
 .pull-right-center[
@@ -130,6 +134,31 @@ NASA software engineers are [famous for producing bug-free code](https://www.bug
 <img src="pics/excel-error-paper-2.jpeg" height="500"/>
 <img src="pics/excel-error-paper.png" height="500"/>
 </div>
+
+
+
+---
+# Why debugging matters (cont.)
+
+.pull-left-center[
+<div align="center">
+<br>
+<img src="pics/fb-socsci1-1.png" width="550"/>
+<img src="pics/fb-socsci1-2.png" width="550"/>
+<img src="pics/fb-socsci1-3.png" width="550"/>
+</div>
+`Source` [Washington Post](https://www.washingtonpost.com/technology/2021/09/10/facebook-error-data-social-scientists/)
+]
+
+
+.pull-right-center[
+<div align="center">
+<br>
+<img src="pics/fb-socsci1-4.png" width="450"/>
+<img src="pics/fb-socsci1-5.png" width="450"/>
+</div>
+`Source` [Solomon Messing / Twitter](https://twitter.com/solomonmg/status/1436742352039669760)
+]
 
 
 
@@ -224,15 +253,16 @@ Whenever you see an error message, start by [googling](https://lmgtfy.app/?q=Err
 ---
 # Deter
 
-.pull-left[
+.pull-left-wide2[
 
 ### Defensive programming
 
-- The best errors are those that are avoided.
+- **Pay attention.** Do results make sense? Do they look different from previous results? Why?
+- **Know what you're doing**, and what you're expecting.
   - Avoid functions that return different types of output depending on their input, e.g., `[]` and `sapply()`.
   - Be strict about what you accept (e.g., only scalars). 
   - Avoid functions that use non-standard evaluation (e.g., `with()`)
-- "Fail fast".
+- **Fail fast**.
   - As soon as something wrong is discovered, signal an error. 
   - Add tests (e.g., with the `testthat` package).
   - Practice good condition/exception handling, e.g., with `try()` and `tryCatch()`. 
@@ -240,7 +270,7 @@ Whenever you see an error message, start by [googling](https://lmgtfy.app/?q=Err
 
 ]
 
-.pull-right[
+.pull-right-small3[
 ### Transparency
 
 - Collaborate! [Pair programming](https://en.wikipedia.org/wiki/Pair_programming) is an established software development technique that increases code robustness. It also works [from remote](https://ivelasq.rbind.io/blog/vscode-live-share/).
@@ -322,7 +352,7 @@ Sometimes the mistake in your code is hard to diagnose, and googling doesn't hel
 
 - Use `debug()` to automatically open a debugger at the start of a function call.
 
-- Use `trace()` to start a debugger at a location inside a function.
+- Use `trace()` to make temporary code modifications inside a function that you don't have easy access to.
 
 
 ---
@@ -333,7 +363,7 @@ Sometimes the mistake in your code is hard to diagnose, and googling doesn't hel
 ### Motivation and usage
 - When an error occurs with an unidentifiable error message or an error message that you are in principle familiar with but cannot locate its sources, the `traceback()` function comes in handy.
 - The `traceback()` function prints the sequence of calls that led to an uncaught error error.
-- Note that the traceback() output from bottom to top.
+- The `traceback()` output reads from bottom to top.
 - Note that errors caught via `try()` or `tryCatch()` do not generate a traceback!
 -  If you’re calling code that you `source()`d into R, the traceback will also display the location of the function, in the form `filename.r#linenumber`. 
 ]
@@ -373,17 +403,11 @@ traceback()
 .pull-left[
 ### Motivation and usage
 - Sometimes, you need more information than the precise location of an error in a function to fix it. 
-- The interactive debugger allows you to pause the execution of a function and interactively explore its state.
+- The interactive debugger lets you pause the run of a function and interactively explore its state.
 - Two options to enter the interactive debugger: 
   1. Through RStudio's "Rerun with Debug" tool, shown to the right of an error message.
   2. You can insert a call to `browser()` into the function at the stage where you want to pause, and re-run the function.
 - In either case, you’ll end up in an interactive environment inside the function where you can run arbitrary R code to explore the current state. You’ll know when you’re in the interactive debugger because you get a special prompt, `Browse[1]>`. 
-
-
-- The `traceback()` function prints the sequence of calls that led to an uncaught error error.
-- Note that the traceback() output from bottom to top.
-- Note that errors caught via `try()` or `tryCatch()` do not generate a traceback!
--  If you’re calling code that you `source()`d into R, the traceback will also display the location of the function, in the form `filename.r#linenumber`. 
 ]
 
 --
@@ -577,12 +601,13 @@ name: automation
 - We're already automating using scripts that bundle multiple commands! Next step: The pipeline as a series of scripts and commands.
 - Good pipelines are modular. But you don't want to trigger 10 scripts sequentially by hand.
 - Some tasks are to be repeated on a regular basis (schedule).
-- Automation makes particular sense when...
 
-  - The input is variable but the process of turning input into output is highly standardized.
-  - You use a diverse set of software to produce the output.
-  - Others (humans, machines) are supposed to run the analyses.
-  - Time saved by automation >> Time needed to automate.
+### When automation makes sense
+
+- The input is variable but the process of turning input into output is highly standardized.
+- You use a diverse set of software to produce the output.
+- Others (humans, machines) are supposed to run the analyses.
+- Time saved by automation >> Time needed to automate.
 ]
 
 .pull-right-small3[
@@ -635,7 +660,7 @@ We will consider automation
 - Scripts and data files are vertices of the graph.
 - Dependencies between stages are edges of the graph.
 - Pipelines are not necessarily DAGS. Recursive routines are imaginable (but to be avoided?).
-- Also, scripts are not necessarily hierarchical (e.g., multiple different modeling approaches of the same data in different scripts.)
+- Also, scripts are not necessarily hierarchical (e.g., multiple different modeling approaches of the same data in different scripts).
 - An automation script gives *one* order in which you can successfully run the pipeline.
 ]
 
@@ -651,7 +676,7 @@ We will consider automation
 # An example pipeline
 
 .pull-left-small[
-In the following, we will work with the following toy pipeline:<sup>1</sup>
+In the following, we will work with this toy pipeline:
 
 .footnote[<sup>1</sup>Courtesy of [Jenny Bryan](https://github.com/STAT545-UBC/STAT545-UBC-original-website).]
 ]
@@ -667,7 +692,7 @@ In the following, we will work with the following toy pipeline:<sup>1</sup>
 # An example pipeline
 
 .pull-left-small[
-In the following, we will work with the following toy pipeline:
+In the following, we will work with this toy pipeline:
 
 - `00-packages.R` loads the packages necessary for analysis,
 ]
@@ -692,7 +717,7 @@ lapply(p_needed, require, character.only = TRUE)
 # An example pipeline
 
 .pull-left-small[
-In the following, we will work with the following toy pipeline:
+In the following, we will work with this toy pipeline:
 
 - `00-packages.R` loads the packages necessary for analysis,
 - `01-download-data.R` downloads a spreadsheet, which is stored as `lotr_raw.tsv`,
@@ -713,7 +738,7 @@ download.file(url = "http://bit.ly/lotr_raw-tsv",
 # An example pipeline
 
 .pull-left-small[
-In the following, we will work with the following toy pipeline:
+In the following, we will work with this toy pipeline:
 
 - `00-packages.R` loads the packages necessary for analysis,
 - `01-download-data.R` downloads a spreadsheet, which is stored as `lotr_raw.tsv`,
@@ -751,7 +776,7 @@ write_tsv(lotr_dat, "lotr_clean.tsv")
 # An example pipeline
 
 .pull-left-small[
-In the following, we will work with the following toy pipeline:
+In the following, we will work with this toy pipeline:
 
 - `00-packages.R` loads the packages necessary for analysis,
 - `01-download-data.R` downloads a spreadsheet, which is stored as `lotr_raw.tsv`,
@@ -948,7 +973,9 @@ Each batch of lines indicates
 - the files it depends on (the prerequisites), and 
 - set of commands needed to construct the target from the dependent files.
 
-Dependencies propagate. To create any of the `png` figures, we need `lotr_clean.tsv`. If this file changes, the `png`s change as well when they're built.
+Dependencies propagate.
+- To create any of the `png` figures, we need `lotr_clean.tsv`.
+- If this file changes, the `png`s change as well when they're built.
 ]
 
 .pull-right-wide[

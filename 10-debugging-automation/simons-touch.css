@@ -116,7 +116,7 @@ hr, .title-slide h2::after, .mline h1::after {
 }
 
 .pull-right-wide3 {
-    margin-top: -20px;
+  margin-top: -20px;
   float: right;
   width: 58%;
 }
