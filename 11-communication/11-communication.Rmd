@@ -186,10 +186,8 @@ Let's apply this to us. Data scientists communicate...
 
 --
 
-<div align="center">
-<br>
-What, how, and to what end you communicate depends on your <b>audience/stakeholders</b>. 
-</div>
+What, how, and to what end you communicate depends on your <b>audience/stakeholders</b> because they will differ in contextual knowledge, data literacy, and motives.
+
 
 
 
@@ -1227,6 +1225,12 @@ name: openscience
 
 ---
 # Towards open data science
+
+Consider the entire workflow as potential part of communication.
+- Your code communicates to Future You and other scientists.
+- Your report/abstract...
+
+
 
 Open Science
 https://en.wikipedia.org/wiki/Open_science
