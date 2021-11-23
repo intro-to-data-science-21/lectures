@@ -42,7 +42,7 @@ class: center, middle, inverse, title-slide
 
 2. [Statistical communication](#stats)
 
-3. [Tools for communication](#tools)
+3. [Visual communication](#visuals)
 
 4. [Written communication with R Markdown](#rmarkdown)
 
@@ -440,26 +440,18 @@ count: false
 &lt;!-- ############################################ --&gt;
 ---
 class: inverse, center, middle
-name: tools
+name: visuals
 
-# Tools for communication
+# Visual communication
 &lt;html&gt;&lt;div style='float:left'&gt;&lt;/div&gt;&lt;hr color='#EB811B' size=1px style="width:1000px; margin:auto;"/&gt;&lt;/html&gt;
 
 
 ---
-# Tools for communication
+# Visual communication
 
 - graphics, interactives
 - spoken words
 - written words
-
-
-
----
-# More on effective communication
-
-https://r4ds.had.co.nz/r-markdown-formats.html#learning-more-5
-
 
 
 
@@ -473,6 +465,11 @@ See the visualization session for
 Here:
   - which figures to use for which audiences?
   - evidence on how policymakers etc. read evidence from graphs
+
+
+
+
+
 
 
 
@@ -513,43 +510,105 @@ name: rmarkdown
 
 
 ---
-# The continuum of data science communication
+# The continuum of written data science communication
 
 &lt;br&gt;&lt;br&gt;
 
+.pull-left-vvsmall[
+&lt;div align="center"&gt;
+&lt;br&gt;&lt;br&gt;
+&lt;img src="pics/nutri-score-a.png" width=100&gt;
+&lt;/div&gt;
+]
+
+.pull-left-vvsmall[
+&lt;div align="center"&gt;
+&lt;br&gt;&lt;br&gt;
+&lt;img src="pics/nutri-score-b.png" width=100&gt;
+&lt;/div&gt;
+]
+
+
+.pull-left-vvsmall[
+&lt;div align="center"&gt;
+&lt;br&gt;&lt;br&gt;
+&lt;img src="pics/nutri-score-c.png" width=100&gt;
+&lt;/div&gt;
+]
+
+
+.pull-left-vvsmall[
+&lt;div align="center"&gt;
+&lt;br&gt;&lt;br&gt;
+&lt;img src="pics/nutri-score-d.png" width=100&gt;
+&lt;/div&gt;
+]
+
+
+.pull-left-vvsmall[
+&lt;div align="center"&gt;
+&lt;br&gt;&lt;br&gt;
+&lt;img src="pics/nutri-score-e.png" width=100&gt;
+&lt;/div&gt;
+]
+
+.pull-left-vvsmall[
+&lt;div align="center"&gt;
+&lt;img src="pics/quadruple-burger.png" width=100&gt;
+&lt;/div&gt;
+]
+
+
+
+&lt;br&gt;
 
 .pull-left-vvsmall[
 **Book**
 &lt;br&gt;
 &lt;div align="center"&gt;
-&lt;img src="pics/foundations-machine-learning.jpeg" width=100&gt;
+&lt;img src="pics/foundations-machine-learning.jpeg" width=130&gt;
 &lt;/div&gt;
-
-
 ]
 
 .pull-left-vvsmall[
 **Conference proceeding, journal article**
+&lt;br&gt;
+&lt;div align="center"&gt;
+&lt;img src="pics/barbera-pa-twitter.png" width=130&gt;
+&lt;/div&gt;
 ]
 
 .pull-left-vvsmall[
 **Technical report**
+&lt;br&gt;
+&lt;div align="center"&gt;
+&lt;img src="pics/rmarkdown-report.png" width=130&gt;
+&lt;/div&gt;
 ]
 
 .pull-left-vvsmall[
 **Executive summary**
+&lt;br&gt;
+&lt;div align="center"&gt;
+&lt;img src="pics/executive-summary.png" width=130&gt;
+&lt;/div&gt;
 ]
 
 .pull-left-vvsmall[
 **Dashboard**
+&lt;br&gt;
+&lt;div align="center"&gt;
+&lt;img src="pics/covid-dashboard.jpeg" width=130&gt;
+&lt;/div&gt;
 ]
 
 .pull-left-vvsmall[
 **Tweet**
+&lt;br&gt;
+&lt;div align="center"&gt;
+&lt;img src="pics/data-scientist-tweet.png" width=130&gt;
+&lt;/div&gt;
 ]
-
-
-
 
 
 ---
@@ -682,21 +741,52 @@ background-color: #000000
 ---
 # What are dashboards?
 
-.pull-left[
+.pull-left-wide[
 ### Yeah, what are they really?
 - A (business or data) [dashboard](https://en.wikipedia.org/wiki/Dashboard_(business)) is a GUI that provides high-level overviews of performance indicators or other quantities of interest. 
 - It's a monitoring (and not so much analysis) tool.
-- Think of dashboards as a mashup of data visualization and report.
-- It's usually accessible via a web browser, features interactives, and is regularly updated.
+- Think of dashboards as a mash-up of data visualization and report.
+- Dashboards are increasingly popular in businesses and organizations to synthesize data points from operative units (for stratetic and analytical purposes).
+- Data journalism has started to embrace dashboards in the context of [elections](https://edition.cnn.com/election/2020/results/president), the [COVID-19 pandemic](https://covid19.who.int/), and [sports](https://projects.fivethirtyeight.com/2018-world-cup-predictions/).
+- Common features are:
+  - Accessibility via web browser
+  - Featuring of interactives
+  - Heavy focus on comparative visualization
+  - Provision of trends on key performance indicators (KPIs)
 ]
 
-.pull-right[
-### And why are they a thing?
+.pull-right-small-center[
+&lt;div align="center"&gt;
+&lt;br&gt;
+&lt;img src="pics/mg-dashboard.jpeg" width="350"/&gt;
+&lt;/div&gt;
+`Credit` [Tim Green](https://commons.wikimedia.org/wiki/File:MG_interior_%2829094966463%29.jpg)
 
-- Continuous quantification of indicators of interest (→ monitoring)
-- Can provide a basis for high-level [evidence-based decision-making](https://stephanieevergreen.com/dashboard-conversation/)
-- Reduce information differential between analysts and stakeholders
-- Satisfy managers' need for control/micromanaging 
+&lt;div align="center"&gt;
+&lt;br&gt;
+&lt;img src="pics/dashboard-example-1.png" width="350"/&gt;
+&lt;/div&gt;
+`Credit` [HelicalInsight OpenSourceBI](https://commons.wikimedia.org/wiki/File:Marketing_dashboard.png)
+]
+
+---
+# Why are dashboards?
+
+.pull-left[
+### Why are they a thing?
+
+- There is increasing abundance of (often process-generated) data that cannot speak for itself.
+- If used wisely, these data can provide an important part of business intelligence and a basis for high-level [evidence-based decision-making](https://stephanieevergreen.com/dashboard-conversation/).
+- Reduce information differential between analysts and stakeholders but providing continuous quantification of indicators of interest (→ monitoring).
+- Also, measuring the health of organizations can help stay in control (if only as a performative act) and satisfy managers' need for micromanaging.
+]
+
+.pull-right-center[
+&lt;div align="center"&gt;
+&lt;br&gt;&lt;br&gt;&lt;br&gt;
+&lt;img src="pics/business-intelligence.jpeg" width="500"/&gt;
+&lt;/div&gt;
+`Credit` [towardsdatascience.com](https://towardsdatascience.com/5-most-popular-business-intelligence-bi-tools-in-2019-4e060b98039a)
 ]
 
 
@@ -706,16 +796,25 @@ background-color: #000000
 https://coronavirus.jhu.edu/
 
 ---
-# The problems with dashboards
+# The problem with dashboards
 
+.pull-left-wide[
+
+
+]
 - Der Sehnsucht nach Dashboards wohnt der Wunsch inne, alles durch Quantifizierung weniger Metriken erklären und entscheiden zu können.
 - Das kommt einer groben Simplifizierung der Realität gleich.
 - Wenn man Entscheidungen auf Basis von Metriken trifft, hören diese auf gut zu funktionieren (weil sie instrumentalisiert wrden).
+- Loss of information crucial for good decision-making when aggregating results into few KPIs
+
+
+.pull-right-small-center[
 
 https://stephanieevergreen.com/dashboard-conversation/
 https://stephanieevergreen.com/problem-with-dashboards/
 http://blogs.ischool.berkeley.edu/i247s12/files/2012/01/Dashboard-Design-Overview-Presentation.pdf
 
+]
 
 ---
 # Good dashboard design
