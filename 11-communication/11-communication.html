@@ -793,37 +793,176 @@ background-color: #000000
 ---
 # Dashboards in the wild
 
-https://coronavirus.jhu.edu/
+.pull-center[
+&lt;div align="center"&gt;
+&lt;br&gt;
+&lt;img src="pics/lime-recruitment-kpis-dashboard-geckoboard.png" width="800"/&gt;
+&lt;/div&gt;
+`Credit` [geckoboard.com](https://www.geckoboard.com/dashboard-examples/company/company-dashboard/)
+]
 
 ---
-# The problem with dashboards
+# Dashboards in the wild
 
-.pull-left-wide[
-
-
+.pull-center[
+&lt;div align="center"&gt;
+&lt;br&gt;
+&lt;img src="pics/bestpass-company-overview-dashboard-geckoboard.png" width="800"/&gt;
+&lt;/div&gt;
+`Credit` [geckoboard.com](https://www.geckoboard.com/dashboard-examples/company/recruitment-dashboard/)
 ]
-- Der Sehnsucht nach Dashboards wohnt der Wunsch inne, alles durch Quantifizierung weniger Metriken erklären und entscheiden zu können.
-- Das kommt einer groben Simplifizierung der Realität gleich.
-- Wenn man Entscheidungen auf Basis von Metriken trifft, hören diese auf gut zu funktionieren (weil sie instrumentalisiert wrden).
-- Loss of information crucial for good decision-making when aggregating results into few KPIs
 
 
-.pull-right-small-center[
+---
+# Dashboards in the wild
 
-https://stephanieevergreen.com/dashboard-conversation/
-https://stephanieevergreen.com/problem-with-dashboards/
-http://blogs.ischool.berkeley.edu/i247s12/files/2012/01/Dashboard-Design-Overview-Presentation.pdf
+.pull-center[
+&lt;div align="center"&gt;
+&lt;br&gt;
+&lt;img src="pics/healthcare-dashboard.png" width="700"/&gt;
+&lt;/div&gt;
+`Credit` [idashboards.com](https://www.idashboards.com/dashboard-examples/healthcare-hospital-billing-scorecard/)
+]
 
+
+---
+# Dashboards in the wild
+
+.pull-center[
+&lt;div align="center"&gt;
+&lt;br&gt;
+&lt;img src="pics/parks-and-recreation-dashboard.png" width="700"/&gt;
+&lt;/div&gt;
+`Credit` [idashboards.com](https://www.idashboards.com/dashboard-examples/government-parks-dashboard/)
+]
+
+
+---
+# Dashboards in the wild
+
+.pull-center[
+&lt;div align="center"&gt;
+&lt;br&gt;
+&lt;img src="pics/london-dashboard.png" width="600"/&gt;
+&lt;/div&gt;
+`Credit` [idashboards.com](https://www.matillion.com/resources/blog/dashboard-examples-the-good-the-bad-and-the-ugly)
+]
+
+
+---
+# Dashboards in the wild
+
+.pull-center[
+&lt;div align="center"&gt;
+&lt;br&gt;
+&lt;img src="pics/pentaho-dashboard.jpeg" width="800"/&gt;
+&lt;/div&gt;
+`Credit` [carmel.es](https://carmel.es/2018/10/26/6-examples-of-bad-dashboard-designs/
+)
+]
+
+
+---
+# Dashboards in the wild: COVID-19 edition
+
+.pull-center[
+&lt;div align="center"&gt;
+&lt;br&gt;
+&lt;img src="pics/covid-dashboard-nyt.png" width="600"/&gt;
+&lt;img src="pics/covid-dashboard-nyt2.png" width="500"/&gt;
+&lt;/div&gt;
+`Credit` [NY Times](https://www.nytimes.com/interactive/2021/us/covid-cases-deaths-tracker.html
+)
+]
+
+---
+# Dashboards in the wild: COVID-19 edition
+
+.pull-center[
+&lt;div align="center"&gt;
+&lt;br&gt;
+&lt;img src="pics/covid-dashboard-owid.png" width="600"/&gt;
+&lt;/div&gt;
+`Credit` [Our World in Data](https://ourworldindata.org/explorers/coronavirus-data-explorer?zoomToSelection=true)
+]
+
+
+---
+# Dashboards in the wild: COVID-19 edition
+
+.pull-center[
+&lt;div align="center"&gt;
+&lt;br&gt;
+&lt;img src="pics/covid-dashboard-sz.png" width="250"/&gt;
+&lt;/div&gt;
+`Credit` [SZ Online](https://www.sueddeutsche.de/wissen/corona-zahlen-1.4844448)
+]
+
+
+---
+# Dashboards in the wild: COVID-19 edition
+
+.pull-center[
+&lt;div align="center"&gt;
+&lt;br&gt;
+&lt;img src="pics/covid-dashboard-zeit.png" width="700"/&gt;
+&lt;/div&gt;
+`Credit` [ZEIT Online](https://www.zeit.de/wissen/corona-karte-deutschland-aktuelle-zahlen-landkreise)
+]
+
+
+
+
+
+
+
+---
+# The problem(s) with dashboards
+
+.pull-left[
+### Design challenges
+
+- **They say too little.** Loss of information is [fatal](https://stephanieevergreen.com/problem-with-dashboards/) for good decision-making when aggregating results into few KPIs.
+- **They say too much** (irrelevant things). 
+- Dashboards often fail not in technology but in communication (rooted in poor design).
+- "Dashboards are not for show. No amount of cuteness and technical wizardry can substitute for clear communication." [Stephen Few](http://blogs.ischool.berkeley.edu/i247s12/files/2012/01/Dashboard-Design-Overview-Presentation.pdf), [Perceptual Edge](https://perceptualedge.com)
+- As dashboards are a subgenre of data viz, so **all rules of good/bad viz apply**.
+- So, there is hope since we do know a bit about how to design good visuals. (See [here](https://stephanieevergreen.com/dashboard-conversation/) for a nice case study on improving the design of a dashboard.)
+]
+
+.pull-right[
+### Analytic challenges
+
+- Dashboards supple the desire to be able to make good decisions on the basis of few selected metrics.
+- This logic reflects a gross simplification of reality. 
+- All challenges that pop up in careful analytic work - issues of selection, measurement, causality, predictiveness - are still valid but will be obscured when aggregating data. 
+- Simple metrics can still be useful, but often you need contextual knowledge (which are difficult to communicate in dashboards).
+- Another consequence of "dashboarding" business intelligence can be that by making decisions a function of metrics, they stop working well because they will be gamed.
 ]
 
 ---
 # Good dashboard design
 
-- As dashboards are a sub genre of data visualizations, all rules of good data visualization apply.
+.pull-left[
+### Do's and don'ts
+
+- Try not to exceed the boundaries of a single screen. 
+- Ensure desktop/mobile screen responsiveness.
+- Work with interactives to make content conditionally accessible.
+]
+
 - In addition, consider the following:
   - Minimize distractions.
   - Focus on meaningful quantities of interest, not the ones that look cool.
   - Don't overload with information.
+
+.pull-right[
+### Dashboard Design Requirements Questionnaire
+
+http://perceptualedge.com/articles/misc/Dashboard_Design_Requirements_Questionnaire.pdf
+]
+
+
 
 
 ---
