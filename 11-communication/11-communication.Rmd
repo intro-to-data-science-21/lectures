@@ -762,11 +762,11 @@ background-color: #000000
 .pull-left-wide[
 ### Yeah, what are they really?
 - A (business or data) [dashboard](https://en.wikipedia.org/wiki/Dashboard_(business)) is a GUI that provides high-level overviews of performance indicators or other quantities of interest. 
-- It's a monitoring (and not so much analysis) tool.
-- Think of dashboards as a mash-up of data visualization and report.
-- Dashboards are increasingly popular in businesses and organizations to synthesize data points from operative units (for stratetic and analytical purposes).
+- It's a **monitoring** (and not so much analysis) **tool**.
+- Think of dashboards as a **mash-up of data visualization and report**.
+- Dashboards are increasingly popular in businesses and organizations to **synthesize data points** from operative units (for strategic and analytical purposes).
 - Data journalism has started to embrace dashboards in the context of [elections](https://edition.cnn.com/election/2020/results/president), the [COVID-19 pandemic](https://covid19.who.int/), and [sports](https://projects.fivethirtyeight.com/2018-world-cup-predictions/).
-- Common features are:
+- **Common features** are:
   - Accessibility via web browser
   - Featuring of interactives
   - Heavy focus on comparative visualization
@@ -793,10 +793,10 @@ background-color: #000000
 .pull-left[
 ### Why are they a thing?
 
-- There is increasing abundance of (often process-generated) data that cannot speak for itself.
-- If used wisely, these data can provide an important part of business intelligence and a basis for high-level [evidence-based decision-making](https://stephanieevergreen.com/dashboard-conversation/).
-- Reduce information differential between analysts and stakeholders but providing continuous quantification of indicators of interest (→ monitoring).
-- Also, measuring the health of organizations can help stay in control (if only as a performative act) and satisfy managers' need for micromanaging.
+- There is increasing **abundance of data** (often process-generated) that cannot speak for itself.
+- If used wisely, these data can provide an **important part of business intelligence** and a basis for high-level [evidence-based decision-making](https://stephanieevergreen.com/dashboard-conversation/).
+- **Reduce information differential** between analysts and stakeholders but providing continuous quantification of indicators of interest (→ monitoring).
+- Also, **measuring the health of organizations** can help stay in control (if only as a performative act) and satisfy managers' need for micromanaging.
 ]
 
 .pull-right-center[
@@ -811,6 +811,12 @@ background-color: #000000
 ---
 # Dashboards in the wild
 
+lime-recruitment-kpis-dashboard-geckoboard
+bestpass-company-overview-dashboard-geckoboard
+https://www.geckoboard.com/dashboard-examples/company/company-dashboard/
+https://www.geckoboard.com/dashboard-examples/company/recruitment-dashboard/
+
+
 https://coronavirus.jhu.edu/
 
 ---
@@ -824,6 +830,9 @@ https://coronavirus.jhu.edu/
 - Das kommt einer groben Simplifizierung der Realität gleich.
 - Wenn man Entscheidungen auf Basis von Metriken trifft, hören diese auf gut zu funktionieren (weil sie instrumentalisiert wrden).
 - Loss of information crucial for good decision-making when aggregating results into few KPIs
+- "Dashboards are not for show. No amount of cuteness and technical wizardry can substitute for clear communication."
+
+Stephen Few, [Perceptual Edge](https://perceptualedge.com)
 
 
 .pull-right-small-center[
@@ -831,17 +840,30 @@ https://coronavirus.jhu.edu/
 https://stephanieevergreen.com/dashboard-conversation/
 https://stephanieevergreen.com/problem-with-dashboards/
 http://blogs.ischool.berkeley.edu/i247s12/files/2012/01/Dashboard-Design-Overview-Presentation.pdf
+http://perceptualedge.com/library.php
+
 
 ]
 
 ---
 # Good dashboard design
 
+.pull-left[
+
+]
 - As dashboards are a sub genre of data visualizations, all rules of good data visualization apply.
 - In addition, consider the following:
   - Minimize distractions.
   - Focus on meaningful quantities of interest, not the ones that look cool.
   - Don't overload with information.
+
+.pull-right[
+### Dashboard Design Requirements Questionnaire
+
+http://perceptualedge.com/articles/misc/Dashboard_Design_Requirements_Questionnaire.pdf
+]
+
+
 
 
 ---
