@@ -1248,7 +1248,7 @@ name: openscience
 
 .pull-left[
 &lt;div align="center"&gt;
-&lt;br&gt;
+&lt;br&gt;&lt;br&gt;&lt;br&gt;
 &lt;img src="pics/data-science-not-cool-1.png" width="500"/&gt;
 &lt;img src="pics/data-science-not-cool-2.png" width="500"/&gt;
 &lt;/div&gt;
@@ -1256,62 +1256,162 @@ name: openscience
 
 .pull-left[
 &lt;div align="center"&gt;
-&lt;br&gt;
+&lt;br&gt;&lt;br&gt;&lt;br&gt;
 &lt;img src="pics/data-science-not-cool-3.png" width="500"/&gt;
 &lt;img src="pics/data-science-not-cool-4.png" width="500"/&gt;
 &lt;/div&gt;
 ]
 
 
----
-# Towards open data science
-
-- ich habe daran gearbeitet, dass ihr open science macht
-
-- honest communication
-- no bullshitting
-
 
 ---
-# Towards open data science
+# The replication crisis
 
-Consider the entire workflow as potential part of communication.
-- Your code communicates to Future You and other scientists.
-- Your report/abstract...
-
-- publish in open access outlets
-
-
-Open Science
-https://en.wikipedia.org/wiki/Open_science
-Transparent communication: an open science workflow
-Session on communication: --&gt; REPRODUCIBILITY, OPEN SCIENCE
+.pull-left-wide2[
+### What the crisis is about
+- The finding that many scientific studies are difficult or impossible to reproduce.
+- Reproducibility is a cornerstone of science as an enterprise of knowledge generation → bad.
 
 
-Open Science: What, Why, and How | Spellman/Gilbert/Corker
-https://psyarxiv.com/ak6jr/
+### Factors fueling the replication crisis
+- Solo, siloed investigators limited to small sample sizes
+- Wrong incentives in science
+- No pre-registration of hypotheses being tested
+- Post-hoc cherry picking of hypotheses with best P values
+- Only requiring P &lt; .05
+- No replication
+- No data sharing
+]
 
-Promoting an open research culture
-https://www.science.org/doi/abs/10.1126/science.aab2374
-
-Promoting transparency in social science research
-https://www.science.org/doi/10.1126/science.1245317
-
+.pull-right-small2[
+&lt;div align="center"&gt;
+&lt;br&gt;
+&lt;img src="pics/ioannidis-findings-false.jpg" height=500&gt;
+&lt;/div&gt;
+`Source` [Ioannidis 2005/PLOS Medicine](10.1371/journal.pmed.0020124)
+]
 
 
 
 ---
-# The science of science communication
+# Fostering trust in science through open science
 
+.pull-left[
+### Communicating the entire workflow
+
+- Any decision - from conceptualizing measures to formatting tables - is meaningful for your output.
+  - Tiny mistakes can have massive technical consequences (→ debugging).
+  - Various decisions can have ethical implications (→ next session).
+  - For others to follow (and potentially invalidate) your analyses, all the details are important.
+- What makes the scientific endeavor unique is that it has self-correcting mechanisms. 
+- But in order for them to work effectively, you have to **be transparent about every step in your workflow**.
+]
+
+.pull-right-center[
+&lt;br&gt;&lt;br&gt;&lt;br&gt;
+&lt;div align="center"&gt;
+&lt;img src="pics/data-science-flow.png" height=200&gt;
+&lt;/div&gt;
+]
 
 
 ---
-# Ethics of communication
+# Fostering trust in science through open science
+
+.pull-left[
+### Communicating the entire workflow
+
+- Any decision - from conceptualizing measures to formatting tables - is meaningful for your output.
+  - Tiny mistakes can have massive technical consequences (→ debugging).
+  - Various decisions can have ethical implications (→ next session).
+  - For others to follow (and potentially invalidate) your analyses, all the details are important.
+- What makes the scientific endeavor unique is that it has self-correcting mechanisms. 
+- But in order for them to work effectively, you have to **be transparent about every step in your workflow**.
+- That's a meta meaning of communication: tell others, by publishing everything from input to code to output, what you've done.
+]
+
+.pull-right-center[
+&lt;br&gt;&lt;br&gt;&lt;br&gt;
+&lt;div align="center"&gt;
+&lt;img src="pics/data-science-flow-communicate.png" height=200&gt;
+&lt;/div&gt;
+]
 
 
-good vs. bad communication (this goes beyond visualization)
+---
+# Towards open data science (cont.)
+
+.pull-left[
+### Good practice
+
+- Pre-register designs `osf.io`, `aspredicted.org` 
+- Do version control `GitHub`
+- Public all research outputs (and inputs if possible) `GitHub`, `plain-text formats`
+- Disclose and document software pipeline `make`
+- Make preprints accessible `arXiv`, `osf.io`
+- Public in open access journals
+]
+
+.pull-right-center[
+&lt;br&gt;
+&lt;div align="center"&gt;
+&lt;img src="pics/open-science-badges.png" height=400&gt;
+&lt;/div&gt;
+]
 
 
+---
+# Towards open data science (cont.)
+
+.pull-left[
+### Good practice
+
+- Pre-register designs `osf.io`, `aspredicted.org` 
+- Do version control `GitHub`
+- Public all research outputs (and inputs if possible) `GitHub`, `plain-text formats`
+- Disclose and document software pipeline `make`
+- Make preprints accessible `arXiv`, `osf.io`
+- Public in open access journals
+
+**Notice something?** 
+
+After the last 10 sessions, you have already become open science practitioners. You are welcome.
+]
+
+.pull-right-center[
+&lt;br&gt;
+&lt;div align="center"&gt;
+&lt;img src="pics/open-science-badges.png" height=400&gt;
+&lt;/div&gt;
+]
+
+
+---
+# Towards open data science (cont.)
+
+.pull-left[
+### Good practice
+
+- Pre-register designs `osf.io`, `aspredicted.org` 
+- Do version control `GitHub`
+- Public all research outputs (and inputs if possible) `GitHub`, `plain-text formats`
+- Disclose and document software pipeline `make`
+- Make preprints accessible `arXiv`, `osf.io`
+- Public in open access journals
+
+**Notice something?** 
+
+After the last 10 sessions, you have already become open science practitioners. You are welcome.
+
+If you want to learn more about the open science movement, check out [this](https://www.nature.com/articles/s41562-016-0021) and  [this](https://psyarxiv.com/ak6jr/) and [this](https://en.wikipedia.org/wiki/Open_science).
+]
+
+.pull-right-center[
+&lt;br&gt;
+&lt;div align="center"&gt;
+&lt;img src="pics/open-science-badges.png" height=400&gt;
+&lt;/div&gt;
+]
 
 
 ---
