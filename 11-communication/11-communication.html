@@ -1,0 +1,1149 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Introduction to Data Science</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Simon Munzert" />
+    <script src="libs/header-attrs/header-attrs.js"></script>
+    <link href="libs/remark-css/default.css" rel="stylesheet" />
+    <link href="libs/remark-css/metropolis.css" rel="stylesheet" />
+    <link href="libs/remark-css/metropolis-fonts.css" rel="stylesheet" />
+    <link rel="stylesheet" href="simons-touch.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Introduction to Data Science
+## Session 11: Monitoring and Communication
+### Simon Munzert
+### Hertie School | <a href="https://github.com/intro-to-data-science-21">GRAD-C11/E1339</a>
+
+---
+
+
+
+&lt;style type="text/css"&gt;
+@media print { # print out incremental slides; see https://stackoverflow.com/questions/56373198/get-xaringan-incremental-animations-to-print-to-pdf/56374619#56374619
+  .has-continuation {
+    display: block !important;
+  }
+}
+&lt;/style&gt;
+
+
+
+
+# Table of contents
+
+&lt;br&gt;
+
+1. [Communicating data science](#communication)
+
+2. [Statistical communication](#stats)
+
+3. [Tools for communication](#tools)
+
+4. [Written communication with R Markdown](#rmarkdown)
+
+5. [Interactive communication with dashboards](#dashboards)
+
+6. [Towards open data science](#openscience)
+
+
+
+
+
+&lt;!-- ############################################ --&gt;
+---
+class: inverse, center, middle
+name: communication
+
+# Communicating data science
+&lt;html&gt;&lt;div style='float:left'&gt;&lt;/div&gt;&lt;hr color='#EB811B' size=1px style="width:1000px; margin:auto;"/&gt;&lt;/html&gt;
+
+
+
+---
+# The final piece of the pipeline
+
+.pull-left[
+
+**Preparatory work**
+
+  - **Problem definition** predict, infer, describe
+  - **Design** conceptualize, build data collection device
+  - **Data collection** recruit, collect, monitor
+
+**Data operation**
+
+   - **Wrangle**: import, tidy, manipulate
+   - **Explore**: visualize, describe, discover
+   - **Model**: build, test, infer, predict
+
+**Dissemination**
+
+  - 👉👉 **Communicate**: to the public, media, policymakers
+  - 👉👉 **Publish**: articles, blogs, software
+  - **Productize**: make usable, robust, scalable
+
+]
+
+.pull-right-center[
+&lt;br&gt;&lt;br&gt;&lt;br&gt;
+&lt;div align="center"&gt;
+&lt;img src="pics/data-science-communicate.png" height=200&gt;
+&lt;/div&gt;
+]
+
+
+---
+# Communicating data science
+
+&lt;div align="center" style="font-size:40px"&gt;
+&lt;br&gt;
+&lt;br&gt;
+&lt;b&gt;"[I]t doesn’t matter how great&lt;br&gt;your analysis is unless you can explain it to others:&lt;br&gt;you need to &lt;b&gt;communicate&lt;/b&gt; your results."&lt;/b&gt;
+&lt;br&gt;&lt;br&gt;
+&lt;/div&gt;
+&lt;span style="float:right;"&gt;Hadley Wickham &amp; Garrett Grolemund, &lt;i&gt;R for Data Science&lt;/i&gt;&lt;/span&gt;
+
+
+
+---
+# Lasswell model of communication **for data scientists**   
+
+Laswell's framework of communication&lt;sup&gt;1&lt;/sup&gt; dissects the task of communication along the following dimensions: (1) Who communicates (2) what (3) in what form (4) to whom (5) to what effect?
+
+Let's apply this to us. Data scientists communicate...
+&lt;/div&gt;
+
+.footnote[&lt;sup&gt;1&lt;/sup&gt;HD Lasswell. 1948. The structure and function of communication in society. In &lt;i&gt;The communication of ideas&lt;/i&gt; (ed. Bryson L), 37-51.]
+
+--
+
+.pull-left-vsmall[
+### What
+- Estimates
+- Uncertainty
+- Model implications
+- Substantive knowledge
+- Product
+- Themselves
+]
+
+--
+
+.pull-left-vsmall[
+### How
+- Spoken word
+- Technical reports
+- Academic papers
+- Web applications
+- Policy briefs
+]
+
+--
+
+.pull-left-vsmall[
+### To whom
+- The public
+- The media
+- Policymakers
+- Other scientists
+- Managers / co-workers
+]
+
+--
+
+.pull-left-vsmall[
+### To what end
+- Inform
+- Influence
+- Instruct
+- Motivate
+- Monitor
+- Document
+]
+
+--
+
+&lt;div align="center"&gt;
+&lt;br&gt;
+What, how, and to what end you communicate depends on your &lt;b&gt;audience/stakeholders&lt;/b&gt;. 
+&lt;/div&gt;
+
+
+
+
+
+&lt;!-- ############################################ --&gt;
+---
+class: inverse, center, middle
+name: communication
+
+# Statistical communication
+&lt;html&gt;&lt;div style='float:left'&gt;&lt;/div&gt;&lt;hr color='#EB811B' size=1px style="width:1000px; margin:auto;"/&gt;&lt;/html&gt;
+
+---
+# Statistical communication
+
+.pull-left[
+### &lt;b&gt;What&lt;/b&gt; we communicate
+- The quantity of interest
+- The selection/generation of data
+- The empirical setup
+- The model mechanics and results (estimates/predictions/uncertainty)
+
+### Common challenges
+- There's epistemological and statistical uncertainty.
+- Effect sizes have implications that are often not easy to grasp.
+- Many humans are bad at understanding (conditional and unconditional) probabilities.
+- Conclusions about data science output crucially hinge on the validity of design aspects, which are extremely difficult to communicate.
+]
+
+.pull-right-center[
+&lt;div align="center"&gt;
+&lt;br&gt;
+&lt;img src="pics/mcelreath-gates.png" width=350&gt;
+&lt;/div&gt;
+`Credit` [Richard McElreath](https://twitter.com/rlmcelreath/status/1462719976259919879)
+]
+
+
+---
+# Uncertainty
+
+
+.pull-left[
+### What we are uncertain about
+
+]
+
+
+.pull-right-center[
+&lt;div align="center"&gt;
+&lt;br&gt;
+&lt;img src="pics/communicating-uncertainty.gif" width=470&gt;
+&lt;/div&gt;
+`Credit` [van der Bles et al. 2019](http://doi.org/10.1098/rsos.181870)
+]
+
+
+---
+# Uncertainty
+
+https://easystats.github.io/report/
+
+
+
+---
+# Uncertainty
+
+
+.pull-left[
+### The role of probabilities
+
+
+
+### (Mis-)communicating probabilities
+
+]
+
+
+.pull-right-center[
+&lt;div align="center"&gt;
+&lt;br&gt;
+&lt;img src="pics/communicating-uncertainty.gif" width=470&gt;
+&lt;/div&gt;
+`Credit` [van der Bles et al. 2019](http://doi.org/10.1098/rsos.181870)
+]
+
+
+
+---
+# Probabilities: verbal expressions
+
+.pull-left-center[
+&lt;div align="center"&gt;
+&lt;br&gt;
+&lt;img src="pics/willems-abstract.png" width=500&gt;
+&lt;/div&gt;
+`Source` [Willems et al. 2020](https://doi.org/10.22323/2.19020203)
+
+]
+
+.pull-right-center[
+&lt;div align="center"&gt;
+&lt;br&gt;
+&lt;img src="pics/willems-probability-phrases.png" width=370&gt;
+&lt;/div&gt;
+]
+
+
+---
+# Probabilities: confusing vote share with p(win)
+
+.pull-left-center[
+&lt;div align="center"&gt;
+&lt;br&gt;
+&lt;img src="pics/westwood-abstract.png" width=500&gt;
+&lt;/div&gt;
+`Source` [Westwood et al. 2020](https://doi.org/10.1086/708682)
+
+]
+
+.pull-right-center[
+&lt;div align="center"&gt;
+&lt;br&gt;
+&lt;img src="pics/westwood-results.png" width=450&gt;
+&lt;/div&gt;
+]
+
+
+---
+# Example: FiveThirtyEight 2020 election forecast
+
+.pull-center[
+&lt;div align="center"&gt;
+&lt;br&gt;
+&lt;img src="pics/538-1.png" height=500&gt;
+&lt;/div&gt;
+`Source` [FiveThirtyEight](https://projects.fivethirtyeight.com/2020-election-forecast/)
+]
+
+
+
+---
+count: false
+
+# Example: FiveThirtyEight 2020 election forecast
+
+.pull-center[
+&lt;div align="center"&gt;
+&lt;br&gt;
+&lt;img src="pics/538-4.png" height=500&gt;
+&lt;/div&gt;
+`Source` [FiveThirtyEight](https://projects.fivethirtyeight.com/2020-election-forecast/)
+]
+
+
+---
+count: false
+
+# Example: FiveThirtyEight 2020 election forecast
+
+.pull-left[
+&lt;div align="center"&gt;
+&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;
+&lt;img src="pics/clinton-538.png" width=500&gt;
+&lt;/div&gt;
+]
+
+.pull-right[
+&lt;div align="center"&gt;
+&lt;br&gt;&lt;br&gt;
+&lt;img src="pics/clinton-nyt.png" width=350&gt;
+&lt;/div&gt;
+]
+
+
+
+
+
+
+---
+count: false
+
+# Example: FiveThirtyEight 2020 election forecast
+
+.pull-center[
+&lt;div align="center"&gt;
+&lt;br&gt;
+&lt;img src="pics/538-2.png" height=500&gt;
+&lt;/div&gt;
+`Source` [FiveThirtyEight](https://projects.fivethirtyeight.com/2020-election-forecast/)
+]
+
+
+---
+count: false
+
+# Example: FiveThirtyEight 2020 election forecast
+
+.pull-center[
+&lt;div align="center"&gt;
+&lt;br&gt;
+&lt;img src="pics/538-3.png" height=500&gt;
+&lt;/div&gt;
+`Source` [FiveThirtyEight](https://projects.fivethirtyeight.com/2020-election-forecast/)
+]
+
+
+---
+count: false
+
+# Example: FiveThirtyEight 2020 election forecast
+
+.pull-center[
+&lt;div align="center"&gt;
+&lt;br&gt;
+&lt;img src="pics/538-6.png" height=500&gt;
+&lt;/div&gt;
+`Source` [FiveThirtyEight](https://projects.fivethirtyeight.com/2020-election-forecast/)
+]
+
+
+---
+count: false
+
+# Example: FiveThirtyEight 2020 election forecast
+
+.pull-center[
+&lt;div align="center"&gt;
+&lt;br&gt;
+&lt;img src="pics/538-7.png" height=500&gt;
+&lt;/div&gt;
+`Source` [FiveThirtyEight](https://projects.fivethirtyeight.com/2020-election-forecast/)
+]
+
+
+---
+count: false
+# Example: FiveThirtyEight 2020 election forecast
+
+.pull-center[
+&lt;div align="center"&gt;
+&lt;br&gt;
+&lt;img src="pics/538-8.png" height=500&gt;
+&lt;/div&gt;
+`Source` [FiveThirtyEight](https://projects.fivethirtyeight.com/2020-election-forecast/)
+]
+
+
+---
+# Effect sizes
+
+
+
+---
+# Research design
+
+
+---
+# Statistical communication: summary
+
+- 
+
+
+
+&lt;!-- ############################################ --&gt;
+---
+class: inverse, center, middle
+name: tools
+
+# Tools for communication
+&lt;html&gt;&lt;div style='float:left'&gt;&lt;/div&gt;&lt;hr color='#EB811B' size=1px style="width:1000px; margin:auto;"/&gt;&lt;/html&gt;
+
+
+---
+# Tools for communication
+
+- graphics, interactives
+- spoken words
+- written words
+
+
+
+---
+# More on effective communication
+
+https://r4ds.had.co.nz/r-markdown-formats.html#learning-more-5
+
+
+
+
+---
+# Graphics for communication
+
+See the visualization session for
+  - the mechanics
+  - the basic do's and don'ts
+  
+Here:
+  - which figures to use for which audiences?
+  - evidence on how policymakers etc. read evidence from graphs
+
+
+
+
+
+&lt;!-- ############################################ --&gt;
+---
+class: inverse, center, middle
+name: rmarkdown
+
+# Written communication with R Markdown
+&lt;html&gt;&lt;div style='float:left'&gt;&lt;/div&gt;&lt;hr color='#EB811B' size=1px style="width:1000px; margin:auto;"/&gt;&lt;/html&gt;
+
+---
+# Written communication
+
+.pull-left[
+
+### When to communicate in writing
+
+- For communicating to **the public and decision makers**, who want to focus on the conclusions, not the code behind the analysis.
+
+- For collaborating with **other data scientists**, who are interested in both your conclusions, and how you reached them (i.e. the code).
+
+### Authoring as part of the workflow
+
+- Many different formats, including reports, briefs, blog posts, books, presentations, ...
+- Form follows function: the write-up tool should talk to the analytic toolset.
+]
+
+.pull-right-center[
+&lt;div align="center"&gt;
+&lt;br&gt;
+&lt;img src="pics/medieval-scribe.jpeg" height=500&gt;
+&lt;/div&gt;
+`Source` [Kurt Newman](https://www.pinterest.com/pin/424745808581131349/)
+]
+
+
+---
+# The continuum of data science communication
+
+&lt;br&gt;&lt;br&gt;
+
+
+.pull-left-vvsmall[
+**Book**
+&lt;br&gt;
+&lt;div align="center"&gt;
+&lt;img src="pics/foundations-machine-learning.jpeg" width=100&gt;
+&lt;/div&gt;
+
+
+]
+
+.pull-left-vvsmall[
+**Conference proceeding, journal article**
+]
+
+.pull-left-vvsmall[
+**Technical report**
+]
+
+.pull-left-vvsmall[
+**Executive summary**
+]
+
+.pull-left-vvsmall[
+**Dashboard**
+]
+
+.pull-left-vvsmall[
+**Tweet**
+]
+
+
+
+
+
+---
+# Authoring with R Markdown
+
+.pull-left[
+
+### What you already know
+
+- R Markdown (and the `rmarkdown` package) helps you create dynamic analysis documents that combine code, rendered output (such as figures), and prose. 
+- You can use it to
+  - Do data science interactively with notebooks.
+  - Modify the layout of your report.
+  - Communicate your results with others.
+- You take care of content, R Markdown of format.
+
+### More resources
+
+- The [official website](https://rmarkdown.rstudio.com/)
+- The [R Markdown Cookbook](https://bookdown.org/yihui/rmarkdown-cookbook/)
+- [R Markdown - The Definitive Guide](https://bookdown.org/yihui/rmarkdown/)
+]
+
+--
+
+.pull-right[
+
+### What you probably don't know (yet)
+
+- R Markdown can do much more than reports. You can use it to author
+  - Reports (in PDF, HTML, Word, etc.)
+  - Interactive documents
+  - Dashboards
+  - Slideshows
+  - Books
+  - Websites
+- It stands on the shoulders of [Pandoc](https://pandoc.org/), a package that converts markup files into virtually any other format.
+
+&lt;div align="center"&gt;
+&lt;img src="pics/rmarkdown-flow.png" width=500&gt;
+&lt;/div&gt;
+]
+
+
+---
+# RMarkdown formats
+
+.pull-left[
+.pull-left-wide[
+### bookdown
+- A [package](https://bookdown.org/) that facilitates writing books and long-form articles/reports with R Markdown.
+- See [here](https://bookdown.org/home/archive/) for an overview of books written with `bookdown`.
+]
+.pull-right-small[
+&lt;br&gt;
+&lt;div align="center"&gt;
+&lt;img src="pics/bookdown.png" height="150"/&gt;
+&lt;/div&gt;
+]
+]
+
+.pull-right[
+.pull-left-wide[
+### blogdown
+- A [package](https://bookdown.org/yihui/blogdown/) that lets you create websites (not only blogs!) using R Markdown.
+- It integrates [Hugo
+](https://gohugo.io/) (or other site generators).
+]
+.pull-right-small[
+&lt;br&gt;
+&lt;div align="center"&gt;
+&lt;img src="pics/blogdown.png" height="150"/&gt;
+&lt;/div&gt;
+]
+]
+
+.pull-left[
+.pull-left-wide[
+&lt;br&gt;
+### pagedown
+- A [package](https://pagedown.rbind.io/) that lets you paginate the HTML output of R Markdown with CSS for print (PDF).
+- Lots of different [templates](https://github.com/rstudio/pagedown) available.
+]
+.pull-right-small[
+&lt;br&gt;&lt;br&gt;
+&lt;div align="center"&gt;
+&lt;img src="pics/pagedown.png" height="150"/&gt;
+&lt;/div&gt;
+]
+]
+
+.pull-right[
+.pull-left-wide[
+&lt;br&gt;
+### xaringan
+- A [package](https://github.com/yihui/xaringan) that lets you crate slideshows with [remark.js](https://remarkjs.com/) through R Markdown.
+- These slides have been created using this package.
+]
+.pull-right-small[
+&lt;br&gt;&lt;br&gt;
+&lt;div align="center"&gt;
+&lt;img src="pics/xaringan.png" height="150"/&gt;
+&lt;/div&gt;
+]
+]
+
+
+
+
+
+
+
+&lt;!-- ############################################ --&gt;
+---
+class: inverse, center, middle
+name: dashboards
+
+# Interactive communication with dashboards
+&lt;html&gt;&lt;div style='float:left'&gt;&lt;/div&gt;&lt;hr color='#EB811B' size=1px style="width:1000px; margin:auto;"/&gt;&lt;/html&gt;
+
+
+---
+background-image: url("pics/delorean-dashboard.png")
+background-size: contain
+background-color: #000000
+
+# What are dashboards?
+
+
+---
+# What are dashboards?
+
+.pull-left[
+### Yeah, what are they really?
+- A (business or data) [dashboard](https://en.wikipedia.org/wiki/Dashboard_(business)) is a GUI that provides high-level overviews of performance indicators or other quantities of interest. 
+- It's a monitoring (and not so much analysis) tool.
+- Think of dashboards as a mashup of data visualization and report.
+- It's usually accessible via a web browser, features interactives, and is regularly updated.
+]
+
+.pull-right[
+### And why are they a thing?
+
+- Continuous quantification of indicators of interest (→ monitoring)
+- Can provide a basis for high-level [evidence-based decision-making](https://stephanieevergreen.com/dashboard-conversation/)
+- Reduce information differential between analysts and stakeholders
+- Satisfy managers' need for control/micromanaging 
+]
+
+
+---
+# Dashboards in the wild
+
+https://coronavirus.jhu.edu/
+
+---
+# The problems with dashboards
+
+- Der Sehnsucht nach Dashboards wohnt der Wunsch inne, alles durch Quantifizierung weniger Metriken erklären und entscheiden zu können.
+- Das kommt einer groben Simplifizierung der Realität gleich.
+- Wenn man Entscheidungen auf Basis von Metriken trifft, hören diese auf gut zu funktionieren (weil sie instrumentalisiert wrden).
+
+https://stephanieevergreen.com/dashboard-conversation/
+https://stephanieevergreen.com/problem-with-dashboards/
+http://blogs.ischool.berkeley.edu/i247s12/files/2012/01/Dashboard-Design-Overview-Presentation.pdf
+
+
+---
+# Good dashboard design
+
+- As dashboards are a sub genre of data visualizations, all rules of good data visualization apply.
+- In addition, consider the following:
+  - Minimize distractions.
+  - Focus on meaningful quantities of interest, not the ones that look cool.
+  - Don't overload with information.
+
+
+---
+# Dashboards with R
+
+.pull-left[
+.pull-left-vwide[
+### &lt;tt&gt;flexdashboard&lt;/tt&gt; package
+- Overview [here](https://pkgs.rstudio.com/flexdashboard)
+- Good for easy dashboard building
+- Just a document that looks like a dashboard
+- Can be compiled into a static file (just like regular Markdown)
+- Can only run interactive code client-fleside (in embedded JavaScript)
+- Shiny  and `htmlwidgets` (`leaflet`, `plotly`, `highcharter`, etc.)  can be integrated (with all the up- and downsides)
+]
+.pull-right-vsmall[
+&lt;br&gt;
+&lt;div align="center"&gt;
+&lt;img src="pics/flexdashboard.png" height="150"/&gt;
+&lt;/div&gt;
+]
+&lt;br&gt;
+&lt;div align="center"&gt;
+&lt;img src="pics/flexdashboard-example-1.png" height="120"/&gt;
+&lt;img src="pics/flexdashboard-example-2.png" height="120"/&gt;
+&lt;/div&gt;
+]
+
+.pull-right[
+.pull-left-vwide[
+### &lt;tt&gt;shiny&lt;/tt&gt; package
+- Overview [here](https://shiny.rstudio.com/)
+- More complex to program, but the best option for complex apps.
+- Can implement any layout.
+- Needs a server behind it to execute R code on user input. 
+- Can run interactive code either by processing serverside (in R) or clientside (in embedded JavaScript).
+- The [shinydashboard](https://rstudio.github.io/shinydashboard/) package provides another way to create dashboards with Shiny
+]
+.pull-right-vsmall[
+&lt;br&gt;
+&lt;div align="center"&gt;
+&lt;img src="pics/shiny.png" height="150"/&gt;
+&lt;/div&gt;
+]
+&lt;br&gt;
+&lt;div align="center"&gt;
+&lt;img src="pics/shiny-example-1.png" height="120"/&gt;
+&lt;img src="pics/shiny-example-2.png" height="120"/&gt;
+&lt;/div&gt;
+]
+
+
+---
+# Dashboards with &lt;tt&gt;flexdashboard&lt;/tt&gt;
+
+.pull-left-vsmall[
+- Use simple R Markdown to build a dashboard.
+]
+
+.pull-right-vwide[
+&lt;div align="center"&gt;
+&lt;br&gt;
+&lt;img src="pics/flexdashboard-nba-1.png" height="400"/&gt;
+&lt;img src="pics/flexdashboard-nba-2.png" height="400"/&gt;
+&lt;tt&gt;Source:&lt;/tt&gt; &lt;a href="https://beta.rstudioconnect.com/jjallaire/htmlwidgets-d3heatmap/htmlwidgets-d3heatmap.html"&gt;jjallaire&lt;/a&gt;
+&lt;/div&gt;
+
+]
+
+---
+# Dashboards with &lt;tt&gt;flexdashboard&lt;/tt&gt;
+
+.pull-left-vsmall[
+- Use simple R Markdown to build a dashboard.
+- Arrange panels as blocks with flexible syntax.
+]
+
+.pull-right-vwide[
+&lt;div align="center"&gt;
+&lt;br&gt;
+&lt;img src="pics/flexdashboard-layout-1.png" width="500"/&gt;
+&lt;/div&gt;
+]
+
+
+---
+# Dashboards with &lt;tt&gt;flexdashboard&lt;/tt&gt;
+
+.pull-left-vsmall[
+- Use simple R Markdown to build a dashboard.
+- Arrange panels as blocks with flexible syntax.
+]
+
+.pull-right-vwide[
+&lt;div align="center"&gt;
+&lt;br&gt;
+&lt;img src="pics/flexdashboard-layout-2.png" width="500"/&gt;
+&lt;/div&gt;
+]
+
+
+---
+# Dashboards with &lt;tt&gt;flexdashboard&lt;/tt&gt;
+
+.pull-left-vsmall[
+- Use simple R Markdown to build a dashboard.
+- Arrange panels as blocks with flexible syntax.
+]
+
+.pull-right-vwide[
+&lt;div align="center"&gt;
+&lt;br&gt;
+&lt;img src="pics/flexdashboard-layout-3.png" width="500"/&gt;
+&lt;/div&gt;
+]
+
+
+
+---
+# Dashboards with &lt;tt&gt;flexdashboard&lt;/tt&gt;
+
+.pull-left-vsmall[
+- Use simple R Markdown to build a dashboard.
+- Arrange panels as blocks with flexible syntax.
+- Add elements like gauges and value boxes.
+]
+
+.pull-right-vwide[
+&lt;div align="center"&gt;
+&lt;br&gt;
+&lt;img src="pics/flexdashboard-value-box.png" width="500"/&gt;
+&lt;br&gt;
+&lt;img src="pics/flexdashboard-gauges.png" width="500"/&gt;
+&lt;/div&gt;
+]
+
+
+---
+# Dashboards with &lt;tt&gt;flexdashboard&lt;/tt&gt;
+
+.pull-left-vsmall[
+- Use simple R Markdown to build a dashboard.
+- Arrange panels as blocks with flexible syntax.
+- Add elements like gauges and value boxes.
+- Couple it with `shiny`.
+]
+
+.pull-right-vwide[
+&lt;div align="center"&gt;
+&lt;br&gt;
+&lt;img src="pics/flexdashboard-shiny-1.png" height="420"/&gt;
+&lt;img src="pics/flexdashboard-shiny-2.png" height="420"/&gt;
+&lt;/div&gt;
+]
+
+
+---
+# Dashboards with &lt;tt&gt;flexdashboard&lt;/tt&gt;
+
+.pull-left-vsmall[
+- Use simple R Markdown to build a dashboard.
+- Arrange panels as blocks with flexible syntax.
+- Add elements like gauges and value boxes.
+- Couple it with `shiny`.
+- Customize themes.
+]
+
+.pull-right-vwide[
+&lt;div align="center"&gt;
+&lt;br&gt;
+&lt;img src="pics/flexdashboard-theme-minty.png" width="500"/&gt;
+&lt;/div&gt;
+]
+
+
+
+---
+# Dashboards with &lt;tt&gt;flexdashboard&lt;/tt&gt;
+
+.pull-left-vsmall[
+- Use simple R Markdown to build a dashboard.
+- Arrange panels as blocks with flexible syntax.
+- Add elements like gauges and value boxes.
+- Couple it with `shiny`.
+- Customize themes.
+- Explore more examples [here](https://pkgs.rstudio.com/flexdashboard/articles/examples.html).
+]
+
+.pull-right-vwide[
+&lt;div align="center"&gt;
+&lt;br&gt;
+&lt;img src="pics/flexdashboard-gallery-1.png" height="500"/&gt;
+&lt;img src="pics/flexdashboard-gallery-2.png" height="500"/&gt;
+&lt;/div&gt;
+]
+
+
+
+
+---
+# Web apps with &lt;tt&gt;shiny&lt;/tt&gt;
+
+
+
+
+---
+# More Shiny resources
+
+.pull-left[
+### Online resources
+- [Shiny official website](https://shiny.rstudio.com/)
+- [Shiny official tutorial](https://shiny.rstudio.com/tutorial/)
+- [Shiny cheatsheet](https://shiny.rstudio.com/images/shiny-cheatsheet.pdf)
+- [Mastering Shiny](https://mastering-shiny.org/), book by Hadley Wickham
+- [Many useful articles about different topics](https://shiny.rstudio.com/articles/)
+- Publishing own Shiny apps for free with [shinapps.io](https://www.shinyapps.io/)
+- Hosting your Shiny app [on your own server](https://deanattali.com/2015/05/09/setup-rstudio-shiny-server-digital-ocean/)
+- [Debugging Shiny](https://shiny.rstudio.com/articles/debugging.html)
+]
+
+.pull-right[
+### An overview of Shiny extensions
+- [awesome-shiny-extensions](https://github.com/nanxstats/awesome-shiny-extensions)
+
+### Some highlights
+- [shinythemes](https://rstudio.github.io/shinythemes/): Altering the overall appearance of Shiny apps
+- [shinyjs](https://deanattali.com/shinyjs/): Enrich apps with JavaScript operations
+- [leaflet](https://rstudio.github.io/leaflet/): Interactive maps
+- [ggvis](https://ggvis.rstudio.com/): Similar to ggplot2 but with focus on web and interaction
+- [shinydashboard](): Tools to create visual dashboards
+]
+
+
+&lt;!-- ############################################ --&gt;
+---
+class: inverse, center, middle
+name: openscience
+
+# Towards open data science
+&lt;html&gt;&lt;div style='float:left'&gt;&lt;/div&gt;&lt;hr color='#EB811B' size=1px style="width:1000px; margin:auto;"/&gt;&lt;/html&gt;
+
+
+---
+# Towards open data science
+
+Open Science
+https://en.wikipedia.org/wiki/Open_science
+Transparent communication: an open science workflow
+Session on communication: --&gt; REPRODUCIBILITY, OPEN SCIENCE
+
+
+Open Science: What, Why, and How | Spellman/Gilbert/Corker
+https://psyarxiv.com/ak6jr/
+
+Promoting an open research culture
+https://www.science.org/doi/abs/10.1126/science.aab2374
+
+Promoting transparency in social science research
+https://www.science.org/doi/10.1126/science.1245317
+
+
+
+
+---
+# The science of science communication
+
+
+
+---
+# Ethics of communication
+
+
+good vs. bad communication (this goes beyond visualization)
+
+
+
+
+---
+# Next steps
+
+&lt;br&gt;
+
+### Final data project
+
+Please submit your final data project proposals until Sunday, November 28 (11.59pm CET) at https://forms.gle/2CJUYnJDDpCzBfJi8
+
+
+### Next lecture
+
+One more session to go. We're going to talk data science ethics.
+
+
+
+
+
+
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false,
+"ratio": "16:9",
+"hash": true
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

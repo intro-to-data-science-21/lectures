@@ -865,10 +865,8 @@ programming languages and APIs.
 
 
 ---
-
-
-
 # Why R and RStudio? (cont.)
+
 ```{R, indeeddotcom, echo = F, fig.height = 6, fig.width = 9, dev = "svg", warning = F}
 # The popularity data
 pop_df = 
@@ -901,6 +899,17 @@ pop_df %>%
   # theme_ipsum() +
   theme(legend.position = "bottom")
 ```
+
+
+---
+# Why R and RStudio? (cont.)
+
+<div align="center">
+<img src="pics/facebook-programming-languages.png" width=700>
+</div>
+˚Credit` [Left_Ad8361/Reddit](https://www.reddit.com/r/dataisbeautiful/comments/qw1bew/oc_which_programming_language_is_required_to_land/)
+
+
 
 
 ---
