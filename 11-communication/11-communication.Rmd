@@ -878,13 +878,72 @@ background-color: #000000
 ]
 
 
+
+---
+# The problem(s) with dashboards
+
+.pull-left[
+### Design challenges
+
+- **They say too little.** Loss of information is [fatal](https://stephanieevergreen.com/problem-with-dashboards/) for good decision-making when aggregating results into few KPIs.
+- **They say too much** (irrelevant things). 
+- Dashboards often fail not in technology but in communication (rooted in poor design).
+- "Dashboards are not for show. No amount of cuteness and technical wizardry can substitute for clear communication." [Stephen Few](http://blogs.ischool.berkeley.edu/i247s12/files/2012/01/Dashboard-Design-Overview-Presentation.pdf), [Perceptual Edge](https://perceptualedge.com)
+- As dashboards are a subgenre of data viz, so **all rules of good/bad viz apply**.
+- So, there is hope since we do know a bit about how to design good visuals. (See [here](https://stephanieevergreen.com/dashboard-conversation/) for a nice case study on improving the design of a dashboard.)
+]
+
+--
+
+.pull-right[
+### Analytic challenges
+
+- Dashboards cater to the desire to be able to make good decisions on the basis of few selected metrics.
+- This logic reflects a **gross simplification of reality**. 
+- All challenges that pop up in careful analytic work - issues of selection, measurement, causality, predictiveness - are still valid but will be obscured when aggregating data. 
+- Simple metrics can still be useful, but often **you need contextual knowledge** (which is difficult to communicate in dashboards).
+- Another consequence of "dashboarding" business intelligence can be that by making decisions a function of metrics, they stop working well because they will be gamed.
+]
+
+---
+# Thoughtful dashboard design and usage
+
+.footnote[<sup>1</sup>Source: [Stephen Few/Perceptual Edge](http://perceptualedge.com/articles/misc/Dashboard_Design_Requirements_Questionnaire.pdf)
+]
+
+.pull-left[
+### Checklist before you start<sup>1</sup>
+
+1. Are you tackling a monitoring task that needs your data/metrics to be updated frequently?
+
+2. Who will use the dashboard and to what end? What questions will they use it to answer? What actions will they take in response to these answers?
+
+3. What specific information should be displayed, and is it meaningful without much context?
+
+4. What could lead to the metrics being wrong/misleading?
+]
+
+--
+
+.pull-right[
+### Design advice
+
+- Minimize distractions.
+- Focus on meaningful quantities of interest, not the ones that look cool.
+- Don't overload with information.
+- Apply all rules of good data viz.
+- Use interactives with care (e.g., to make optional content  conditionally visible)
+- Try not to exceed the boundaries of a single screen. 
+- Ensure desktop/mobile screen responsiveness.
+]
+
+
+
 ---
 # Dashboards in the wild: COVID-19 edition
 
 .pull-center[
 <div align="center">
-<br>
-<img src="pics/covid-dashboard-nyt.png" width="600"/>
 <img src="pics/covid-dashboard-nyt2.png" width="500"/>
 </div>
 `Credit` [NY Times](https://www.nytimes.com/interactive/2021/us/covid-cases-deaths-tracker.html
@@ -925,61 +984,6 @@ background-color: #000000
 </div>
 `Credit` [ZEIT Online](https://www.zeit.de/wissen/corona-karte-deutschland-aktuelle-zahlen-landkreise)
 ]
-
-
-
-
-
-
-
----
-# The problem(s) with dashboards
-
-.pull-left[
-### Design challenges
-
-- **They say too little.** Loss of information is [fatal](https://stephanieevergreen.com/problem-with-dashboards/) for good decision-making when aggregating results into few KPIs.
-- **They say too much** (irrelevant things). 
-- Dashboards often fail not in technology but in communication (rooted in poor design).
-- "Dashboards are not for show. No amount of cuteness and technical wizardry can substitute for clear communication." [Stephen Few](http://blogs.ischool.berkeley.edu/i247s12/files/2012/01/Dashboard-Design-Overview-Presentation.pdf), [Perceptual Edge](https://perceptualedge.com)
-- As dashboards are a subgenre of data viz, so **all rules of good/bad viz apply**.
-- So, there is hope since we do know a bit about how to design good visuals. (See [here](https://stephanieevergreen.com/dashboard-conversation/) for a nice case study on improving the design of a dashboard.)
-]
-
---
-
-.pull-right[
-### Analytic challenges
-
-- Dashboards supple the desire to be able to make good decisions on the basis of few selected metrics.
-- This logic reflects a gross simplification of reality. 
-- All challenges that pop up in careful analytic work - issues of selection, measurement, causality, predictiveness - are still valid but will be obscured when aggregating data. 
-- Simple metrics can still be useful, but often you need contextual knowledge (which are difficult to communicate in dashboards).
-- Another consequence of "dashboarding" business intelligence can be that by making decisions a function of metrics, they stop working well because they will be gamed.
-]
-
----
-# Good dashboard design
-
-.pull-left[
-### Do's and don'ts
-
-- Try not to exceed the boundaries of a single screen. 
-- Ensure desktop/mobile screen responsiveness.
-- Work with interactives to make content conditionally accessible.
-]
-
-- In addition, consider the following:
-  - Minimize distractions.
-  - Focus on meaningful quantities of interest, not the ones that look cool.
-  - Don't overload with information.
-
-.pull-right[
-### Dashboard Design Requirements Questionnaire
-
-http://perceptualedge.com/articles/misc/Dashboard_Design_Requirements_Questionnaire.pdf
-]
-
 
 
 
@@ -1224,12 +1228,76 @@ name: openscience
 
 
 ---
+# Trust in science
+
+.pull-center[
+<div align="center">
+<br>
+<img src="pics/trust-science-pew.png" height="500"/>
+<img src="pics/trust-science-pew-2.png" height="500"/>
+</div>
+`Source` [Pew 2020](https://www.pewresearch.org/science/2020/09/29/science-and-scientists-held-in-high-esteem-across-global-publics/)
+]
+
+
+---
+# Trust in data science
+
+.pull-left[
+<div align="center">
+<br>
+<img src="pics/data-science-cool-1.png" width="500"/>
+<img src="pics/data-science-cool-2.png" width="500"/>
+<img src="pics/data-science-cool-5.png" width="500"/>
+</div>
+]
+
+.pull-left[
+<div align="center">
+<br>
+<img src="pics/data-science-cool-4.png" width="500"/>
+<img src="pics/data-science-cool-3.png" width="500"/>
+<img src="pics/data-science-cool-6.png" width="500"/>
+</div>
+]
+
+---
+# Trust in data science?
+
+.pull-left[
+<div align="center">
+<br>
+<img src="pics/data-science-not-cool-1.png" width="500"/>
+<img src="pics/data-science-not-cool-2.png" width="500"/>
+</div>
+]
+
+.pull-left[
+<div align="center">
+<br>
+<img src="pics/data-science-not-cool-3.png" width="500"/>
+<img src="pics/data-science-not-cool-4.png" width="500"/>
+</div>
+]
+
+
+---
+# Towards open data science
+
+- ich habe daran gearbeitet, dass ihr open science macht
+
+- honest communication
+- no bullshitting
+
+
+---
 # Towards open data science
 
 Consider the entire workflow as potential part of communication.
 - Your code communicates to Future You and other scientists.
 - Your report/abstract...
 
+- publish in open access outlets
 
 
 Open Science
