@@ -25,6 +25,8 @@
 
 10. Debugging, automation and packaging \[[**.html**](https://raw.githack.com/intro-to-data-science-21/lectures/main/10-debugging-automation/10-debugging-automation.html) | [**.pdf**](https://raw.githack.com/intro-to-data-science-21/lectures/main/10-debugging-automation/10-debugging-automation.pdf) | [**.Rmd**](https://raw.githack.com/intro-to-data-science-21/lectures/main/10-debugging-automation/10-debugging-automation.Rmd)\]
 
+11. Monitoring and communication \[[**.html**](https://raw.githack.com/intro-to-data-science-21/lectures/main/11-communication/11-communication.html) | [**.pdf**](https://raw.githack.com/intro-to-data-science-21/lectures/main/11-communication/11-communication.pdf) | [**.Rmd**](https://raw.githack.com/intro-to-data-science-21/lectures/main/11-communication/11-communication.Rmd)\]
+
 
 ## Summary
 

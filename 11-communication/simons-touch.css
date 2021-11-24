@@ -98,6 +98,14 @@ hr, .title-slide h2::after, .mline h1::after {
   text-align: center;
 }
 
+
+.pull-left-small-center {
+  margin-top: -20px;
+  float: left;
+  width: 38%;
+  text-align: center;
+}
+
 .pull-right-wide {
     margin-top: -20px;
   float: right;
@@ -213,6 +221,14 @@ hr, .title-slide h2::after, .mline h1::after {
     margin-top: -20px;
   float: right;
   width: 47%;
+  text-align: center;
+}
+
+
+.pull-right-wide-center {
+    margin-top: -20px;
+  float: right;
+  width: 58%;
   text-align: center;
 }
 

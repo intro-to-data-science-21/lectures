@@ -233,7 +233,7 @@ name: communication
 
 .pull-left[
 
-<br><br><br><br>
+<br><br>
 ### Question to reflect on
 
 Thinking about the task of publicly forecasting the U.S. presidential election using polling data, what kinds of uncertainty would you have to deal with as a forecaster?
@@ -797,7 +797,7 @@ name: rmarkdown
   - Slideshows
   - Books
   - Websites
-- It stands on the shoulders of [Pandoc](https://pandoc.org/), a package that converts markup files into virtually any other format.
+- It stands on the shoulders of [Pandoc](https://pandoc.org/), a program that converts markup files into virtually any other format.
 
 <div align="center">
 <img src="pics/rmarkdown-flow.png" width=500>
@@ -929,7 +929,8 @@ background-color: #000000
 
 - There is increasing **abundance of data** (often process-generated) that cannot speak for itself.
 - If used wisely, these data can provide an **important part of business intelligence** and a basis for high-level [evidence-based decision-making](https://stephanieevergreen.com/dashboard-conversation/).
-- **Reduce information differential** between analysts and stakeholders but providing continuous quantification of indicators of interest (→ monitoring).
+- Provide continuous quantification of indicators of interest (→ **monitoring**).
+- **Reduce information differential** between analysts and stakeholders 
 - Also, **measuring the health of organizations** can help stay in control (if only as a performative act) and satisfy managers' need for micromanaging.
 ]
 
@@ -988,6 +989,18 @@ background-color: #000000
 `Credit` [idashboards.com](https://www.idashboards.com/dashboard-examples/government-parks-dashboard/)
 ]
 
+---
+# Dashboards in the wild
+
+.pull-center[
+<div align="center">
+<br>
+<img src="pics/telesales-dashboard.png" width="600"/>
+</div>
+`Credit` [Stephen Few](http://perceptualedge.com/articles/Whitepapers/Dashboard_Design.pdf)
+]
+
+
 
 ---
 # Dashboards in the wild
@@ -1012,6 +1025,8 @@ background-color: #000000
 `Credit` [carmel.es](https://carmel.es/2018/10/26/6-examples-of-bad-dashboard-designs/
 )
 ]
+
+
 
 
 
@@ -1078,7 +1093,7 @@ background-color: #000000
 ---
 # Dashboards in the wild: COVID-19 edition
 
-.pull-center[
+.pull-left-center[
 <div align="center">
 <img src="pics/covid-dashboard-nyt2.png" width="500"/>
 </div>
@@ -1086,10 +1101,9 @@ background-color: #000000
 )
 ]
 
----
-# Dashboards in the wild: COVID-19 edition
+--
 
-.pull-center[
+.pull-right-center[
 <div align="center">
 <br>
 <img src="pics/covid-dashboard-owid.png" width="600"/>
@@ -1101,7 +1115,7 @@ background-color: #000000
 ---
 # Dashboards in the wild: COVID-19 edition
 
-.pull-center[
+.pull-left-small-center[
 <div align="center">
 <br>
 <img src="pics/covid-dashboard-sz.png" width="250"/>
@@ -1109,11 +1123,9 @@ background-color: #000000
 `Credit` [SZ Online](https://www.sueddeutsche.de/wissen/corona-zahlen-1.4844448)
 ]
 
+--
 
----
-# Dashboards in the wild: COVID-19 edition
-
-.pull-center[
+.pull-right-wide-center[
 <div align="center">
 <br>
 <img src="pics/covid-dashboard-zeit.png" width="700"/>
