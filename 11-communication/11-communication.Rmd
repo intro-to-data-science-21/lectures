@@ -60,11 +60,11 @@ library(kableExtra)
 
 2. [Statistical communication](#stats)
 
-3. [Visual communication](#visuals)
+3. [Written communication with R Markdown](#rmarkdown)
 
-4. [Written communication with R Markdown](#rmarkdown)
+4. [Interactive communication with dashboards](#dashboards)
 
-5. [Interactive communication with dashboards](#dashboards)
+5. [The science of science communication](#science)
 
 6. [Towards open data science](#openscience)
 
@@ -186,7 +186,7 @@ Let's apply this to us. Data scientists communicate...
 
 --
 
-What, how, and to what end you communicate depends on your <b>audience/stakeholders</b> because they will differ in contextual knowledge, data literacy, and motives.
+What, how, and to what end you communicate depends on your <b>audience/stakeholders</b> because they will differ in interest, contextual knowledge, data literacy, and motives.
 
 
 
@@ -214,107 +214,44 @@ name: communication
 ### Common challenges
 - There's epistemological and statistical uncertainty.
 - Effect sizes have implications that are often not easy to grasp.
-- Many humans are bad at understanding (conditional and unconditional) probabilities.
 - Conclusions about data science output crucially hinge on the validity of design aspects, which are extremely difficult to communicate.
 ]
 
 .pull-right-center[
 <div align="center">
 <br>
-<img src="pics/mcelreath-gates.png" width=350>
+<img src="pics/biontech-paper.png" width=370>
 </div>
-`Credit` [Richard McElreath](https://twitter.com/rlmcelreath/status/1462719976259919879)
+`Credit` [Polack et al. 2020, NEJM](https://www.nejm.org/doi/full/10.1056/nejmoa2034577)
 ]
+
+
 
 
 ---
 # Uncertainty
-
 
 .pull-left[
-### What we are uncertain about
 
-]
+<br><br><br><br>
+### Question to reflect on
 
+Thinking about the task of publicly forecasting the U.S. presidential election using polling data, what kinds of uncertainty would you have to deal with as a forecaster?
 
-.pull-right-center[
 <div align="center">
 <br>
-<img src="pics/communicating-uncertainty.gif" width=470>
+<img src="pics/needle.gif" width=370>
 </div>
-`Credit` [van der Bles et al. 2019](http://doi.org/10.1098/rsos.181870)
-]
-
-
----
-# Uncertainty
-
-https://easystats.github.io/report/
-
-
-
----
-# Uncertainty
-
-
-.pull-left[
-### The role of probabilities
-
-
-
-### (Mis-)communicating probabilities
-
-]
-
-
-.pull-right-center[
-<div align="center">
-<br>
-<img src="pics/communicating-uncertainty.gif" width=470>
-</div>
-`Credit` [van der Bles et al. 2019](http://doi.org/10.1098/rsos.181870)
-]
-
-
-
----
-# Probabilities: verbal expressions
-
-.pull-left-center[
-<div align="center">
-<br>
-<img src="pics/willems-abstract.png" width=500>
-</div>
-`Source` [Willems et al. 2020](https://doi.org/10.22323/2.19020203)
-
 ]
 
 .pull-right-center[
 <div align="center">
 <br>
-<img src="pics/willems-probability-phrases.png" width=370>
+<img src="pics/nyt-needle.jpeg" width=370>
 </div>
+`Credit` [NYTimes.com at 9:20 p.m. Nov. 8, 2016](https://www.axios.com/spinning-needle-election-night-victory-d285c0da-db86-46b4-86bf-2253c5d661c2.html)
 ]
 
-
----
-# Probabilities: confusing vote share with p(win)
-
-.pull-left-center[
-<div align="center">
-<br>
-<img src="pics/westwood-abstract.png" width=500>
-</div>
-`Source` [Westwood et al. 2020](https://doi.org/10.1086/708682)
-
-]
-
-.pull-right-center[
-<div align="center">
-<br>
-<img src="pics/westwood-results.png" width=450>
-</div>
-]
 
 
 ---
@@ -327,45 +264,6 @@ https://easystats.github.io/report/
 </div>
 `Source` [FiveThirtyEight](https://projects.fivethirtyeight.com/2020-election-forecast/)
 ]
-
-
-
----
-count: false
-
-# Example: FiveThirtyEight 2020 election forecast
-
-.pull-center[
-<div align="center">
-<br>
-<img src="pics/538-4.png" height=500>
-</div>
-`Source` [FiveThirtyEight](https://projects.fivethirtyeight.com/2020-election-forecast/)
-]
-
-
----
-count: false
-
-# Example: FiveThirtyEight 2020 election forecast
-
-.pull-left[
-<div align="center">
-<br><br><br><br><br><br>
-<img src="pics/clinton-538.png" width=500>
-</div>
-]
-
-.pull-right[
-<div align="center">
-<br><br>
-<img src="pics/clinton-nyt.png" width=350>
-</div>
-]
-
-
-
-
 
 
 ---
@@ -438,49 +336,287 @@ count: false
 
 
 ---
-# Effect sizes
+count: false
+# Example: FiveThirtyEight 2020 election forecast
+
+.pull-center[
+<div align="center">
+<br>
+<img src="pics/538-8.png" height=500>
+</div>
+`Source` [FiveThirtyEight](https://projects.fivethirtyeight.com/2020-election-forecast/)
+]
+
+---
+# Example: How the sausage is made
+
+.pull-left-center[
+<div align="center">
+<br>
+<img src="pics/fivythirtyeight-methodology-1.png" width=500>
+</div>
+`Source` [FiveThirtyEight](https://fivethirtyeight.com/features/how-fivethirtyeights-2020-presidential-forecast-works-and-whats-different-because-of-covid-19/)
+
+]
+
+---
+count: false
+# Example: How the sausage is made
+
+.pull-left-center[
+<div align="center">
+<br>
+<img src="pics/fivythirtyeight-methodology-2.png" width=500>
+</div>
+`Source` [FiveThirtyEight](https://fivethirtyeight.com/features/how-fivethirtyeights-2020-presidential-forecast-works-and-whats-different-because-of-covid-19/)
+]
+
+
+---
+count: false
+# Example: How the sausage is made
+
+.pull-left-center[
+<div align="center">
+<br>
+<img src="pics/fivythirtyeight-methodology-3.png" width=500>
+</div>
+`Source` [FiveThirtyEight](https://fivethirtyeight.com/features/how-fivethirtyeights-2020-presidential-forecast-works-and-whats-different-because-of-covid-19/)
+]
+
+---
+count: false
+# Example: How the sausage is made
+
+.pull-left-center[
+<div align="center">
+<br>
+<img src="pics/fivythirtyeight-methodology-4.png" width=500>
+</div>
+`Source` [FiveThirtyEight](https://fivethirtyeight.com/features/how-fivethirtyeights-2020-presidential-forecast-works-and-whats-different-because-of-covid-19/)
+]
+
+---
+count: false
+# Example: How the sausage is made
+
+.pull-left-center[
+<div align="center">
+<br>
+<img src="pics/fivythirtyeight-methodology-5.png" width=450>
+</div>
+`Source` [FiveThirtyEight](https://fivethirtyeight.com/features/how-fivethirtyeights-2020-presidential-forecast-works-and-whats-different-because-of-covid-19/)
+]
+
+--
+.pull-right-center[
+<div align="center">
+<br><br><br><br>
+<img src="pics/nate-colbert.gif" width=400>
+</div>
+]
+
+
+
+
 
 
 
 ---
-# Research design
+# Uncertainty
 
+.pull-left[
+### What we are uncertain about
 
----
-# Statistical communication: summary
+- **Measurement** → uncertainty in single variables
+- **Model specification** → uncertainty across multiple variables and how they connect
+- **Parameter estimates** → uncertainty about bias and precision
+- **Model outcomes** → uncertainty about (out-of-sample) fit
+- **Generalizability** to other samples, the future
 
-- 
+Depending on the empirical setup, various specific **sources of error** might enter (e.g., [survey data](https://academic.oup.com/poq/article/74/5/849/1817502), [digital trace data](https://academic.oup.com/poq/article/85/S1/399/6359490)).
+]
 
-
-
-<!-- ############################################ -->
----
-class: inverse, center, middle
-name: visuals
-
-# Visual communication
-<html><div style='float:left'></div><hr color='#EB811B' size=1px style="width:1000px; margin:auto;"/></html>
-
-
----
-# Visual communication
-
-- graphics, interactives
-- spoken words
-- written words
+.pull-right-center[
+<div align="center">
+<br>
+<img src="pics/total-survey-error.png" width=450>
+</div>
+`Credit` [Robert Groves, Total Survey Error](https://academic.oup.com/poq/article/74/5/849/1817502?login=true)
+]
 
 
 
 ---
-# Graphics for communication
+# Communicating uncertainty
 
-See the visualization session for
-  - the mechanics
-  - the basic do's and don'ts
-  
-Here:
-  - which figures to use for which audiences?
-  - evidence on how policymakers etc. read evidence from graphs
+.pull-left[
+### The difficulty of communicating uncertainty
+
+- The concept is complex. Not all people think in probabilistic terms.
+- Many humans are bad at understanding (conditional and unconditional) probabilities.
+- Adding information about uncertainty might distract, confuse, and undermine trust.
+]
+
+.pull-right-center[
+<div align="center">
+<br>
+<img src="pics/mcelreath-gates.png" width=350>
+</div>
+`Credit` [Richard McElreath](https://twitter.com/rlmcelreath/status/1462719976259919879)
+]
+
+
+---
+# Communicating uncertainty (cont.)
+
+.pull-left-center[
+### Visualizing uncertainty
+
+<div align="center">
+<br>
+<img src="pics/errorbars-1.png" width=500>
+</div>
+
+<div align="center">
+<img src="pics/confidence-dists-1.png" width=500>
+</div>
+
+<div align="center">
+<img src="pics/confidence-bands-1.png" width=500>
+</div>
+
+`Source` [Claus Wilke](https://clauswilke.com/dataviz/visualizing-uncertainty.html)
+]
+
+
+.pull-right-center[
+### Uncertainty by numbers
+
+<div align="center">
+<br>
+<img src="pics/model-out-broom.png" width=500>
+</div>
+
+
+### Strategies by precision
+
+<div align="center">
+<br>
+<img src="pics/communicating-uncertainty.gif" width=470>
+</div>
+`Credit` [van der Bles et al. 2019](http://doi.org/10.1098/rsos.181870)
+]
+
+
+
+---
+# Communicating probabilities with verbal expressions
+
+.pull-left-center[
+<div align="center">
+<br>
+<img src="pics/willems-abstract.png" width=500>
+</div>
+`Source` [Willems et al. 2020](https://doi.org/10.22323/2.19020203)
+
+]
+
+.pull-right-center[
+<div align="center">
+<br>
+<img src="pics/willems-probability-phrases.png" width=370>
+</div>
+]
+
+
+---
+# Probabilities: confusing vote share with p(win)
+
+.pull-left-center[
+<div align="center">
+<br>
+<img src="pics/westwood-abstract.png" width=550>
+</div>
+`Source` [Westwood et al. 2020](https://doi.org/10.1086/708682)
+
+]
+
+.pull-right[
+<div align="center">
+<br>
+<img src="pics/westwood-results.png" width=450>
+</div>
+]
+
+
+---
+# Communicating data and analyses with <tt>report</tt>
+
+.pull-left-small[
+### The package
+- The [`report`](https://easystats.github.io/report/) package (part of the [easystats](https://easystats.github.io/easystats/) project) provides verbal reports of models, tests, and data frames.
+- In doing so, it helps ensure standardization in reporting.
+]
+
+.pull-right-wide[
+### The workflow
+
+<div align="center">
+<br>
+<img src="pics/report-workflow.png" width=700>
+</div>
+]
+
+
+---
+# Communicating data and analyses with <tt>report</tt>
+
+.pull-left-small[
+### The package
+- The [`report`](https://easystats.github.io/report/) package (part of the [easystats](https://easystats.github.io/easystats/) project) provides verbal reports of models, tests, and data frames.
+- In doing so, it helps ensure standardization in reporting.
+
+### Use with care
+- Fully automating this part of communication is probably not a good idea (do you enjoy talking to a bot?).
+- The output is pseudo-objective (reporting some quantities but not others).
+]
+
+.pull-right-wide[
+### Example
+
+```{r, eval = F}
+library(report)
+model <- lm(Sepal.Length ~ Species, data = iris)
+report(model)
+```
+
+```r
+We fitted a linear model (estimated using OLS) to predict Sepal.Length 
+with Species (formula: Sepal.Length ~ Species). The model explains a 
+statistically significant and substantial proportion of variance 
+(R2 = 0.62, F(2, 147) = 119.26, p < .001, adj. R2 = 0.61). The model's 
+intercept, corresponding to Species = setosa, is at 5.01 (95% CI 
+[4.86, 5.15], t(147) = 68.76, p < .001). Within this model:
+
+  - The effect of Species [versicolor] is statistically significant 
+  and positive (beta = 0.93, 95% CI [0.73, 1.13], t(147) = 9.03, 
+  p < .001; Std. beta = 1.12, 95% CI [0.88, 1.37])
+  - The effect of Species [virginica] is statistically significant 
+  and positive (beta = 1.58, 95% CI [1.38, 1.79], t(147) = 15.37, 
+  p < .001; Std. beta = 1.91, 95% CI [1.66, 2.16])
+
+Standardized parameters were obtained by fitting the model on a 
+standardized version of the dataset.
+```
+]
+
+
+
+
+
+
+
 
 
 
@@ -993,7 +1129,7 @@ background-color: #000000
 .pull-left[
 .pull-left-vwide[
 ### <tt>flexdashboard</tt> package
-- Overview [here](https://pkgs.rstudio.com/flexdashboard)
+- Overview [here](https://pkgs.rstudio.com/flexdashboard).
 - Good for easy dashboard building
 - Just a document that looks like a dashboard
 - Can be compiled into a static file (just like regular Markdown)
@@ -1016,12 +1152,12 @@ background-color: #000000
 .pull-right[
 .pull-left-vwide[
 ### <tt>shiny</tt> package
-- Overview [here](https://shiny.rstudio.com/)
+- Overview [here](https://shiny.rstudio.com/).
 - More complex to program, but the best option for complex apps.
 - Can implement any layout.
 - Needs a server behind it to execute R code on user input. 
 - Can run interactive code either by processing serverside (in R) or clientside (in embedded JavaScript).
-- The [shinydashboard](https://rstudio.github.io/shinydashboard/) package provides another way to create dashboards with Shiny
+- The [shinydashboard](https://rstudio.github.io/shinydashboard/) package provides another way to create dashboards with Shiny.
 ]
 .pull-right-vsmall[
 <br>
@@ -1041,6 +1177,8 @@ background-color: #000000
 # Dashboards with <tt>flexdashboard</tt>
 
 .pull-left-vsmall[
+### Functionality
+
 - Use simple R Markdown to build a dashboard.
 ]
 
@@ -1058,6 +1196,8 @@ background-color: #000000
 # Dashboards with <tt>flexdashboard</tt>
 
 .pull-left-vsmall[
+### Functionality
+
 - Use simple R Markdown to build a dashboard.
 - Arrange panels as blocks with flexible syntax.
 ]
@@ -1074,6 +1214,8 @@ background-color: #000000
 # Dashboards with <tt>flexdashboard</tt>
 
 .pull-left-vsmall[
+### Functionality
+
 - Use simple R Markdown to build a dashboard.
 - Arrange panels as blocks with flexible syntax.
 ]
@@ -1090,6 +1232,8 @@ background-color: #000000
 # Dashboards with <tt>flexdashboard</tt>
 
 .pull-left-vsmall[
+### Functionality
+
 - Use simple R Markdown to build a dashboard.
 - Arrange panels as blocks with flexible syntax.
 ]
@@ -1107,6 +1251,8 @@ background-color: #000000
 # Dashboards with <tt>flexdashboard</tt>
 
 .pull-left-vsmall[
+### Functionality
+
 - Use simple R Markdown to build a dashboard.
 - Arrange panels as blocks with flexible syntax.
 - Add elements like gauges and value boxes.
@@ -1126,6 +1272,8 @@ background-color: #000000
 # Dashboards with <tt>flexdashboard</tt>
 
 .pull-left-vsmall[
+### Functionality
+
 - Use simple R Markdown to build a dashboard.
 - Arrange panels as blocks with flexible syntax.
 - Add elements like gauges and value boxes.
@@ -1145,6 +1293,8 @@ background-color: #000000
 # Dashboards with <tt>flexdashboard</tt>
 
 .pull-left-vsmall[
+### Functionality
+
 - Use simple R Markdown to build a dashboard.
 - Arrange panels as blocks with flexible syntax.
 - Add elements like gauges and value boxes.
@@ -1165,6 +1315,8 @@ background-color: #000000
 # Dashboards with <tt>flexdashboard</tt>
 
 .pull-left-vsmall[
+### Functionality
+
 - Use simple R Markdown to build a dashboard.
 - Arrange panels as blocks with flexible syntax.
 - Add elements like gauges and value boxes.
@@ -1186,6 +1338,112 @@ background-color: #000000
 
 ---
 # Web apps with <tt>shiny</tt>
+
+.pull-left-vsmall[
+### Functionality
+
+- Shiny's functionality is too complex and rich to introduce it on a couple of slides. Wait for the labs!
+- It certainly can do much more than dashboards.
+- Think of it as a tool to create **web apps** that allow interaction with raw and cooked data.
+]
+
+.pull-right-vwide[
+<div align="center">
+<br><br><br>
+<img src="pics/shiny-cheatsheet-1.png" height="300"/>
+<img src="pics/shiny-cheatsheet-2.png" height="300"/>
+</div>
+]
+
+---
+# Web apps with <tt>shiny</tt>
+
+.pull-left-vsmall[
+### Example applications
+- Data explorer
+]
+
+.pull-right-vwide[
+<div align="center">
+<br>
+<a href="https://cosima-meyer.shinyapps.io/conflict-elections/"><img src="pics/shinyapp-conflict-new.png" height="500"/></a>
+</div>
+]
+
+
+---
+# Web apps with <tt>shiny</tt>
+
+.pull-left-vsmall[
+### Example applications
+- Data explorer
+- Interactive appendix
+]
+
+.pull-right-vwide[
+<div align="center">
+<br>
+<a href="http://134.155.108.111:3838/Populism/"><img src="pics/wuttke-appendix.png" height="500"/></a>
+</div>
+]
+
+
+---
+# Web apps with <tt>shiny</tt>
+
+.pull-left-vsmall[
+### Example applications
+- Data explorer
+- Interactive appendix
+- Workflow apps
+]
+
+.pull-right-vwide[
+<div align="center">
+<br>
+<a href="https://leeper.shinyapps.io/pdfcount/"><img src="pics/leeper-pdf-wordcount.png" height="500"/></a>
+</div>
+]
+
+
+---
+# Web apps with <tt>shiny</tt>
+
+.pull-left-vsmall[
+### Example applications
+- Data explorer
+- Interactive appendix
+- Workflow apps
+- Learning tools
+]
+
+.pull-right-vwide[
+<div align="center">
+<br>
+<a href="https://egap.shinyapps.io/Power_Calculator/"><img src="pics/egap-power-calculator.png" height="500"/></a>
+</div>
+]
+
+
+
+---
+# Web apps with <tt>shiny</tt>
+
+.pull-left-vsmall[
+### Example applications
+- Data explorer
+- Interactive appendix
+- Workflow apps
+- Learning tools
+- ... and so much more!
+]
+
+.pull-right-vwide[
+<div align="center">
+<br>
+<a href="https://shiny.rstudio.com/gallery/"><img src="pics/shiny-gallery.png" height="500"/></a>
+</div>
+]
 
 
 
@@ -1216,6 +1474,100 @@ background-color: #000000
 - [ggvis](https://ggvis.rstudio.com/): Similar to ggplot2 but with focus on web and interaction
 - [shinydashboard](): Tools to create visual dashboards
 ]
+
+
+
+<!-- ############################################ -->
+---
+class: inverse, center, middle
+name: science
+
+# The science of science communication
+<html><div style='float:left'></div><hr color='#EB811B' size=1px style="width:1000px; margin:auto;"/></html>
+
+---
+# The science of science communication
+
+.pull-left-wide[
+### Motivation
+- You have learned the basic rules of good visualization and reporting, but what is the external validity of this advice?
+- How are facts and figures perceived by the public, policymakers, or even other scientists?
+- How does science communication affect attitudes and behaviors?
+
+### Show us the data
+- It turns out there's increasing evidence on how science communication is consumed by stakeholders, and to what effect. 
+- However, much more research is needed to better understand how what we do and communicate travels to stakeholders.
+- The following slides report some selected findings.
+]
+
+.pull-right-small[
+<div align="center">
+<br><br>
+<img src="pics/boardroom-meme.jpeg" width="500"/>
+</div>
+]
+
+
+
+---
+# Lawmakers, scientists, and evidence
+
+.pull-left-center[
+<div align="center">
+<br><br><br>
+<img src="pics/crowley-pnas-1.png" width="500"/>
+</div>
+`Source` [Crowley et al. 2021, *PNAS*](https://www.pnas.org/content/118/9/e2012955118)
+]
+
+.pull-right[
+<div align="center">
+<br>
+<img src="pics/crowley-pnas-2.png" width="250"/>
+<img src="pics/crowley-pnas-3.png" width="250"/>
+</div>
+]
+
+---
+# Study characteristics and appreciation
+
+.pull-left-center[
+<div align="center">
+<br>
+<img src="pics/vivalt-2021-wp-1.png" width="380"/>
+<img src="pics/vivalt-2021-wp-2.png" width="380"/>
+</div>
+]
+
+.pull-right-center[
+<div align="center">
+<br>
+<img src="pics/vivalt-2021-wp-3.png" width="400"/>
+</div>
+`Source` [Vivalt et al. 2021, *working paper*](http://evavivalt.com/wp-content/uploads/Weighing-the-Evidence.pdf)
+]
+
+
+---
+# Reported uncertainty and public trust
+
+.pull-left-center[
+<div align="center">
+<br>
+<img src="pics/van-der-bles-pnas-1.png" width="450"/>
+<img src="pics/van-der-bles-pnas-2.png" width="280"/>
+</div>
+]
+
+.pull-right-center[
+<div align="center">
+<br>
+<img src="pics/van-der-bles-pnas-3.png" width="330"/>
+</div>
+`Source` [Van der Bles et al. 2020, *PNAS*](https://doi.org/10.1073/pnas.1913678117)
+]
+
+
 
 
 <!-- ############################################ -->
@@ -1255,9 +1607,9 @@ name: openscience
 .pull-left[
 <div align="center">
 <br>
-<img src="pics/data-science-cool-4.png" width="500"/>
-<img src="pics/data-science-cool-3.png" width="500"/>
-<img src="pics/data-science-cool-6.png" width="500"/>
+<img src="pics/data-science-cool-4.png" width="450"/>
+<img src="pics/data-science-cool-3.png" width="450"/>
+<img src="pics/data-science-cool-6.png" width="450"/>
 </div>
 ]
 
@@ -1292,7 +1644,7 @@ name: openscience
 
 
 ### Factors fueling the replication crisis
-- Solo, siloed investigators limited to small sample sizes
+- Solo, silo-ed investigators limited to small sample sizes
 - Wrong incentives in science
 - No pre-registration of hypotheses being tested
 - Post-hoc cherry picking of hypotheses with best P values

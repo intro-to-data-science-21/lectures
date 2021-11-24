@@ -90,6 +90,14 @@ hr, .title-slide h2::after, .mline h1::after {
   float: left;
   width: 63%;
 }
+
+.pull-left-wide-center {
+  margin-top: -20px;
+  float: left;
+  width: 58%;
+  text-align: center;
+}
+
 .pull-right-wide {
     margin-top: -20px;
   float: right;
