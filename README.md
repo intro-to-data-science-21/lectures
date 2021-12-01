@@ -27,6 +27,8 @@
 
 11. Monitoring and communication \[[**.html**](https://raw.githack.com/intro-to-data-science-21/lectures/main/11-communication/11-communication.html) | [**.pdf**](https://raw.githack.com/intro-to-data-science-21/lectures/main/11-communication/11-communication.pdf) | [**.Rmd**](https://raw.githack.com/intro-to-data-science-21/lectures/main/11-communication/11-communication.Rmd)\]
 
+12. Data science ethics \[[**.html**](https://raw.githack.com/intro-to-data-science-21/lectures/main/12-ethics/12-ethics.html) | [**.pdf**](https://raw.githack.com/intro-to-data-science-21/lectures/main/12-ethics/12-ethics.pdf) | [**.Rmd**](https://raw.githack.com/intro-to-data-science-21/lectures/main/12-ethics/12-ethics.Rmd)\]
+
 
 ## Summary
 

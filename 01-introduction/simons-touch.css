@@ -59,6 +59,12 @@ hr, .title-slide h2::after, .mline h1::after {
   height: 2px;
 }
 
+.pull-center {
+  margin-top: -20px;
+  width: 100%;
+  text-align: center;
+}
+
 .pull-left {
   margin-top: -20px;
   float: left;
@@ -77,10 +83,66 @@ hr, .title-slide h2::after, .mline h1::after {
   float: left;
   width: 63%;
 }
+
+.pull-left-wide-center {
+  margin-top: -20px;
+  float: left;
+  width: 58%;
+  text-align: center;
+}
+
+
+.pull-left-small-center {
+  margin-top: -20px;
+  float: left;
+  width: 38%;
+  text-align: center;
+}
+
+
+.pull-right-small-center {
+  margin-top: -20px;
+  float: right;
+  width: 38%;
+  text-align: center;
+}
+
+
 .pull-right-wide {
     margin-top: -20px;
   float: right;
   width: 63%;
+}
+
+.pull-left-wide2 {
+    margin-top: -20px;
+  float: left;
+  width: 58%;
+}
+
+
+.pull-left-vwide {
+  margin-top: -20px;
+  float: left;
+  width: 73%;
+}
+
+.pull-right-vwide {
+    margin-top: -20px;
+  float: right;
+  width: 73%;
+}
+
+.pull-right-wide2 {
+    margin-top: -20px;
+  float: right;
+  width: 58%;
+}
+
+.pull-right-wide3 {
+  margin-top: -20px;
+  float: right;
+  width: 58%;
 }
 
 .pull-left-small {
@@ -88,10 +150,68 @@ hr, .title-slide h2::after, .mline h1::after {
   float: left;
   width: 30%;
 }
+
+.pull-left-small2 {
+    margin-top: -20px;
+  float: left;
+  width: 33%;
+}
+
+.pull-left-small3 {
+    margin-top: -20px;
+  float: left;
+  width: 40%;
+}
+
+.pull-right-small3 {
+    margin-top: -20px;
+  float: right;
+  width: 40%;
+}
+
 .pull-right-small {
     margin-top: -20px;
   float: right;
   width: 30%;
+}
+
+.pull-right-small2 {
+  margin-top: -20px;
+  float: right;
+  width: 33%;
+}
+
+.pull-right-small2-center {
+  margin-top: -20px;
+  float: right;
+  width: 33%;
+  text-align: center;
+}
+
+
+.pull-center-small {
+  margin-top: -20px;
+  width: 30%;
+}
+
+.pull-left-vsmall {
+    margin-top: -20px;
+  float: left;
+  width: 25%;
+}
+
+.pull-left-vvsmall {
+  margin-top: -20px;
+  float: left;
+  width: 16%;
+  text-align: center;
+}
+
+
+.pull-right-vsmall {
+    margin-top: -20px;
+  float: right;
+  width: 25%;
 }
 
 .pull-right-small-center {
@@ -112,6 +232,21 @@ hr, .title-slide h2::after, .mline h1::after {
   float: right;
   width: 47%;
   text-align: center;
+}
+
+
+.pull-right-wide-center {
+    margin-top: -20px;
+  float: right;
+  width: 58%;
+  text-align: center;
+}
+.font80 {
+  font-size: 80%;
+}
+
+.font200 {
+  font-size: 200%;
 }
 
 .font500 {
