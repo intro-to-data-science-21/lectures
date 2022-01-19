@@ -10,3 +10,5 @@
 **/logs/
 clips/
 .DS_Store
+**/pics/
+**/libs/
