@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Master of Data Science for Public Policy</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Simon Munzert" />
+    <script src="libs/header-attrs/header-attrs.js"></script>
+    <link href="libs/remark-css/default.css" rel="stylesheet" />
+    <link href="libs/remark-css/metropolis.css" rel="stylesheet" />
+    <link href="libs/remark-css/metropolis-fonts.css" rel="stylesheet" />
+    <link rel="stylesheet" href="simons-touch.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Master of Data Science for Public Policy
+## Taster Lecture: Introduction to Data Science
+### Simon Munzert
+### Hertie School | <a href="https://github.com/intro-to-data-science-21">GRAD-C11</a>
+
+---
+
+class: inverse, center, middle
+name: welcome
+
+&lt;style type="text/css"&gt;
+@media print { # print out incremental slides; see https://stackoverflow.com/questions/56373198/get-xaringan-incremental-animations-to-print-to-pdf/56374619#56374619
+  .has-continuation {
+    display: block !important;
+  }
+}
+&lt;/style&gt;
+
+
+
+
+# Welcome!
+
+---
+
+# Roadmap
+
+&lt;/br&gt;&lt;/br&gt;&lt;/br&gt;&lt;/br&gt;
+
+1. [Welcome!](#welcome)
+
+2. [What is data science?](#whatisdatascience)
+
+3. [Sneak preview](#preview)
+
+3. [Q&amp;A](#qanda)
+
+
+
+---
+
+# Introductions
+
+### Course
+
+<svg aria-hidden="true" role="img" viewBox="0 0 496 512" style="height:1em;width:0.97em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M336.5 160C322 70.7 287.8 8 248 8s-74 62.7-88.5 152h177zM152 256c0 22.2 1.2 43.5 3.3 64h185.3c2.1-20.5 3.3-41.8 3.3-64s-1.2-43.5-3.3-64H155.3c-2.1 20.5-3.3 41.8-3.3 64zm324.7-96c-28.6-67.9-86.5-120.4-158-141.6 24.4 33.8 41.2 84.7 50 141.6h108zM177.2 18.4C105.8 39.6 47.8 92.1 19.3 160h108c8.7-56.9 25.5-107.8 49.9-141.6zM487.4 192H372.7c2.1 21 3.3 42.5 3.3 64s-1.2 43-3.3 64h114.6c5.5-20.5 8.6-41.8 8.6-64s-3.1-43.5-8.5-64zM120 256c0-21.5 1.2-43 3.3-64H8.6C3.2 212.5 0 233.8 0 256s3.2 43.5 8.6 64h114.6c-2-21-3.2-42.5-3.2-64zm39.5 96c14.5 89.3 48.7 152 88.5 152s74-62.7 88.5-152h-177zm159.3 141.6c71.4-21.2 129.4-73.7 158-141.6h-108c-8.8 56.9-25.6 107.8-50 141.6zM19.3 352c28.6 67.9 86.5 120.4 158 141.6-24.4-33.8-41.2-84.7-50-141.6h-108z"/></svg> https://github.com/intro-to-data-science-21
+
+Much of this course lives on GitHub. You will find lecture materials, code, assignments, and other people's presentations there. We also have Moodle, which is for everything else.
+
+--
+
+### Me
+
+<svg aria-hidden="true" role="img" viewBox="0 0 448 512" style="height:1em;width:0.88em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M436 160c6.6 0 12-5.4 12-12v-40c0-6.6-5.4-12-12-12h-20V48c0-26.5-21.5-48-48-48H48C21.5 0 0 21.5 0 48v416c0 26.5 21.5 48 48 48h320c26.5 0 48-21.5 48-48v-48h20c6.6 0 12-5.4 12-12v-40c0-6.6-5.4-12-12-12h-20v-64h20c6.6 0 12-5.4 12-12v-40c0-6.6-5.4-12-12-12h-20v-64h20zm-228-32c35.3 0 64 28.7 64 64s-28.7 64-64 64-64-28.7-64-64 28.7-64 64-64zm112 236.8c0 10.6-10 19.2-22.4 19.2H118.4C106 384 96 375.4 96 364.8v-19.2c0-31.8 30.1-57.6 67.2-57.6h5c12.3 5.1 25.7 8 39.8 8s27.6-2.9 39.8-8h5c37.1 0 67.2 25.8 67.2 57.6v19.2z"/></svg> I'm [Simon Munzert](https://simonmunzert.github.io/) [si’mən munsɜrt], or just Simon [saɪmən].
+
+<svg aria-hidden="true" role="img" viewBox="0 0 512 512" style="height:1em;width:1em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M502.3 190.8c3.9-3.1 9.7-.2 9.7 4.7V400c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V195.6c0-5 5.7-7.8 9.7-4.7 22.4 17.4 52.1 39.5 154.1 113.6 21.1 15.4 56.7 47.8 92.2 47.6 35.7.3 72-32.8 92.3-47.6 102-74.1 131.6-96.3 154-113.7zM256 320c23.2.4 56.6-29.2 73.4-41.4 132.7-96.3 142.8-104.7 173.4-128.7 5.8-4.5 9.2-11.5 9.2-18.9v-19c0-26.5-21.5-48-48-48H48C21.5 64 0 85.5 0 112v19c0 7.4 3.4 14.3 9.2 18.9 30.6 23.9 40.7 32.4 173.4 128.7 16.8 12.2 50.2 41.8 73.4 41.4z"/></svg> [munzert@hertie-school.org](mailto:munzert@hertie-school.org)
+
+<svg aria-hidden="true" role="img" viewBox="0 0 640 512" style="height:1em;width:1.25em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M622.34 153.2L343.4 67.5c-15.2-4.67-31.6-4.67-46.79 0L17.66 153.2c-23.54 7.23-23.54 38.36 0 45.59l48.63 14.94c-10.67 13.19-17.23 29.28-17.88 46.9C38.78 266.15 32 276.11 32 288c0 10.78 5.68 19.85 13.86 25.65L20.33 428.53C18.11 438.52 25.71 448 35.94 448h56.11c10.24 0 17.84-9.48 15.62-19.47L82.14 313.65C90.32 307.85 96 298.78 96 288c0-11.57-6.47-21.25-15.66-26.87.76-15.02 8.44-28.3 20.69-36.72L296.6 284.5c9.06 2.78 26.44 6.25 46.79 0l278.95-85.7c23.55-7.24 23.55-38.36 0-45.6zM352.79 315.09c-28.53 8.76-52.84 3.92-65.59 0l-145.02-44.55L128 384c0 35.35 85.96 64 192 64s192-28.65 192-64l-14.18-113.47-145.03 44.56z"/></svg> Assistant Professor of Data Science and Public Policy
+
+--
+
+### You
+
+What's your name? Why are you here? And would you share a funny fact about yourself?
+
+
+---
+
+# More about you (one year ago)
+
+&lt;div align="center"&gt;
+&lt;br&gt;
+&lt;img src="pics/r-knowledge.png" height=500&gt;
+&lt;/div&gt;
+
+
+
+
+---
+class: inverse, center, middle
+name: whatisdatascience
+
+# What is data science?
+&lt;html&gt;&lt;div style='float:left'&gt;&lt;/div&gt;&lt;hr color='#EB811B' size=1px style="width:1000px; margin:auto;"/&gt;&lt;/html&gt;
+
+
+---
+
+# An old classic
+
+&lt;div align="center"&gt;
+&lt;img src="pics/venn-orig-1.png" height=550&gt;
+&lt;/div&gt;
+
+---
+
+# An old classic
+
+&lt;div align="center"&gt;
+&lt;img src="pics/venn-orig-2.png" height=550&gt;
+&lt;/div&gt;
+
+---
+
+# An old classic
+
+&lt;div align="center"&gt;
+&lt;img src="pics/venn-orig-3.png" height=550&gt;
+&lt;/div&gt;
+
+---
+
+# An old classic
+
+&lt;div align="center"&gt;
+&lt;img src="pics/venn-orig-4.png" height=550&gt;
+&lt;/div&gt;
+
+
+---
+
+# An old classic
+
+&lt;div align="center"&gt;
+&lt;img src="pics/venn-orig-5.png" height=550&gt;
+&lt;/div&gt;
+
+---
+
+# An old classic
+
+&lt;div align="center"&gt;
+&lt;img src="pics/venn-orig-5-credit.png" height=550&gt;
+&lt;/div&gt;
+
+
+---
+
+# The data science pipeline
+
+.pull-left[
+
+**Preparatory work**
+
+- **Problem definition** predict, infer, describe
+- **Design** conceptualize, build data collection device
+- **Data collection** recruit, collect, monitor
+
+]
+
+---
+
+# The data science pipeline
+
+.pull-left[
+
+**Preparatory work**
+
+- **Problem definition** predict, infer, describe
+- **Design** conceptualize, build data collection device
+- **Data collection** recruit, collect, monitor
+
+**Data operation**
+
+]
+
+.pull-right-center[
+&lt;br&gt;&lt;br&gt;&lt;br&gt;
+&lt;div align="center"&gt;
+&lt;img src="pics/data-science-flow.png" height=200&gt;
+&lt;/div&gt;
+]
+
+---
+
+# The data science pipeline
+
+.pull-left[
+
+**Preparatory work**
+
+  - **Problem definition** predict, infer, describe
+  - **Design** conceptualize, build data collection device
+  - **Data collection** recruit, collect, monitor
+
+**Data operation**
+
+   - **Wrangle**: import, tidy, manipulate
+   
+]
+
+.pull-right-center[
+&lt;br&gt;&lt;br&gt;&lt;br&gt;
+&lt;div align="center"&gt;
+&lt;img src="pics/data-science-wrangle.png" height=200&gt;
+&lt;/div&gt;
+]
+
+
+---
+
+# The data science pipeline
+
+.pull-left[
+
+**Preparatory work**
+
+  - **Problem definition** predict, infer, describe
+  - **Design** conceptualize, build data collection device
+  - **Data collection** recruit, collect, monitor
+
+**Data operation**
+
+   - **Wrangle**: import, tidy, manipulate
+   - **Explore**: visualize, describe, discover
+
+
+]
+
+.pull-right-center[
+&lt;br&gt;&lt;br&gt;&lt;br&gt;
+&lt;div align="center"&gt;
+&lt;img src="pics/data-science-explore.png" height=200&gt;
+&lt;/div&gt;
+]
+
+
+---
+
+# The data science pipeline
+
+.pull-left[
+
+**Preparatory work**
+
+  - **Problem definition** predict, infer, describe
+  - **Design** conceptualize, build data collection device
+  - **Data collection** recruit, collect, monitor
+
+**Data operation**
+
+   - **Wrangle**: import, tidy, manipulate
+   - **Explore**: visualize, describe, discover
+   - **Model**: build, test, infer, predict
+
+
+
+]
+
+.pull-right-center[
+&lt;br&gt;&lt;br&gt;&lt;br&gt;
+&lt;div align="center"&gt;
+&lt;img src="pics/data-science-model.png" height=200&gt;
+&lt;/div&gt;
+]
+
+
+---
+
+# The data science pipeline
+
+.pull-left[
+
+**Preparatory work**
+
+  - **Problem definition** predict, infer, describe
+  - **Design** conceptualize, build data collection device
+  - **Data collection** recruit, collect, monitor
+
+**Data operation**
+
+   - **Wrangle**: import, tidy, manipulate
+   - **Explore**: visualize, describe, discover
+   - **Model**: build, test, infer, predict
+
+**Dissemination**
+
+  - **Communicate**: to the public, media, policymakers
+  - **Publish**: journals/proceedings, blogs, software
+  - **Productize**: make usable, robust, scalable
+
+
+]
+
+.pull-right-center[
+&lt;br&gt;&lt;br&gt;&lt;br&gt;
+&lt;div align="center"&gt;
+&lt;img src="pics/data-science-communicate.png" height=200&gt;
+&lt;/div&gt;
+]
+
+
+---
+
+# The data science pipeline
+
+.pull-left[
+
+**Preparatory work**
+
+  - **Problem definition** predict, infer, describe
+  - **Design** conceptualize, build data collection device
+  - **Data collection** recruit, collect, monitor
+
+**Data operation**
+
+   - **Wrangle**: import, tidy, manipulate
+   - **Explore**: visualize, describe, discover
+   - **Model**: build, test, infer, predict
+
+**Dissemination**
+
+  - **Communicate**: to the public, media, policymakers
+  - **Publish**: journals/proceedings, blogs, software
+  - **Productize**: make usable, robust, scalable
+
+
+]
+
+.pull-right-center[
+&lt;br&gt;&lt;br&gt;&lt;br&gt;
+&lt;div align="center"&gt;
+&lt;img src="pics/data-science-program.png" height=200&gt;
+&lt;/div&gt;
+]
+
+
+
+---
+
+# The data science pipeline
+
+.pull-left[
+
+**Preparatory work**
+
+  - **Problem definition** predict, infer, describe
+  - **Design** conceptualize, build data collection device
+  - **Data collection** recruit, collect, monitor
+
+**Data operation**
+
+   - **Wrangle**: import, tidy, manipulate
+   - **Explore**: visualize, describe, discover
+   - **Model**: build, test, infer, predict
+
+**Dissemination**
+
+  - **Communicate**: to the public, media, policymakers
+  - **Publish**: journals/proceedings, blogs, software
+  - **Productize**: make usable, robust, scalable
+
+
+]
+
+.pull-right-center[
+&lt;br&gt;&lt;br&gt;
+&lt;div align="center"&gt;
+&lt;img src="pics/armyknife2.jpg" height=350&gt;
+&lt;/div&gt;
+]
+
+
+
+---
+class: inverse, center, middle
+name: preview
+
+# Sneak preview
+&lt;html&gt;&lt;div style='float:left'&gt;&lt;/div&gt;&lt;hr color='#EB811B' size=1px style="width:1000px; margin:auto;"/&gt;&lt;/html&gt;
+
+
+
+---
+
+# Introduction to Data Science in a nutshell
+
+&lt;div align="center"&gt;
+&lt;br&gt;
+&lt;img src="pics/i2ds-sneak-preview-1.png" height=500&gt;
+&lt;/div&gt;
+
+
+
+---
+class: inverse, center, middle
+
+# Sneak preview &lt;br&gt; Learning to love a programming environment
+
+&lt;html&gt;&lt;div style='float:left'&gt;&lt;/div&gt;&lt;hr color='#EB811B' size=1px style="width:1000px; margin:auto;"/&gt;&lt;/html&gt;
+
+
+---
+class: center
+background-color: #fff
+
+# The tidyverse
+
+&lt;div align="center"&gt;
+&lt;br&gt;
+&lt;img src="pics/hex-tidyverse.gif" height=500&gt;
+&lt;/div&gt;
+
+
+
+---
+
+# Why R and RStudio?
+
+### Data science positivism
+
+- Alongside Python, R has become the *de facto* language for data science.
+  - See: [*The Impressive Growth of R*](https://stackoverflow.blog/2017/10/10/impressive-growth-r/), [*The Popularity of Data Science Software*](http://r4stats.com/articles/popularity/)
+- Open-source (free!) with a global user-base spanning academia and industry.
+  - "Do you want to be a profit source or a cost center?"
+
+--
+
+### Bridge to multiple other programming environments, with statistics at heart
+
+- Already has all of the statistics support, and is amazingly adaptable as a “glue” language to other
+programming languages and APIs.
+- The RStudio IDE and ecosystem allow for further, seemless integration.
+
+--
+
+### Path dependency
+
+- It's also the language that I - and many data scientists with a foot in public policy - know best.
+- (Learning multiple languages is a good idea, though.)
+
+
+---
+# Why R and RStudio? (cont.)
+
+&lt;div align="center"&gt;
+&lt;img src="pics/facebook-programming-languages.png" width=600&gt;
+&lt;/div&gt;
+`Credit` [Left_Ad8361/Reddit](https://www.reddit.com/r/dataisbeautiful/comments/qw1bew/oc_which_programming_language_is_required_to_land/)
+
+
+
+
+
+---
+class: inverse, center, middle
+
+# Sneak preview &lt;br&gt; Collecting web data at scale
+
+&lt;html&gt;&lt;div style='float:left'&gt;&lt;/div&gt;&lt;hr color='#EB811B' size=1px style="width:1000px; margin:auto;"/&gt;&lt;/html&gt;
+
+
+
+---
+# Scraping the web for social research
+
+
+.pull-left-center[
+&lt;div align="center"&gt;
+&lt;img src="pics/pap1.png" height=300&gt;
+&lt;br&gt;&lt;br&gt;
+&lt;img src="pics/pap4.png" height=200&gt;
+&lt;/div&gt;
+]
+
+.pull-right-center[
+&lt;div align="center"&gt;
+&lt;img src="pics/cld-paper.png" height=250&gt;
+&lt;br&gt;
+&lt;img src="pics/leakingnetworks.png" height=260&gt;
+&lt;/div&gt;
+]
+
+
+---
+# Web scraping
+
+.pull-left[
+
+### What is web scraping?
+
+1. Pulling (unstructured) data from websites (HTMLs)
+2. Bringing it into shape (into an analysis-ready format)
+
+### The philosophy of scraping with R
+
+- No point-and-click procedure
+- Script the entire process from start to finish
+- **Automate**
+  - The downloading of files
+  - The scraping of information from web sites
+  - Tapping APIs
+  - Parsing of web content
+  - Data tidying, text data processing
+- Easily scale up scraping procedures
+- Scheduling of scraping tasks
+]
+
+.pull-right-center[
+&lt;br&gt;
+&lt;div align="center"&gt;
+&lt;img src="pics/web-scraping-vs-web-crawling.png" width=500&gt;
+&lt;/div&gt;
+`Credit` [prowebscraping.com](http://prowebscraping.com/web-scraping-vs-web-crawling/)
+]
+
+---
+# Technologies of the world wide web
+
+.pull-left[
+
+- To fully unlock the potential of web data for data science, we draw on certain web technologies.
+- Importantly, often a basic understanding of these technologies is sufficient as the focus is on web data collection, not [web development](https://en.wikipedia.org/wiki/Web_development).
+- Specifically, we have to understand
+  - How our machine/browser/R communicates with web servers (→ **HTTP/S**)
+  - How websites are built (→ **HTML**, **CSS**, basics of **JavaScript**)
+  - How content in webpages can be effectively located (→ **XPath**, **CSS selectors**)
+  - How dynamic web applications are executed and tapped (→ **AJAX**, **Selenium**)
+  - How data by web services is distributed and processed (→ **APIs**, **JSON**, **XML**)
+  
+]
+
+.pull-right-center[
+&lt;div align="center"&gt;
+&lt;br&gt;
+&lt;img src="pics/webtechnologies.png" width=500&gt;
+&lt;/div&gt;
+`Credit` [ADCR](http://r-datacollection.com/)
+]
+
+
+---
+class: inverse, center, middle
+
+# Sneak preview &lt;br&gt; Reflecting everyday ethics in data science
+
+&lt;html&gt;&lt;div style='float:left'&gt;&lt;/div&gt;&lt;hr color='#EB811B' size=1px style="width:1000px; margin:auto;"/&gt;&lt;/html&gt;
+
+
+---
+class: center
+background-image: url("pics/webscraping2.jpeg")
+background-size: contain
+
+# How do I respect intellectual property?
+
+---
+class: center
+background-image: url("pics/hate-online.jpeg")
+background-size: contain
+background-color: #000000
+
+# How do I protect the safety of my research subjects?
+
+
+---
+class: center
+background-image: url("pics/versioncontrol.jpeg")
+background-size: contain
+background-color: #000000
+
+# How do I ensure an open science workflow?
+
+
+---
+class: center
+background-image: url("pics/meeting-presentation.png")
+background-size: contain
+background-color: #000000
+
+# How do I communicate results honestly?
+
+
+
+---
+class: inverse, center, middle
+
+# Sneak preview &lt;br&gt; Tools for Data Science Workshop
+
+&lt;html&gt;&lt;div style='float:left'&gt;&lt;/div&gt;&lt;hr color='#EB811B' size=1px style="width:1000px; margin:auto;"/&gt;&lt;/html&gt;
+
+
+
+---
+
+# Tools for Data Science Workshop
+
+&lt;div align="center"&gt;
+&lt;br&gt;
+&lt;img src="pics/i2ds-sneak-preview-2.png" height=500&gt;
+&lt;br&gt;
+&lt;a href ="https://intro-to-data-science-21-workshop.github.io/"&gt;https://intro-to-data-science-21-workshop.github.io/&lt;/a&gt;
+&lt;/div&gt;
+
+---
+# Tools for Data Science Workshop
+
+.pull-left[
+&lt;div align="center"&gt;
+&lt;br&gt;
+&lt;img src="pics/i2ds-workshop-1.png" width=500&gt;
+&lt;/div&gt;
+]
+
+.pull-right-center[
+&lt;div align="center"&gt;
+&lt;br&gt;
+&lt;img src="pics/i2ds-workshop-2.png" width=500&gt;
+&lt;/div&gt;
+]
+
+
+---
+class: inverse, center, middle
+name: qanda
+
+# Q &amp; A
+&lt;html&gt;&lt;div style='float:left'&gt;&lt;/div&gt;&lt;hr color='#EB811B' size=1px style="width:1000px; margin:auto;"/&gt;&lt;/html&gt;
+
+
+
+---
+# Question time!
+
+.pull-left[
+
+&lt;b&gt;Please AMA!&lt;/b&gt;
+
+- About the course
+- About the MDS curriculum
+- About the Hertie School
+- About the Data Science Lab
+- About anything else
+  
+&lt;div align="center"&gt;
+&lt;img src="pics/stupid-questions.jpg" width=220&gt;
+&lt;/div&gt;
+
+]
+
+.pull-right-center[
+&lt;div align="center"&gt;
+&lt;br&gt;
+&lt;img src="pics/mds-curriculum-2.png" width=450&gt;
+&lt;/div&gt;
+]
+
+
+
+
+
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false,
+"ratio": "16:9",
+"hash": true
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
